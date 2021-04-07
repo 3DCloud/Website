@@ -1,27 +1,36 @@
-# Website
+# 3DCloud Client
+## Getting Started
+Install [Node.js](https://nodejs.org/en/). It's usually safer to install the LTS version, but anything marked as compatible in [Angular's package.json file](https://github.com/angular/angular/blob/master/package.json) will work. If you already have Node.js installed, you can check the version you have by running `npm -v`.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.1.
+Once that's done, install the Angular CLI globally by running
 
-## Development server
+```
+npm install -g @angular/cli
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+You are now ready to develop! To run the app, simply run
 
-## Code scaffolding
+```
+ng serve --open
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+This should open your default browser to http://localhost:4200.
 
-## Build
+## Updating
+Angular-related packages (`@angular/*`, `rxjs`, `typescript`) should be updated through the `ng update` command. Running `ng update` without specifying arguments will tell you which packages can be updated; for example:
+```text
+We analyzed your package.json, there are some packages to update:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+  Name                               Version                  Command to update
+ --------------------------------------------------------------------------------
+  @angular/cli                       11.1.1 -> 11.2.7         ng update @angular/cli
+  @angular/core                      11.1.0 -> 11.2.8         ng update @angular/core
+  rxjs                               6.6.3 -> 6.6.7           ng update rxjs
 
-## Running unit tests
+There might be additional packages which don't provide 'ng update' capabilities that are outdated.
+You can update the additional packages by running the update command of your package manager.
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+If you want to update multiple packages at once, it's faster to run `ng update` with all the package names (e.g. `ng update @angular/cli @angular/core rxjs`) since the updater requires a clean repository (no uncommitted changes).
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+All other packages can be updated normally through NPM.
