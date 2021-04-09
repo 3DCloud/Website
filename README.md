@@ -17,7 +17,7 @@ ng serve --open
 This should open your default browser to http://localhost:4200.
 
 ## Updating
-Angular-related packages (`@angular/*`, `rxjs`, `typescript`) should be updated through the `ng update` command. Running `ng update` without specifying arguments will tell you which packages can be updated; for example:
+Angular-related packages should be updated through the `ng update` command since they may need to run additional commands before/after installing. If you're not sure if a package can be updated through it, running `ng update` without specifying arguments will tell you which packages can be updated; for example:
 ```text
 We analyzed your package.json, there are some packages to update:
 

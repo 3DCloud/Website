@@ -3,14 +3,34 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { GraphQLModule } from './graphql.module';
+import { HttpClientModule } from '@angular/common/http';
+import { ClientsComponent } from './clients/clients.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ClientComponent } from './clients/client/client.component';
+import { DeletePrinterModalComponent } from './clients/client/delete-printer-modal/delete-printer-modal.component';
+import { CreatePrinterModalComponent } from './clients/client/create-printer-modal/create-printer-modal.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ClientsComponent,
+    PageNotFoundComponent,
+    ClientComponent,
+    DeletePrinterModalComponent,
+    CreatePrinterModalComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    GraphQLModule,
+    HttpClientModule,
+    NgbModule,
+    FontAwesomeModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

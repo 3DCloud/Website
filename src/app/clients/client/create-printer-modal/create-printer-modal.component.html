@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Create Printer</h4>
+</div>
+<div class="modal-body">
+  <div *ngIf="error" class="alert alert-danger">Failed to create printer: {{ error }}</div>
+
+  <form [formGroup]="form">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input class="form-control" id="name" formControlName="name" type="text" />
+    </div>
+
+    <div class="form-group">
+      <label for="printer-definition">Printer Type</label>
+      <select class="form-control" id="printer-definition" formControlName="printerDefinition">
+        <option *ngFor="let def of printerDefinitions" [value]="def.id">{{ def.name }}</option>
+      </select>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" [disabled]="busy || form.invalid" class="btn btn-primary" (click)="createPrinter()">Create</button>
+  <button type="button" [disabled]="busy" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+</div>

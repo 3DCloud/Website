@@ -1,0 +1,78 @@
+<div *ngIf="loading" class="d-flex justify-content-center">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<div *ngIf="error" class="alert alert-danger">
+  Failed to get clients: {{ error }}
+</div>
+
+<ng-container *ngIf="client">
+  <h1>{{ client.name ? client.name : 'Client' }} <small class="text-muted">{{ client.id }}</small></h1>
+
+  <h2>Client Details</h2>
+  <div class="row">
+    <div class="form-group col-3">
+      <label for="name">Name</label>
+      <div class="input-group">
+        <input id="name" class="form-control" type="text" [formControl]="name" placeholder="Enter a name..." />
+        <div class="input-group-append">
+          <button class="btn btn-primary" [disabled]="name.invalid" (click)="saveName()" title="Save">
+            <fa-icon [icon]="icons.faSave"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Devices</h2>
+  <table class="table" *ngIf="client.devices?.length">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Hardware Identifier</th>
+        <th>Portable ID?</th>
+        <th>Last Seen</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let device of client.devices">
+        <td>{{ device.deviceName }}</td>
+        <td>{{ device.hardwareIdentifier }}</td>
+        <td>{{ device.isPortableHardwareIdentifier ? 'Yes' : 'No' }}</td>
+        <td>{{ device.lastSeen | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+        <td>
+          <button [disabled]="device.printer" class="btn btn-success" (click)="createPrinter(device)">{{ device.printer ? 'Printer Assigned' : 'Assign Printer' }}</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!client.devices?.length" class="alert alert-info" role="alert">
+    No devices detected.
+  </div>
+
+  <h2>Printers</h2>
+  <table class="table" *ngIf="client.printers?.length">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let printer of client.printers">
+        <td>{{printer.name}}</td>
+        <td>
+          <button class="btn btn-danger" (click)="showDeletePrinterModal(printer)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!client.printers?.length" class="alert alert-info" role="alert">
+    No printers configured. Use the "Assign Printer" button on a device above to configure a printer.
+  </div>
+</ng-container>

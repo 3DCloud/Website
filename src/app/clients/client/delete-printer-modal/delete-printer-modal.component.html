@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Delete Printer</h4>
+</div>
+<div class="modal-body">
+  <div *ngIf="error" class="alert alert-danger">Failed to delete printer: {{ error }}</div>
+  Are you sure you want to delete the printer "{{ printer?.name }}"? This action is irreversible.
+</div>
+<div class="modal-footer">
+  <button [disabled]="busy" class="btn btn-danger" (click)="deletePrinter()">Delete</button>
+  <button [disabled]="busy" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+</div>

@@ -1,0 +1,39 @@
+<h1>Clients</h1>
+
+<div class="clients-table">
+  <div *ngIf="loading" class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
+  <table *ngIf="!loading && clients.length" class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Authorized?</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let client of clients">
+        <td><a routerLink="/clients/{{client.id}}">{{client.id}}</a></td>
+        <td>{{client.name ? client.name : '&mdash;'}}</td>
+        <td>{{client.authorized ? 'Yes' : 'No'}}</td>
+        <td>
+          <button *ngIf="!client.authorized" [disabled]="busy" class="btn btn-success" (click)="grantAuthorization(client.id)">Grant Access</button>
+          <button *ngIf="client.authorized" [disabled]="busy" class="btn btn-danger" (click)="revokeAuthorization(client.id)">Revoke Access</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!clients.length && !loading && !error" class="alert alert-info">
+    No results.
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    Failed to get clients: {{error}}
+  </div>
+</div>
