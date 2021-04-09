@@ -17,7 +17,7 @@
     <tr *ngFor="let printer of printers">
       <td>{{ printer.name }}</td>
       <td>
-        <a class="btn btn-primary" [routerLink]="printer.id">Control Panel</a>
+        <a class="btn btn-primary" routerLink="{{printer.id}}/control-panel">Control Panel</a>
       </td>
     </tr>
   </tbody>

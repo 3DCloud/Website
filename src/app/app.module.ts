@@ -14,7 +14,7 @@ import { DeletePrinterModalComponent } from './clients/client/delete-printer-mod
 import { CreatePrinterModalComponent } from './clients/client/create-printer-modal/create-printer-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrintersComponent } from './printers/printers.component';
-import { PrinterComponent } from './printers/printer/printer.component';
+import { PrinterControlPanelComponent } from './printers/printer-control-panel/printer-control-panel.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { PrinterComponent } from './printers/printer/printer.component';
     DeletePrinterModalComponent,
     CreatePrinterModalComponent,
     PrintersComponent,
-    PrinterComponent
+    PrinterControlPanelComponent
   ],
     imports: [
         BrowserModule,

@@ -11,10 +11,10 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-printer',
-  templateUrl: './printer.component.html',
-  styleUrls: ['./printer.component.scss']
+  templateUrl: './printer-control-panel.component.html',
+  styleUrls: ['./printer-control-panel.component.scss']
 })
-export class PrinterComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PrinterControlPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('logElement', { static: true }) public logElement?: ElementRef<HTMLPreElement>;
 
