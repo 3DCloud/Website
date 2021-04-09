@@ -1,10 +1,10 @@
 import { Device } from './device';
 
 export interface Printer {
-  id: number;
+  id: string;
   name: string;
   createdAt: Date;
   updatedAt: Date;
-  deviceId: number;
+  deviceId: string;
   device?: Device;
 }

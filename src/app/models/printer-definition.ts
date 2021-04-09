@@ -1,4 +1,4 @@
 export interface PrinterDefinition {
-  id: number;
+  id: string;
   name: string;
 }

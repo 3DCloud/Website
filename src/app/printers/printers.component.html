@@ -1,0 +1,32 @@
+<h1>Printers</h1>
+
+<div *ngIf="loading" class="d-flex justify-content-center">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<table *ngIf="!loading && printers.length" class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let printer of printers">
+      <td>{{ printer.name }}</td>
+      <td>
+        <a class="btn btn-primary" [routerLink]="printer.id">Control Panel</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="!printers.length && !loading && !error" class="alert alert-info">
+  No results.
+</div>
+
+<div *ngIf="error" class="alert alert-danger">
+  Failed to get printers: {{error}}
+</div>

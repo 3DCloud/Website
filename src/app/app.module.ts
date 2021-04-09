@@ -12,7 +12,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ClientComponent } from './clients/client/client.component';
 import { DeletePrinterModalComponent } from './clients/client/delete-printer-modal/delete-printer-modal.component';
 import { CreatePrinterModalComponent } from './clients/client/create-printer-modal/create-printer-modal.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PrintersComponent } from './printers/printers.component';
+import { PrinterComponent } from './printers/printer/printer.component';
 
 @NgModule({
   declarations: [
@@ -21,17 +23,20 @@ import { ReactiveFormsModule } from '@angular/forms';
     PageNotFoundComponent,
     ClientComponent,
     DeletePrinterModalComponent,
-    CreatePrinterModalComponent
+    CreatePrinterModalComponent,
+    PrintersComponent,
+    PrinterComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    GraphQLModule,
-    HttpClientModule,
-    NgbModule,
-    FontAwesomeModule,
-    ReactiveFormsModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        GraphQLModule,
+        HttpClientModule,
+        NgbModule,
+        FontAwesomeModule,
+        ReactiveFormsModule,
+        FormsModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
