@@ -39,7 +39,8 @@ query GetClient($clientId: ID!) {
     },
     printers {
       id,
-      name
+      name,
+      deviceId
     }
   }
 }
@@ -78,6 +79,14 @@ mutation RevokeClientAuthorization($clientId: ID!) {
 }
 `;
 
+const DELETE_CLIENT = gql`
+mutation DeleteClient($id: ID!) {
+  deleteClient(id: $id) {
+    deleteCount
+  }
+}
+`;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -107,5 +116,10 @@ export class ClientsService {
   revokeAuthorization(clientId: string): Observable<Client> {
     return this.apollo.mutate<any>({ mutation: REVOKE_AUTHORIZATION, variables: { clientId } })
       .pipe(map(result => result.data.revokeClientAuthorization));
+  }
+
+  delete(id: string): Observable<void> {
+    return this.apollo.mutate({ mutation: DELETE_CLIENT, variables: { id } })
+      .pipe(map(() => {}))
   }
 }

@@ -67,4 +67,16 @@ export class ClientsComponent implements OnInit, OnDestroy {
     }));
   }
 
+  public delete(id: string): void {
+    this.busy = true;
+
+    this.subscriptions.push(this.clientsService.delete(id).subscribe(() => {
+      this.clients = this.clients.filter(c => c.id !== id);
+    }, error => {
+      this.error = error;
+    }).add(() => {
+      this.busy = false;
+    }));
+  }
+
 }

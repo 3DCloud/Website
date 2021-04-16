@@ -22,8 +22,9 @@
         <td>{{client.name ? client.name : '&mdash;'}}</td>
         <td>{{client.authorized ? 'Yes' : 'No'}}</td>
         <td>
-          <button *ngIf="!client.authorized" [disabled]="busy" class="btn btn-success" (click)="grantAuthorization(client.id)">Grant Access</button>
-          <button *ngIf="client.authorized" [disabled]="busy" class="btn btn-danger" (click)="revokeAuthorization(client.id)">Revoke Access</button>
+          <button *ngIf="!client.authorized" [disabled]="busy" class="btn btn-success mr-1" (click)="grantAuthorization(client.id)">Grant Access</button>
+          <button *ngIf="client.authorized" [disabled]="busy" class="btn btn-warning mr-1" (click)="revokeAuthorization(client.id)">Revoke Access</button>
+          <button [disabled]="busy" class="btn btn-danger" (click)="delete(client.id)">Delete</button>
         </td>
       </tr>
     </tbody>
