@@ -5,39 +5,30 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
-import { ClientsComponent } from './clients/clients.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ClientComponent } from './clients/client/client.component';
-import { DeletePrinterModalComponent } from './clients/client/delete-printer-modal/delete-printer-modal.component';
-import { CreatePrinterModalComponent } from './clients/client/create-printer-modal/create-printer-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PrintersComponent } from './printers/printers.component';
-import { PrinterControlPanelComponent } from './printers/printer-control-panel/printer-control-panel.component';
+import { ClientsModule } from './modules/clients/clients.module';
+import { PrintersModule } from './modules/printers/printers.module';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ClientsComponent,
-    PageNotFoundComponent,
-    ClientComponent,
-    DeletePrinterModalComponent,
-    CreatePrinterModalComponent,
-    PrintersComponent,
-    PrinterControlPanelComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        GraphQLModule,
-        HttpClientModule,
-        NgbModule,
-        FontAwesomeModule,
-        ReactiveFormsModule,
-        FormsModule
-    ],
-  providers: [],
+  imports: [
+    BrowserModule,
+    GraphQLModule,
+    HttpClientModule,
+    NgbModule,
+    FontAwesomeModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ClientsModule,
+    PrintersModule,
+    AppRoutingModule,
+    CoreModule
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

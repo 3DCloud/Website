@@ -3,7 +3,7 @@ import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { gql } from '@apollo/client/core';
-import { Printer } from '../models/printer';
+import { Printer } from 'core/models';
 
 const GET_PRINTERS = gql`
 query GetPrinters {

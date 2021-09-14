@@ -1,13 +1,10 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ClientsService } from '../../services/clients.service';
-import { Client } from '../../models/client';
-import { Device } from '../../models/device';
+import { ClientsService } from 'shared/services';
+import { Client, Device, Printer } from 'core/models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DeletePrinterModalComponent } from './delete-printer-modal/delete-printer-modal.component';
-import { Printer } from '../../models/printer';
-import { CreatePrinterModalComponent } from './create-printer-modal/create-printer-modal.component';
+import { CreatePrinterModalComponent, DeletePrinterModalComponent } from '..';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { FormControl } from '@angular/forms';
 

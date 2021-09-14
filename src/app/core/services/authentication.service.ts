@@ -1,0 +1,168 @@
+import { Injectable } from '@angular/core';
+import { sha256 } from 'js-sha256';
+import { HttpClient } from '@angular/common/http';
+import { parse as parseQueryString } from 'qs';
+import jwtDecode from 'jwt-decode';
+import { Observable } from 'rxjs';
+import { User } from '../models';
+import { gql } from '@apollo/client/core';
+import { map } from 'rxjs/operators';
+import { Apollo } from 'apollo-angular';
+import { apiUrl } from '../helpers';
+
+interface TokenResponse {
+  access_token: string;
+  refresh_token: string;
+  token_type: string;
+  expires_in: number;
+}
+
+interface TokenPayload {
+  iss: string;
+  jti: string;
+  exp: number;
+  sub: number;
+}
+
+const CODE_VERIFIER_KEY = '3dcloud-code-verifier';
+const ACCESS_TOKEN_KEY = '3dcloud-access-token';
+const REFRESH_TOKEN_KEY = '3dcloud-refresh-token';
+
+const GET_USER_INFO = gql`
+{
+  currentUser {
+    name,
+    emailAddress
+  }
+}
+`
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthenticationService {
+  public get isAuthenticated(): boolean {
+    return this._user !== undefined;
+  }
+
+  public get accessToken(): string | undefined {
+    return this._accessToken;
+  }
+
+  public get currentUser(): User | undefined {
+    return this._user;
+  }
+
+  private _user?: User;
+  private _accessToken?: string;
+  private _refreshToken?: string;
+
+  constructor(private _http: HttpClient, private _apollo: Apollo) {
+    this._accessToken = window.localStorage.getItem(ACCESS_TOKEN_KEY) || undefined;
+    this._refreshToken = window.localStorage.getItem(REFRESH_TOKEN_KEY) || undefined;
+  }
+
+  public async initialize(): Promise<void> {
+    if (location.search) {
+      await this.continueAuthorization();
+    } else if (this._accessToken || this._refreshToken) {
+      await this.refreshAuthorization(this._accessToken, this._refreshToken);
+    } else {
+      this.initiateAuthorization();
+    }
+  }
+
+  public signOut(): void {
+    this._http.post(apiUrl('/sessions/logout'), { token: this._refreshToken }).subscribe(() => {
+      window.localStorage.removeItem(ACCESS_TOKEN_KEY);
+      window.localStorage.removeItem(REFRESH_TOKEN_KEY);
+      this._accessToken = undefined;
+      this._refreshToken = undefined;
+      location.assign('https://makerepo.com');
+    });
+  }
+
+  private initiateAuthorization() {
+    const codeChallenge = this.generateCodeChallenge();
+    location.assign(apiUrl(`/sessions/authorize?code_challenge=${codeChallenge}`));
+  }
+
+  private async continueAuthorization(): Promise<void> {
+    const params = parseQueryString(location.search.substring(1));
+
+    if (!params['code'] || typeof params['code'] !== 'string') {
+      this.initiateAuthorization();
+    }
+
+    await new Promise<void>((resolve, reject) => {
+      this._http.post<TokenResponse>(apiUrl('/sessions/token'), { grant_type: 'authorization_code', code: params['code'], code_verifier: window.localStorage.getItem('3dcloud-code-verifier') }).subscribe((response) => {
+        window.localStorage.removeItem(CODE_VERIFIER_KEY);
+        this.processTokens(response.access_token, response.refresh_token).then(resolve, reject);
+      }, reject);
+    });
+  }
+
+  private async refreshAuthorization(accessToken: string | undefined, refreshToken: string | undefined): Promise<void> {
+    if (!refreshToken || jwtDecode<TokenPayload>(refreshToken).exp * 1000 <= Date.now()) {
+      this.initiateAuthorization();
+      return;
+    }
+
+    if (accessToken && jwtDecode<TokenPayload>(accessToken).exp * 1000 > Date.now()) {
+      await this.processTokens(accessToken, refreshToken);
+      return;
+    }
+
+    await new Promise<void>((resolve, reject) => {
+      this._http.post<TokenResponse>(apiUrl('/sessions/token'), {
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+      }).subscribe((response) => {
+        this.processTokens(response.access_token, response.refresh_token).then(resolve, reject);
+      });
+    });
+  }
+
+  private async processTokens(accessToken: string, refreshToken: string) {
+    return new Promise<void>((reject, resolve) => {
+      this._accessToken = accessToken;
+      this._refreshToken = refreshToken;
+
+      window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+      window.localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+
+      this.getUserInfo().subscribe((userInfo) => {
+        this._user = userInfo;
+        resolve();
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  private getUserInfo(): Observable<User> {
+    return this._apollo.query<any>({ query: GET_USER_INFO })
+      .pipe(map(result => result.data.currentUser));
+  }
+
+  private generateCodeChallenge() {
+    const codeVerifier = this.generateSecureRandomHexString();
+    window.localStorage.setItem(CODE_VERIFIER_KEY, codeVerifier);
+    return sha256(codeVerifier);
+  }
+
+  private generateSecureRandomHexString(): string {
+    const characters = '0123456789abcdef';
+    const buffer = new Uint8Array(64);
+
+    crypto.getRandomValues(buffer);
+
+    let str = '';
+
+    for (const num of buffer) {
+      str += characters[(num >> 4) & 0xF] + characters[num & 0xF]
+    }
+
+    return str;
+  }
+}

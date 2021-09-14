@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Printer } from '../../../models/printer';
-import { PrintersService } from '../../../services/printers.service';
+import { Printer } from 'core/models';
+import { PrintersService } from 'shared/services';
 import { Subscription } from 'rxjs';
 
 @Component({
