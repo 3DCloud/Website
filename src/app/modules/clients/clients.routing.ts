@@ -1,11 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ClientsComponent, ClientComponent } from './components';
-import { AuthGuard } from 'app/core/guards';
+import { AuthorizationGuard } from 'app/core/guards';
 
 const routes: Routes = [
-  { path: 'clients', component: ClientsComponent, canActivate: [AuthGuard] },
-  { path: 'clients/:id', component: ClientComponent },
+  {
+    path: 'clients',
+    canActivateChild: [AuthorizationGuard],
+    children: [
+      { path: '', component: ClientsComponent },
+      { path: ':id', component: ClientComponent },
+    ]
+  }
 ];
 
 @NgModule({

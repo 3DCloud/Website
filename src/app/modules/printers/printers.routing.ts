@@ -1,10 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PrintersComponent, PrinterControlPanelComponent } from './components';
+import { PrinterControlPanelComponent, PrintersComponent } from './components';
+import { AuthorizationGuard } from '../../core/guards';
 
 const routes: Routes = [
-  { path: 'printers', component: PrintersComponent },
-  { path: 'printers/:id/control-panel', component: PrinterControlPanelComponent },
+  {
+    path: 'printers',
+    canActivateChild: [AuthorizationGuard],
+    children: [
+      { path: '', component: PrintersComponent },
+      { path: ':id/control-panel', component: PrinterControlPanelComponent },
+    ],
+  },
 ];
 
 @NgModule({

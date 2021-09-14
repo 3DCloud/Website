@@ -17,7 +17,6 @@ import { CoreModule } from './core/core.module';
     AppComponent,
   ],
   imports: [
-    CoreModule,
     BrowserModule,
     FontAwesomeModule,
     FormsModule,
@@ -30,6 +29,7 @@ import { CoreModule } from './core/core.module';
     // for the fallback page to work properly
     ClientsModule,
     PrintersModule,
+    CoreModule,
     AppRoutingModule,
   ],
   bootstrap: [AppComponent]

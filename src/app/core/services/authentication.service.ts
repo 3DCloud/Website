@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { sha256 } from 'js-sha256';
 import { HttpClient } from '@angular/common/http';
-import { parse as parseQueryString } from 'qs';
 import jwtDecode from 'jwt-decode';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { User } from '../models';
 import { gql } from '@apollo/client/core';
-import { map } from 'rxjs/operators';
+import { concatMap, map } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import { apiUrl } from '../helpers';
+import { Router } from '@angular/router';
 
 interface TokenResponse {
   access_token: string;
@@ -57,18 +57,17 @@ export class AuthenticationService {
   private _accessToken?: string;
   private _refreshToken?: string;
 
-  constructor(private _http: HttpClient, private _apollo: Apollo) {
+  constructor(private _http: HttpClient, private _apollo: Apollo, private _router: Router) {
     this._accessToken = window.localStorage.getItem(ACCESS_TOKEN_KEY) || undefined;
     this._refreshToken = window.localStorage.getItem(REFRESH_TOKEN_KEY) || undefined;
   }
 
-  public async initialize(): Promise<void> {
-    if (location.search) {
-      await this.continueAuthorization();
-    } else if (this._accessToken || this._refreshToken) {
-      await this.refreshAuthorization(this._accessToken, this._refreshToken);
+  public signIn(): Observable<boolean> {
+    if (this._accessToken || this._refreshToken) {
+      return this.refreshAuthorization(this._accessToken, this._refreshToken);
     } else {
       this.initiateAuthorization();
+      return of(false);
     }
   }
 
@@ -76,10 +75,23 @@ export class AuthenticationService {
     this._http.post(apiUrl('/sessions/logout'), { token: this._refreshToken }).subscribe(() => {
       window.localStorage.removeItem(ACCESS_TOKEN_KEY);
       window.localStorage.removeItem(REFRESH_TOKEN_KEY);
+
       this._accessToken = undefined;
       this._refreshToken = undefined;
+
       location.assign('https://makerepo.com');
     });
+  }
+
+  public continueAuthorization(code: string): Observable<boolean> {
+    return this._http.post<TokenResponse>(apiUrl('/sessions/token'), { grant_type: 'authorization_code', code: code, code_verifier: window.localStorage.getItem(CODE_VERIFIER_KEY) }).pipe(concatMap((response) => {
+      window.localStorage.removeItem(CODE_VERIFIER_KEY);
+      return this.processTokens(response.access_token, response.refresh_token);
+    }));
+  }
+
+  public hasRole(role: string | undefined): boolean {
+    return true; // TODO: get role from back-end
   }
 
   private initiateAuthorization() {
@@ -87,57 +99,35 @@ export class AuthenticationService {
     location.assign(apiUrl(`/sessions/authorize?code_challenge=${codeChallenge}`));
   }
 
-  private async continueAuthorization(): Promise<void> {
-    const params = parseQueryString(location.search.substring(1));
-
-    if (!params['code'] || typeof params['code'] !== 'string') {
-      this.initiateAuthorization();
-    }
-
-    await new Promise<void>((resolve, reject) => {
-      this._http.post<TokenResponse>(apiUrl('/sessions/token'), { grant_type: 'authorization_code', code: params['code'], code_verifier: window.localStorage.getItem('3dcloud-code-verifier') }).subscribe((response) => {
-        window.localStorage.removeItem(CODE_VERIFIER_KEY);
-        this.processTokens(response.access_token, response.refresh_token).then(resolve, reject);
-      }, reject);
-    });
-  }
-
-  private async refreshAuthorization(accessToken: string | undefined, refreshToken: string | undefined): Promise<void> {
+  private refreshAuthorization(accessToken?: string, refreshToken?: string): Observable<boolean> {
     if (!refreshToken || jwtDecode<TokenPayload>(refreshToken).exp * 1000 <= Date.now()) {
       this.initiateAuthorization();
-      return;
+      return of(false);
     }
 
     if (accessToken && jwtDecode<TokenPayload>(accessToken).exp * 1000 > Date.now()) {
-      await this.processTokens(accessToken, refreshToken);
-      return;
+      return this.processTokens(accessToken, refreshToken);
     }
 
-    await new Promise<void>((resolve, reject) => {
-      this._http.post<TokenResponse>(apiUrl('/sessions/token'), {
-        grant_type: 'refresh_token',
-        refresh_token: refreshToken,
-      }).subscribe((response) => {
-        this.processTokens(response.access_token, response.refresh_token).then(resolve, reject);
-      });
-    });
+    return this._http.post<TokenResponse>(apiUrl('/sessions/token'), {
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+    }).pipe(concatMap((response) => {
+      return this.processTokens(response.access_token, response.refresh_token);
+    }));
   }
 
-  private async processTokens(accessToken: string, refreshToken: string) {
-    return new Promise<void>((reject, resolve) => {
-      this._accessToken = accessToken;
-      this._refreshToken = refreshToken;
+  private processTokens(accessToken: string, refreshToken: string) : Observable<boolean> {
+    this._accessToken = accessToken;
+    this._refreshToken = refreshToken;
 
-      window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-      window.localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+    window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+    window.localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 
-      this.getUserInfo().subscribe((userInfo) => {
-        this._user = userInfo;
-        resolve();
-      }, (err) => {
-        reject(err);
-      });
-    });
+    return this.getUserInfo().pipe(map((userInfo) => {
+      this._user = userInfo;
+      return true;
+    }));
   }
 
   private getUserInfo(): Observable<User> {

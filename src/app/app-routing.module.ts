@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PageNotFoundComponent } from './core/components';
+import { AuthenticationCallbackComponent, PageNotFoundComponent } from './core/components';
 
 const routes: Routes = [
   { path: '', redirectTo: 'clients', pathMatch: 'full' },
-  { path: '**', component: PageNotFoundComponent }
+  { path: 'auth/callback', component: AuthenticationCallbackComponent },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
