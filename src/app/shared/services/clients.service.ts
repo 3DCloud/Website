@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Client } from 'src/app/core/models';
+import { Client } from 'app/core/models';
 import { gql } from '@apollo/client/core';
 import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs/operators';

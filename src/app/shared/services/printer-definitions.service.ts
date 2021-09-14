@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PrinterDefinition } from 'src/app/core/models/printer-definition';
+import { PrinterDefinition } from 'app/core/models';
 import { Observable } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs/operators';

@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ClientsService } from 'shared/services';
-import { Client, Device, Printer } from 'core/models';
+import { ClientsService } from 'app/shared/services';
+import { Client, Device, Printer } from 'app/core/models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreatePrinterModalComponent, DeletePrinterModalComponent } from '..';
 import { faSave } from '@fortawesome/free-regular-svg-icons';

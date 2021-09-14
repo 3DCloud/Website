@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Device, PrinterDefinition } from 'core/models';
-import { PrintersService, PrinterDefinitionsService } from 'shared/services';
+import { Device, PrinterDefinition } from 'app/core/models';
+import { PrintersService, PrinterDefinitionsService } from 'app/shared/services';
 import { Subscription } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 

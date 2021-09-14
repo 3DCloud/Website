@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { PrintersService } from '../services';
-import { Printer } from 'core/models';
+import { PrintersService } from 'app/shared/services';
+import { Printer } from 'app/core/models';
 
 @Component({
   selector: 'app-printers',

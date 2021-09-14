@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PrintersComponent, PrinterControlPanelComponent } from './components';
 import { CommonModule } from '@angular/common';
-import { PrintersRoutingModule } from './printers-routing.module';
+import { PrintersRouting } from './printers.routing';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
   ],
   imports: [
     CommonModule,
-    PrintersRoutingModule,
+    PrintersRouting,
     FormsModule,
   ]
 })

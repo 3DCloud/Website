@@ -17,17 +17,20 @@ import { CoreModule } from './core/core.module';
     AppComponent,
   ],
   imports: [
+    CoreModule,
     BrowserModule,
+    FontAwesomeModule,
+    FormsModule,
     GraphQLModule,
     HttpClientModule,
     NgbModule,
-    FontAwesomeModule,
     ReactiveFormsModule,
-    FormsModule,
+
+    // AppRoutingModule should always be last
+    // for the fallback page to work properly
     ClientsModule,
     PrintersModule,
     AppRoutingModule,
-    CoreModule
   ],
   bootstrap: [AppComponent]
 })

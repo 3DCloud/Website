@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { ClientsComponent, ClientComponent, CreatePrinterModalComponent, DeletePrinterModalComponent } from './components';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ClientsRoutingModule } from './clients-routing.module';
+import { ClientsRouting } from './clients.routing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
@@ -15,7 +15,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    ClientsRoutingModule,
+    ClientsRouting,
     FontAwesomeModule,
   ]
 })
