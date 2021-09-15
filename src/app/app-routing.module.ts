@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthenticationCallbackComponent, PageNotFoundComponent } from './core/components';
+
+import {
+  AuthenticationCallbackComponent,
+  PageNotFoundComponent,
+} from './core/components';
 
 const routes: Routes = [
   { path: '', redirectTo: 'clients', pathMatch: 'full' },
@@ -10,6 +14,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

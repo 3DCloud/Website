@@ -1,14 +1,21 @@
 import { Component } from '@angular/core';
-import { AuthenticationService } from 'app/core/services';
 import { Router } from '@angular/router';
+
+import { AuthenticationService } from 'app/core/services';
+
 import { User } from './core/models';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  public constructor(
+    private authenticationService: AuthenticationService,
+    private _router: Router
+  ) {}
+
   public get loaded(): boolean {
     return this._router.navigated;
   }
@@ -21,10 +28,7 @@ export class AppComponent {
     return this.authenticationService.currentUser;
   }
 
-  public constructor(private authenticationService: AuthenticationService, private _router: Router) { }
-
   public signOut(): void {
     this.authenticationService.signOut();
   }
-
 }

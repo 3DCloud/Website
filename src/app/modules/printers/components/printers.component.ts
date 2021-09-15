@@ -1,31 +1,39 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { PrintersService } from 'app/shared/services';
+
 import { Printer } from 'app/core/models';
+import { PrintersService } from 'app/shared/services';
 
 @Component({
   selector: 'app-printers',
   templateUrl: './printers.component.html',
-  styleUrls: ['./printers.component.scss']
+  styleUrls: ['./printers.component.scss'],
 })
 export class PrintersComponent implements OnInit, OnDestroy {
-
   public loading = true;
   public printers: Printer[] = [];
-  public error: any = null;
+  public error: unknown = null;
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private printersService: PrintersService) { }
+  constructor(private printersService: PrintersService) {}
 
   public ngOnInit(): void {
-    this.subscriptions.push(this.printersService.getPrinters().subscribe(printers => {
-      this.printers = printers;
-    }, error => {
-      this.error = error;
-    }).add(() => {
-      this.loading = false;
-    }));
+    this.subscriptions.push(
+      this.printersService
+        .getPrinters()
+        .subscribe(
+          (printers) => {
+            this.printers = printers;
+          },
+          (error) => {
+            this.error = error;
+          }
+        )
+        .add(() => {
+          this.loading = false;
+        })
+    );
   }
 
   public ngOnDestroy(): void {
@@ -33,5 +41,4 @@ export class PrintersComponent implements OnInit, OnDestroy {
       subscription.unsubscribe();
     }
   }
-
 }

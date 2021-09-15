@@ -4,46 +4,52 @@ import {
   ElementRef,
   OnDestroy,
   OnInit,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
-import * as actioncable from 'actioncable';
 import { ActivatedRoute } from '@angular/router';
+import * as actioncable from 'actioncable';
 
 @Component({
   selector: 'app-printer',
   templateUrl: './printer-control-panel.component.html',
-  styleUrls: ['./printer-control-panel.component.scss']
+  styleUrls: ['./printer-control-panel.component.scss'],
 })
-export class PrinterControlPanelComponent implements OnInit, AfterViewInit, OnDestroy {
-
-  @ViewChild('logElement', { static: true }) public logElement?: ElementRef<HTMLPreElement>;
+export class PrinterControlPanelComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
+  @ViewChild('logElement', { static: true })
+  public logElement?: ElementRef<HTMLPreElement>;
 
   public connecting = true;
-  public temperatures: any;
+  public temperatures: unknown;
   public scrollToBottom = true;
   public command = '';
 
   private consumer?: actioncable.Cable;
   private channel?: actioncable.Channel;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.consumer = actioncable.createConsumer('ws://localhost:3000/cable');
     this.consumer.connect();
 
-    this.route.params.subscribe(params => {
-      this.channel = this.consumer?.subscriptions.create({ channel: 'PrinterListenerChannel', id: params.id }, {
-        connected: () => this.connected(),
-        disconnected: () => this.disconnected(),
-        received: (data) => this.received(data)
-      });
+    this.route.params.subscribe((params) => {
+      this.channel = this.consumer?.subscriptions.create(
+        { channel: 'PrinterListenerChannel', id: params.id },
+        {
+          connected: () => this.connected(),
+          received: (data) => this.received(data),
+        }
+      );
     });
   }
 
   ngAfterViewInit(): void {
     if (this.logElement) {
-      this.logElement.nativeElement.addEventListener('scroll', () => this.onScroll());
+      this.logElement.nativeElement.addEventListener('scroll', () =>
+        this.onScroll()
+      );
     }
   }
 
@@ -60,9 +66,7 @@ export class PrinterControlPanelComponent implements OnInit, AfterViewInit, OnDe
     this.connecting = false;
   }
 
-  private disconnected(): void { }
-
-  private received(data: any): void {
+  private received(data: Record<string, unknown>): void {
     if (!data.action) {
       return;
     }
@@ -75,7 +79,8 @@ export class PrinterControlPanelComponent implements OnInit, AfterViewInit, OnDe
           this.logElement.nativeElement.textContent += data.message + '\n';
 
           if (this.scrollToBottom) {
-            this.logElement.nativeElement.scrollTop = this.logElement.nativeElement.scrollHeight;
+            this.logElement.nativeElement.scrollTop =
+              this.logElement.nativeElement.scrollHeight;
           }
         }
 
@@ -92,7 +97,9 @@ export class PrinterControlPanelComponent implements OnInit, AfterViewInit, OnDe
       return;
     }
 
-    this.scrollToBottom = (this.logElement.nativeElement.scrollTop + this.logElement.nativeElement.clientHeight) === this.logElement.nativeElement.scrollHeight;
+    this.scrollToBottom =
+      this.logElement.nativeElement.scrollTop +
+        this.logElement.nativeElement.clientHeight ===
+      this.logElement.nativeElement.scrollHeight;
   }
-
 }

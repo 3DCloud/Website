@@ -8,9 +8,8 @@ describe('PrintersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PrintersComponent ]
-    })
-    .compileComponents();
+      declarations: [PrintersComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

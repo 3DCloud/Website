@@ -1,21 +1,19 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CoreModule } from './core/core.module';
 import { GraphQLModule } from './graphql.module';
-import { HttpClientModule } from '@angular/common/http';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClientsModule } from './modules/clients/clients.module';
 import { PrintersModule } from './modules/printers/printers.module';
-import { CoreModule } from './core/core.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     FontAwesomeModule,
@@ -32,6 +30,6 @@ import { CoreModule } from './core/core.module';
     CoreModule,
     AppRoutingModule,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

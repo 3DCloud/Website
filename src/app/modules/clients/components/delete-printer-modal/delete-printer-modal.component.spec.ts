@@ -8,9 +8,8 @@ describe('DeletePrinterModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DeletePrinterModalComponent ]
-    })
-    .compileComponents();
+      declarations: [DeletePrinterModalComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+import { AuthorizationGuard } from 'app/core/guards';
+
 import { PrinterControlPanelComponent, PrintersComponent } from './components';
-import { AuthorizationGuard } from '../../core/guards';
 
 const routes: Routes = [
   {
@@ -18,4 +20,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class PrintersRouting { }
+export class PrintersRouting {}

@@ -8,9 +8,8 @@ describe('CreatePrinterModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreatePrinterModalComponent ]
-    })
-    .compileComponents();
+      declarations: [CreatePrinterModalComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

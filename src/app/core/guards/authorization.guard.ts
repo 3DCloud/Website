@@ -1,14 +1,27 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, CanLoad, Data, Route, Router } from '@angular/router';
-import { AuthenticationService } from '../services';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  CanActivateChild,
+  CanLoad,
+  Data,
+  Route,
+  Router,
+} from '@angular/router';
 import { Observable, of } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthorizationGuard implements CanActivate, CanActivateChild, CanLoad {
+import { AuthenticationService } from 'app/core/services';
 
-  public constructor(private router: Router, private authenticationService: AuthenticationService) { }
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthorizationGuard
+  implements CanActivate, CanActivateChild, CanLoad
+{
+  public constructor(
+    private router: Router,
+    private authenticationService: AuthenticationService
+  ) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     return this.checkAuthorization(route.data);
@@ -23,11 +36,13 @@ export class AuthorizationGuard implements CanActivate, CanActivateChild, CanLoa
   }
 
   private checkAuthorization(data: Data | undefined): Observable<boolean> {
-    if (this.authenticationService.isAuthenticated && this.authenticationService.hasRole(data?.requiredRole)) {
+    if (
+      this.authenticationService.isAuthenticated &&
+      this.authenticationService.hasRole(data?.requiredRole)
+    ) {
       return of(true);
     }
 
     return this.authenticationService.signIn();
   }
-
 }
