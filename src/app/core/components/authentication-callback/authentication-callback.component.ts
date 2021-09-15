@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthenticationService } from 'app/core/services';
 
@@ -9,6 +10,10 @@ import { AuthenticationService } from 'app/core/services';
   styleUrls: ['./authentication-callback.component.scss'],
 })
 export class AuthenticationCallbackComponent implements OnInit {
+  public showSpinner = true;
+  public message?: string;
+  public messageIcon = faExclamationCircle;
+
   constructor(
     private _authenticationService: AuthenticationService,
     private _route: ActivatedRoute,
@@ -20,17 +25,23 @@ export class AuthenticationCallbackComponent implements OnInit {
       const code = params.get('code');
 
       if (!code || !code.length) {
-        this._router.navigate(['/']);
+        this._router.navigate(['']);
         return;
       }
 
-      this._authenticationService.continueAuthorization(code).subscribe(() => {
-        const returnPath = params.get('return') || '';
-        this._router.navigate([returnPath], {
-          queryParams: { code: null },
-          queryParamsHandling: 'merge',
-        });
-      });
+      this._authenticationService.continueAuthorization(code).subscribe(
+        () => {
+          const returnPath = params.get('return') || '';
+          this._router.navigate([returnPath], {
+            queryParams: { code: null, return: null },
+            queryParamsHandling: 'merge',
+          });
+        },
+        (err: Error) => {
+          this.showSpinner = false;
+          this.message = `Failed to authenticate. Please refresh the page.\n${err.message}`;
+        }
+      );
     });
   }
 }

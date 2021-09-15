@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import {
+  AlertComponent,
   AuthenticationCallbackComponent,
   PageNotFoundComponent,
 } from './components';
@@ -15,6 +16,7 @@ import { AuthorizationInterceptor } from './interceptors';
     PageNotFoundComponent,
     AuthenticationCallbackComponent,
     LoadingOverlayComponent,
+    AlertComponent,
   ],
   imports: [CommonModule, FontAwesomeModule],
   providers: [

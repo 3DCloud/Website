@@ -6,7 +6,7 @@ import { Apollo } from 'apollo-angular';
 import { sha256 } from 'js-sha256';
 import jwtDecode from 'jwt-decode';
 import { Observable, of } from 'rxjs';
-import { concatMap, map } from 'rxjs/operators';
+import { catchError, concatMap, map } from 'rxjs/operators';
 
 import { apiUrl } from 'app/core/helpers';
 import { User } from 'app/core/models';
@@ -151,6 +151,10 @@ export class AuthenticationService {
             response.access_token,
             response.refresh_token
           );
+        }),
+        catchError(() => {
+          this.initiateAuthorization();
+          return of(false);
         })
       );
   }

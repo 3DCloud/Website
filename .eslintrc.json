@@ -92,6 +92,7 @@
             "ignoreDeclarationSort": true
           }
         ],
+        "import/first": "error",
         "import/order": [
           "error",
           {
@@ -108,8 +109,8 @@
             }
           }
         ],
+        "import/no-extraneous-dependencies": "error",
         "import/no-useless-path-segments": "error",
-        "import/first": "error",
         "no-restricted-imports": [
           "error",
           {

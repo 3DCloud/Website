@@ -1,0 +1,13 @@
+.alert-contents {
+  display: table;
+
+  .alert-icon {
+    display: table-cell;
+    vertical-align: middle;
+    padding-right: 1.25em;
+  }
+
+  .message-text {
+    white-space: pre-wrap;
+  }
+}

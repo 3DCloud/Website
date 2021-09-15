@@ -3,7 +3,9 @@
     <img class="d-inline-block align-top" src="assets/3dcloud.svg" alt="3DCloud" height="200" loading="eager" />
   </div>
 
-  <div class="spinner-border" role="status">
+  <div *ngIf="showSpinner" class="spinner-border" role="status">
     <span class="sr-only">Loading...</span>
   </div>
+
+  <app-alert *ngIf="message" [type]="alertType" [message]="message" [icon]="messageIcon"></app-alert>
 </div>
