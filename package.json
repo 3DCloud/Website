@@ -9,6 +9,9 @@
   },
   "sideEffects": false,
   "private": true,
+  "prettier": {
+    "endOfLine": "auto"
+  },
   "dependencies": {
     "@angular/animations": "~12.2.5",
     "@angular/common": "~12.2.5",
