@@ -1,6 +1,4 @@
-import { Environment } from './environment';
-
-export const environment: Environment = {
-  apiUrl: 'https://staging.print.makerepo.com/api',
+export const environment = {
   production: true,
+  apiUrl: 'https://print-staging.makerepo.com/api',
 };
