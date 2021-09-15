@@ -1,0 +1,39 @@
+name: Angular
+
+on:
+- push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js 16
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.x
+        cache: 'npm'
+
+    - name: Lint
+      run: |
+        npm install
+        npm run build --prod
+        
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js 16
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.x
+        cache: 'npm'
+
+    - name: Lint
+      run: |
+        npm install
+        npm run lint
