@@ -7,7 +7,19 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import * as actioncable from 'actioncable';
+import { Cable, Channel, createConsumer } from 'actioncable';
+
+interface Temperature {
+  name: string;
+  current: number;
+  target: number;
+}
+
+interface TemperaturesMessage {
+  active_hotend_temperature: Temperature;
+  build_plate_temperature?: Temperature;
+  hotend_temperatures: Temperature[];
+}
 
 @Component({
   selector: 'app-printer',
@@ -21,17 +33,17 @@ export class PrinterControlPanelComponent
   public logElement?: ElementRef<HTMLPreElement>;
 
   public connecting = true;
-  public temperatures: unknown;
+  public temperatures?: TemperaturesMessage;
   public scrollToBottom = true;
   public command = '';
 
-  private consumer?: actioncable.Cable;
-  private channel?: actioncable.Channel;
+  private consumer?: Cable;
+  private channel?: Channel;
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.consumer = actioncable.createConsumer('ws://localhost:3000/cable');
+    this.consumer = createConsumer('ws://localhost:3000/cable');
     this.consumer.connect();
 
     this.route.params.subscribe((params) => {
@@ -39,7 +51,7 @@ export class PrinterControlPanelComponent
         { channel: 'PrinterListenerChannel', id: params.id },
         {
           connected: () => this.connected(),
-          received: (data) => this.received(data),
+          received: (data: Record<string, unknown>) => this.received(data),
         }
       );
     });
@@ -87,7 +99,7 @@ export class PrinterControlPanelComponent
         break;
 
       case 'state':
-        this.temperatures = data.printer_state;
+        this.temperatures = data.printer_state as TemperaturesMessage;
         break;
     }
   }
