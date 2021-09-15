@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v2
 
@@ -16,14 +16,14 @@ jobs:
         node-version: 16.x
         cache: 'npm'
 
-    - name: Lint
+    - name: Build
       run: |
         npm install
         npm run build --prod
-        
+
   lint:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v2
 
