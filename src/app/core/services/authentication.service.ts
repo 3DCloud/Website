@@ -25,6 +25,9 @@ interface TokenPayload {
   sub: number;
 }
 
+// attempt to refresh access token 1 minute before expiry
+const TOKEN_REFRESH_EXPIRY_DELAY = 60 * 1000;
+
 const CODE_VERIFIER_KEY = '3dcloud-code-verifier';
 const ACCESS_TOKEN_KEY = '3dcloud-access-token';
 const REFRESH_TOKEN_KEY = '3dcloud-refresh-token';
@@ -45,6 +48,7 @@ export class AuthenticationService {
   private _user?: User;
   private _accessToken?: string;
   private _refreshToken?: string;
+  private _refreshTimer?: number;
 
   constructor(
     private _http: HttpClient,
@@ -127,7 +131,8 @@ export class AuthenticationService {
   ): Observable<boolean> {
     if (
       !refreshToken ||
-      jwtDecode<TokenPayload>(refreshToken).exp * 1000 <= Date.now()
+      jwtDecode<TokenPayload>(refreshToken).exp * 1000 <=
+        Date.now() - TOKEN_REFRESH_EXPIRY_DELAY
     ) {
       this.initiateAuthorization();
       return of(false);
@@ -135,11 +140,16 @@ export class AuthenticationService {
 
     if (
       accessToken &&
-      jwtDecode<TokenPayload>(accessToken).exp * 1000 > Date.now()
+      jwtDecode<TokenPayload>(accessToken).exp * 1000 >
+        Date.now() - TOKEN_REFRESH_EXPIRY_DELAY
     ) {
       return this.processTokens(accessToken, refreshToken);
     }
 
+    return this.refreshAccessToken(refreshToken);
+  }
+
+  private refreshAccessToken(refreshToken: string): Observable<boolean> {
     return this._http
       .post<TokenResponse>(apiUrl('/sessions/token'), {
         grant_type: 'refresh_token',
@@ -163,6 +173,28 @@ export class AuthenticationService {
     accessToken: string,
     refreshToken: string
   ): Observable<boolean> {
+    if (this._refreshTimer) {
+      clearInterval(this._refreshTimer);
+    }
+
+    const expiry = jwtDecode<TokenPayload>(accessToken).exp;
+    const timeout = expiry * 1000 - Date.now() - TOKEN_REFRESH_EXPIRY_DELAY;
+
+    if (timeout <= 0) {
+      return this.refreshAccessToken(refreshToken);
+    }
+
+    this._refreshTimer = setInterval(() => {
+      const subscription = this.refreshAccessToken(refreshToken).subscribe(
+        () => {
+          subscription.unsubscribe();
+        },
+        () => {
+          subscription.unsubscribe();
+        }
+      );
+    }, timeout);
+
     this._accessToken = accessToken;
     this._refreshToken = refreshToken;
 
