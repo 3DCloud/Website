@@ -34,19 +34,19 @@ export class ClientComponent implements OnInit, OnDestroy {
 
   public name = new FormControl();
 
-  private subscriptions: Subscription[] = [];
+  private _subscriptions: Subscription[] = [];
 
   constructor(
-    private route: ActivatedRoute,
-    private clientsService: ClientsService,
-    private modalService: NgbModal
+    private _route: ActivatedRoute,
+    private _clientsService: ClientsService,
+    private _modalService: NgbModal
   ) {}
 
   public ngOnInit(): void {
-    this.subscriptions.push(
-      this.route.params.subscribe((params) => {
-        this.subscriptions.push(
-          this.clientsService
+    this._subscriptions.push(
+      this._route.params.subscribe((params) => {
+        this._subscriptions.push(
+          this._clientsService
             .getClient(params.id)
             .subscribe(
               (client) => {
@@ -66,7 +66,7 @@ export class ClientComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    for (const subscription of this.subscriptions) {
+    for (const subscription of this._subscriptions) {
       subscription.unsubscribe();
     }
   }
@@ -77,8 +77,8 @@ export class ClientComponent implements OnInit, OnDestroy {
     }
 
     this.busy = true;
-    this.subscriptions.push(
-      this.clientsService
+    this._subscriptions.push(
+      this._clientsService
         .setName(this.client.id, this.name.value)
         .subscribe(
           (client) => {
@@ -99,12 +99,12 @@ export class ClientComponent implements OnInit, OnDestroy {
   }
 
   public createPrinter(device: Device): void {
-    const modalRef = this.modalService.open(CreatePrinterModalComponent, {
+    const modalRef = this._modalService.open(CreatePrinterModalComponent, {
       backdrop: 'static',
       keyboard: false,
     });
     modalRef.componentInstance.device = device;
-    this.subscriptions.push(
+    this._subscriptions.push(
       modalRef.closed.subscribe((printer) => {
         if (!this.client || !this.client.printers) {
           return;
@@ -117,12 +117,12 @@ export class ClientComponent implements OnInit, OnDestroy {
   }
 
   public showDeletePrinterModal(printer: Printer): void {
-    const modalRef = this.modalService.open(DeletePrinterModalComponent, {
+    const modalRef = this._modalService.open(DeletePrinterModalComponent, {
       backdrop: 'static',
       keyboard: false,
     });
     modalRef.componentInstance.printer = printer;
-    this.subscriptions.push(
+    this._subscriptions.push(
       modalRef.closed.subscribe(() => {
         if (!this.client || !this.client.printers) {
           return;

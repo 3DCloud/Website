@@ -11,9 +11,9 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 export class PageNotFoundComponent {
   public icons = { faArrowLeft, faQuestionCircle };
 
-  constructor(private location: Location) {}
+  constructor(private _location: Location) {}
 
   public back(): void {
-    this.location.back();
+    this._location.back();
   }
 }

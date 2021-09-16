@@ -19,8 +19,8 @@ export class AuthorizationGuard
   implements CanActivate, CanActivateChild, CanLoad
 {
   public constructor(
-    private router: Router,
-    private authenticationService: AuthenticationService
+    private _router: Router,
+    private _authenticationService: AuthenticationService
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
@@ -37,12 +37,12 @@ export class AuthorizationGuard
 
   private checkAuthorization(data: Data | undefined): Observable<boolean> {
     if (
-      this.authenticationService.isAuthenticated &&
-      this.authenticationService.hasRole(data?.requiredRole)
+      this._authenticationService.isAuthenticated &&
+      this._authenticationService.hasRole(data?.requiredRole)
     ) {
       return of(true);
     }
 
-    return this.authenticationService.signIn();
+    return this._authenticationService.signIn();
   }
 }

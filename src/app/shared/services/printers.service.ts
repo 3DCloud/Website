@@ -62,16 +62,16 @@ const DELETE_PRINTER = gql`
   providedIn: 'root',
 })
 export class PrintersService {
-  constructor(private apollo: Apollo) {}
+  constructor(private _apollo: Apollo) {}
 
   public getPrinters(): Observable<Printer[]> {
-    return this.apollo
+    return this._apollo
       .query<{ printers: Printer[] }>({ query: GET_PRINTERS })
       .pipe(map((result) => result.data.printers));
   }
 
   public getPrinter(id: string): Observable<Printer> {
-    return this.apollo
+    return this._apollo
       .query<{ printer: Printer }>({ query: GET_PRINTER, variables: { id } })
       .pipe(map((result) => result.data.printer));
   }
@@ -81,7 +81,7 @@ export class PrintersService {
     printerDefinitionId: string,
     name: string
   ): Observable<Printer> {
-    return this.apollo
+    return this._apollo
       .mutate<{ createPrinter: Printer }>({
         mutation: CREATE_PRINTER,
         variables: { deviceId, printerDefinitionId, name },
@@ -90,7 +90,7 @@ export class PrintersService {
   }
 
   public deletePrinter(id: string): Observable<void> {
-    return this.apollo
+    return this._apollo
       .mutate({ mutation: DELETE_PRINTER, variables: { id } })
       .pipe(map(() => undefined));
   }

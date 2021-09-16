@@ -92,22 +92,22 @@ const DELETE_CLIENT = gql`
   providedIn: 'root',
 })
 export class ClientsService {
-  constructor(private apollo: Apollo) {}
+  constructor(private _apollo: Apollo) {}
 
   getClients(): Observable<Client[]> {
-    return this.apollo
+    return this._apollo
       .query<{ clients: Client[] }>({ query: GET_CLIENTS })
       .pipe(map((result) => result.data.clients));
   }
 
   getClient(clientId: string): Observable<Client> {
-    return this.apollo
+    return this._apollo
       .query<{ client: Client }>({ query: GET_CLIENT, variables: { clientId } })
       .pipe(map((result) => result.data.client));
   }
 
   setName(id: string, name?: string): Observable<Client> {
-    return this.apollo
+    return this._apollo
       .mutate<{ setClientName: Client }>({
         mutation: SET_NAME,
         variables: { id, name },
@@ -116,7 +116,7 @@ export class ClientsService {
   }
 
   grantAuthorization(clientId: string): Observable<Client> {
-    return this.apollo
+    return this._apollo
       .mutate<{ grantClientAuthorization: Client }>({
         mutation: GRANT_AUTHORIZATION,
         variables: { clientId },
@@ -125,7 +125,7 @@ export class ClientsService {
   }
 
   revokeAuthorization(clientId: string): Observable<Client> {
-    return this.apollo
+    return this._apollo
       .mutate<{ revokeClientAuthorization: Client }>({
         mutation: REVOKE_AUTHORIZATION,
         variables: { clientId },
@@ -134,7 +134,7 @@ export class ClientsService {
   }
 
   delete(id: string): Observable<void> {
-    return this.apollo
+    return this._apollo
       .mutate({ mutation: DELETE_CLIENT, variables: { id } })
       .pipe(map(() => undefined));
   }

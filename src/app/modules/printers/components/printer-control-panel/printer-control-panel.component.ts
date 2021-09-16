@@ -37,17 +37,17 @@ export class PrinterControlPanelComponent
   public scrollToBottom = true;
   public command = '';
 
-  private consumer?: Cable;
-  private channel?: Channel;
+  private _consumer?: Cable;
+  private _channel?: Channel;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private _route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.consumer = createConsumer('ws://localhost:3000/cable');
-    this.consumer.connect();
+    this._consumer = createConsumer('ws://localhost:3000/cable');
+    this._consumer.connect();
 
-    this.route.params.subscribe((params) => {
-      this.channel = this.consumer?.subscriptions.create(
+    this._route.params.subscribe((params) => {
+      this._channel = this._consumer?.subscriptions.create(
         { channel: 'PrinterListenerChannel', id: params.id },
         {
           connected: () => this.connected(),
@@ -66,11 +66,11 @@ export class PrinterControlPanelComponent
   }
 
   ngOnDestroy(): void {
-    this.consumer?.disconnect();
+    this._consumer?.disconnect();
   }
 
   public sendCommand(): void {
-    this.channel?.perform('send_command', { command: this.command });
+    this._channel?.perform('send_command', { command: this.command });
     this.command = '';
   }
 

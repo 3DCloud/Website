@@ -12,7 +12,7 @@ import { User } from './core/models';
 })
 export class AppComponent {
   public constructor(
-    private authenticationService: AuthenticationService,
+    private _authenticationService: AuthenticationService,
     private _router: Router
   ) {}
 
@@ -21,14 +21,14 @@ export class AppComponent {
   }
 
   public get isAuthenticated(): boolean {
-    return this.authenticationService.isAuthenticated;
+    return this._authenticationService.isAuthenticated;
   }
 
   public get currentUser(): User | undefined {
-    return this.authenticationService.currentUser;
+    return this._authenticationService.currentUser;
   }
 
   public signOut(): void {
-    this.authenticationService.signOut();
+    this._authenticationService.signOut();
   }
 }

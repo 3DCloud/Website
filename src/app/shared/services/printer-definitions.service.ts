@@ -21,10 +21,10 @@ const GET_PRINTER_DEFINITIONS = gql`
   providedIn: 'root',
 })
 export class PrinterDefinitionsService {
-  constructor(private apollo: Apollo) {}
+  constructor(private _apollo: Apollo) {}
 
   public getPrinterDefinitions(): Observable<PrinterDefinition[]> {
-    return this.apollo
+    return this._apollo
       .query<{ printerDefinitions: PrinterDefinition[] }>({
         query: GET_PRINTER_DEFINITIONS,
       })

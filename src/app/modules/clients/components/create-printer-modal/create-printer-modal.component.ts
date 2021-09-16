@@ -28,17 +28,17 @@ export class CreatePrinterModalComponent implements OnInit, OnDestroy {
     ]),
   });
 
-  private subscriptions: Subscription[] = [];
+  private _subscriptions: Subscription[] = [];
 
   constructor(
     public modal: NgbActiveModal,
-    private printerService: PrintersService,
-    private printerDefinitionsService: PrinterDefinitionsService
+    private _printerService: PrintersService,
+    private _printerDefinitionsService: PrinterDefinitionsService
   ) {}
 
   public ngOnInit(): void {
-    this.subscriptions.push(
-      this.printerDefinitionsService
+    this._subscriptions.push(
+      this._printerDefinitionsService
         .getPrinterDefinitions()
         .subscribe(
           (printerDefinitions) => {
@@ -55,7 +55,7 @@ export class CreatePrinterModalComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    for (const subscription of this.subscriptions) {
+    for (const subscription of this._subscriptions) {
       subscription.unsubscribe();
     }
   }
@@ -72,8 +72,8 @@ export class CreatePrinterModalComponent implements OnInit, OnDestroy {
 
     this.busy = true;
 
-    this.subscriptions.push(
-      this.printerService
+    this._subscriptions.push(
+      this._printerService
         .createPrinter(
           this.device.id,
           this.form.get('printerDefinition')?.value,

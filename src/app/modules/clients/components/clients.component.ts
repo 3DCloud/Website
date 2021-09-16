@@ -15,13 +15,13 @@ export class ClientsComponent implements OnInit, OnDestroy {
   public clients: Client[] = [];
   public busy = false;
 
-  private subscriptions: Subscription[] = [];
+  private _subscriptions: Subscription[] = [];
 
-  constructor(private clientsService: ClientsService) {}
+  constructor(private _clientsService: ClientsService) {}
 
   public ngOnInit(): void {
-    this.subscriptions.push(
-      this.clientsService.getClients().subscribe(
+    this._subscriptions.push(
+      this._clientsService.getClients().subscribe(
         (clients) => {
           this.clients = clients.slice();
           this.loading = false;
@@ -35,7 +35,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    for (const subscription of this.subscriptions) {
+    for (const subscription of this._subscriptions) {
       subscription.unsubscribe();
     }
   }
@@ -43,8 +43,8 @@ export class ClientsComponent implements OnInit, OnDestroy {
   public grantAuthorization(clientId: string): void {
     this.busy = true;
 
-    this.subscriptions.push(
-      this.clientsService
+    this._subscriptions.push(
+      this._clientsService
         .grantAuthorization(clientId)
         .subscribe(
           (client) => {
@@ -67,8 +67,8 @@ export class ClientsComponent implements OnInit, OnDestroy {
   public revokeAuthorization(clientId: string): void {
     this.busy = true;
 
-    this.subscriptions.push(
-      this.clientsService
+    this._subscriptions.push(
+      this._clientsService
         .revokeAuthorization(clientId)
         .subscribe(
           (client) => {
@@ -91,8 +91,8 @@ export class ClientsComponent implements OnInit, OnDestroy {
   public delete(id: string): void {
     this.busy = true;
 
-    this.subscriptions.push(
-      this.clientsService
+    this._subscriptions.push(
+      this._clientsService
         .delete(id)
         .subscribe(
           () => {

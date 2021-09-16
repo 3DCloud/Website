@@ -111,6 +111,21 @@
         ],
         "import/no-extraneous-dependencies": "error",
         "import/no-useless-path-segments": "error",
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": ["classProperty", "parameterProperty"],
+            "modifiers": ["private"],
+            "format": ["strictCamelCase"],
+            "leadingUnderscore": "require"
+          },
+          {
+            "selector": ["classProperty", "parameterProperty"],
+            "modifiers": ["protected"],
+            "format": ["strictCamelCase"],
+            "leadingUnderscore": "require"
+          }
+        ],
         "no-restricted-imports": [
           "error",
           {

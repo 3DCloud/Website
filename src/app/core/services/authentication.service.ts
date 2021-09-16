@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -53,7 +54,8 @@ export class AuthenticationService {
   constructor(
     private _http: HttpClient,
     private _apollo: Apollo,
-    private _router: Router
+    private _router: Router,
+    private _location: Location
   ) {
     this._accessToken =
       window.localStorage.getItem(ACCESS_TOKEN_KEY) || undefined;
@@ -92,7 +94,7 @@ export class AuthenticationService {
         this._accessToken = undefined;
         this._refreshToken = undefined;
 
-        location.assign('https://makerepo.com');
+        this._location.go('https://makerepo.com');
       });
   }
 
@@ -120,7 +122,7 @@ export class AuthenticationService {
 
   private initiateAuthorization() {
     const codeChallenge = this.generateCodeChallenge();
-    location.assign(
+    this._location.go(
       apiUrl(`/sessions/authorize?code_challenge=${codeChallenge}`)
     );
   }

@@ -16,15 +16,15 @@ export class DeletePrinterModalComponent implements OnDestroy {
   public busy = false;
   public error?: unknown;
 
-  private subscriptions: Subscription[] = [];
+  private _subscriptions: Subscription[] = [];
 
   constructor(
     public modal: NgbActiveModal,
-    private printersService: PrintersService
+    private _printersService: PrintersService
   ) {}
 
   public ngOnDestroy(): void {
-    for (const subscription of this.subscriptions) {
+    for (const subscription of this._subscriptions) {
       subscription.unsubscribe();
     }
   }
@@ -36,8 +36,8 @@ export class DeletePrinterModalComponent implements OnDestroy {
     }
 
     this.busy = true;
-    this.subscriptions.push(
-      this.printersService
+    this._subscriptions.push(
+      this._printersService
         .deletePrinter(this.printer.id)
         .subscribe(
           () => {

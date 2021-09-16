@@ -14,13 +14,13 @@ export class PrintersComponent implements OnInit, OnDestroy {
   public printers: Printer[] = [];
   public error: unknown = null;
 
-  private subscriptions: Subscription[] = [];
+  private _subscriptions: Subscription[] = [];
 
-  constructor(private printersService: PrintersService) {}
+  constructor(private _printersService: PrintersService) {}
 
   public ngOnInit(): void {
-    this.subscriptions.push(
-      this.printersService
+    this._subscriptions.push(
+      this._printersService
         .getPrinters()
         .subscribe(
           (printers) => {
@@ -37,7 +37,7 @@ export class PrintersComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    for (const subscription of this.subscriptions) {
+    for (const subscription of this._subscriptions) {
       subscription.unsubscribe();
     }
   }
