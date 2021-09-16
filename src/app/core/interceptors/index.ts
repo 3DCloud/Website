@@ -1,1 +1,2 @@
-export * from './authentication-interceptor.service';
+export { AuthorizationInterceptor } from './authorization.interceptor';
+export { UnauthorizedInterceptor } from './unauthorized.interceptor';

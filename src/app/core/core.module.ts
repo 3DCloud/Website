@@ -9,7 +9,10 @@ import {
   PageNotFoundComponent,
 } from './components';
 import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
-import { AuthorizationInterceptor } from './interceptors';
+import {
+  AuthorizationInterceptor,
+  UnauthorizedInterceptor,
+} from './interceptors';
 
 @NgModule({
   declarations: [
@@ -20,6 +23,11 @@ import { AuthorizationInterceptor } from './interceptors';
   ],
   imports: [CommonModule, FontAwesomeModule],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedInterceptor,
+      multi: true,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthorizationInterceptor,
