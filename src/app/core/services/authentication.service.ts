@@ -1,5 +1,10 @@
-import { Location } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpContext,
+  HttpContextToken,
+  HttpHeaders,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { gql } from '@apollo/client/core';
@@ -42,6 +47,10 @@ const GET_USER_INFO = gql`
   }
 `;
 
+export const HTTP_CONTEXT_AUTHENTICATION_REQUEST_KEY = new HttpContextToken(
+  () => false
+);
+
 @Injectable({
   providedIn: 'root',
 })
@@ -54,8 +63,7 @@ export class AuthenticationService {
   constructor(
     private _http: HttpClient,
     private _apollo: Apollo,
-    private _router: Router,
-    private _location: Location
+    private _router: Router
   ) {
     this._accessToken =
       window.localStorage.getItem(ACCESS_TOKEN_KEY) || undefined;
@@ -85,35 +93,33 @@ export class AuthenticationService {
   }
 
   public signOut(): void {
-    this._http
-      .post(apiUrl('/sessions/logout'), { token: this._refreshToken })
-      .subscribe(() => {
-        window.localStorage.removeItem(ACCESS_TOKEN_KEY);
-        window.localStorage.removeItem(REFRESH_TOKEN_KEY);
+    this.post(apiUrl('/sessions/logout'), {
+      token: this._refreshToken,
+    }).subscribe(() => {
+      window.localStorage.removeItem(ACCESS_TOKEN_KEY);
+      window.localStorage.removeItem(REFRESH_TOKEN_KEY);
 
-        this._accessToken = undefined;
-        this._refreshToken = undefined;
+      this._accessToken = undefined;
+      this._refreshToken = undefined;
 
-        this._location.go('https://makerepo.com');
-      });
+      location.assign('https://makerepo.com');
+    });
   }
 
   public continueAuthorization(code: string): Observable<boolean> {
-    return this._http
-      .post<TokenResponse>(apiUrl('/sessions/token'), {
-        grant_type: 'authorization_code',
-        code: code,
-        code_verifier: window.localStorage.getItem(CODE_VERIFIER_KEY),
+    return this.post<TokenResponse>(apiUrl('/sessions/token'), {
+      grant_type: 'authorization_code',
+      code: code,
+      code_verifier: window.localStorage.getItem(CODE_VERIFIER_KEY),
+    }).pipe(
+      concatMap((response) => {
+        window.localStorage.removeItem(CODE_VERIFIER_KEY);
+        return this.processTokens(
+          response.access_token,
+          response.refresh_token
+        );
       })
-      .pipe(
-        concatMap((response) => {
-          window.localStorage.removeItem(CODE_VERIFIER_KEY);
-          return this.processTokens(
-            response.access_token,
-            response.refresh_token
-          );
-        })
-      );
+    );
   }
 
   public refreshAccessToken(): Observable<boolean> {
@@ -122,23 +128,21 @@ export class AuthenticationService {
       return of(false);
     }
 
-    return this._http
-      .post<TokenResponse>(apiUrl('/sessions/token'), {
-        grant_type: 'refresh_token',
-        refresh_token: this._refreshToken,
+    return this.post<TokenResponse>(apiUrl('/sessions/token'), {
+      grant_type: 'refresh_token',
+      refresh_token: this._refreshToken,
+    }).pipe(
+      concatMap((response) => {
+        return this.processTokens(
+          response.access_token,
+          response.refresh_token
+        );
+      }),
+      catchError(() => {
+        this.initiateAuthorization();
+        return of(false);
       })
-      .pipe(
-        concatMap((response) => {
-          return this.processTokens(
-            response.access_token,
-            response.refresh_token
-          );
-        }),
-        catchError(() => {
-          this.initiateAuthorization();
-          return of(false);
-        })
-      );
+    );
   }
 
   public hasRole(role: string | undefined): boolean {
@@ -244,5 +248,25 @@ export class AuthenticationService {
     }
 
     return str;
+  }
+
+  private post<T>(
+    url: string,
+    body: unknown | null,
+    options?: {
+      headers?: HttpHeaders;
+      observe?: 'body';
+      params?: HttpParams;
+      reportProgress?: boolean;
+      responseType?: 'json';
+      withCredentials?: boolean;
+    }
+  ) {
+    const context = new HttpContext().set(
+      HTTP_CONTEXT_AUTHENTICATION_REQUEST_KEY,
+      true
+    );
+
+    return this._http.post<T>(url, body, { ...options, context });
   }
 }
