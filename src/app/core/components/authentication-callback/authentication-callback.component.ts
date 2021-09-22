@@ -39,7 +39,7 @@ export class AuthenticationCallbackComponent implements OnInit {
         },
         (err: Error) => {
           this._router.navigate([], {
-            queryParams: { code: null, return: null },
+            queryParams: { relativeTo: this._route, code: null, return: null },
             queryParamsHandling: 'merge',
           });
           this.showSpinner = false;

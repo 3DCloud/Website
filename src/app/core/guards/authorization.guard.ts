@@ -9,6 +9,7 @@ import {
   Router,
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { AuthenticationService } from 'app/core/services';
 
@@ -43,6 +44,10 @@ export class AuthorizationGuard
       return of(true);
     }
 
-    return this._authenticationService.signIn();
+    return this._authenticationService.signIn().pipe(
+      catchError(() => {
+        return of(false);
+      })
+    );
   }
 }
