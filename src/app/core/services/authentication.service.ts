@@ -116,14 +116,42 @@ export class AuthenticationService {
       );
   }
 
+  public refreshAccessToken(): Observable<boolean> {
+    if (!this._refreshToken) {
+      this.initiateAuthorization();
+      return of(false);
+    }
+
+    return this._http
+      .post<TokenResponse>(apiUrl('/sessions/token'), {
+        grant_type: 'refresh_token',
+        refresh_token: this._refreshToken,
+      })
+      .pipe(
+        concatMap((response) => {
+          return this.processTokens(
+            response.access_token,
+            response.refresh_token
+          );
+        }),
+        catchError(() => {
+          this.initiateAuthorization();
+          return of(false);
+        })
+      );
+  }
+
   public hasRole(role: string | undefined): boolean {
     return true; // TODO: get role from back-end
   }
 
   private initiateAuthorization() {
     const codeChallenge = this.generateCodeChallenge();
-    this._location.go(
-      apiUrl(`/sessions/authorize?code_challenge=${codeChallenge}`)
+
+    location.assign(
+      apiUrl('/sessions/authorize', {
+        code_challenge: codeChallenge,
+      })
     );
   }
 
@@ -141,34 +169,14 @@ export class AuthenticationService {
     }
 
     if (
-      accessToken &&
-      jwtDecode<TokenPayload>(accessToken).exp * 1000 >
+      !accessToken ||
+      jwtDecode<TokenPayload>(accessToken).exp * 1000 <=
         Date.now() - TOKEN_REFRESH_EXPIRY_DELAY
     ) {
-      return this.processTokens(accessToken, refreshToken);
+      return this.refreshAccessToken();
     }
 
-    return this.refreshAccessToken(refreshToken);
-  }
-
-  private refreshAccessToken(refreshToken: string): Observable<boolean> {
-    return this._http
-      .post<TokenResponse>(apiUrl('/sessions/token'), {
-        grant_type: 'refresh_token',
-        refresh_token: refreshToken,
-      })
-      .pipe(
-        concatMap((response) => {
-          return this.processTokens(
-            response.access_token,
-            response.refresh_token
-          );
-        }),
-        catchError(() => {
-          this.initiateAuthorization();
-          return of(false);
-        })
-      );
+    return this.processTokens(accessToken, refreshToken);
   }
 
   private processTokens(
@@ -183,11 +191,11 @@ export class AuthenticationService {
     const timeout = expiry * 1000 - Date.now() - TOKEN_REFRESH_EXPIRY_DELAY;
 
     if (timeout <= 0) {
-      return this.refreshAccessToken(refreshToken);
+      return this.refreshAccessToken();
     }
 
     this._refreshTimer = setInterval(() => {
-      const subscription = this.refreshAccessToken(refreshToken).subscribe(
+      const subscription = this.refreshAccessToken().subscribe(
         () => {
           subscription.unsubscribe();
         },

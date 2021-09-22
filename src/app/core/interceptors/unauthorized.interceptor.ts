@@ -25,7 +25,7 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
           return throwError(err);
         }
 
-        return this._authenticationService.signIn().pipe(
+        return this._authenticationService.refreshAccessToken().pipe(
           concatMap((result) => {
             if (result) {
               return next.handle(request);

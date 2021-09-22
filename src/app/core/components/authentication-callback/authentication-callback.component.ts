@@ -38,6 +38,10 @@ export class AuthenticationCallbackComponent implements OnInit {
           });
         },
         (err: Error) => {
+          this._router.navigate([], {
+            queryParams: { code: null, return: null },
+            queryParamsHandling: 'merge',
+          });
           this.showSpinner = false;
           this.message = `Failed to authenticate. Please refresh the page.\n${err.message}`;
         }
