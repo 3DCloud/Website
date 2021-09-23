@@ -4,6 +4,7 @@ import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { mapMutationResult } from 'app/core/helpers';
 import { Printer } from 'app/core/models';
 
 const GET_PRINTERS = gql`
@@ -86,7 +87,7 @@ export class PrintersService {
         mutation: CREATE_PRINTER,
         variables: { deviceId, printerDefinitionId, name },
       })
-      .pipe(map((result) => result.data!.createPrinter));
+      .pipe(mapMutationResult((data) => data.createPrinter));
   }
 
   public deletePrinter(id: string): Observable<void> {

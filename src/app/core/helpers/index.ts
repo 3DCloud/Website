@@ -1,1 +1,2 @@
-export * from './url-helpers';
+export { mapMutationResult } from './graphql-helpers';
+export { apiUrl } from './url-helpers';

@@ -4,6 +4,7 @@ import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { mapMutationResult } from 'app/core/helpers';
 import { Client } from 'app/core/models';
 
 const GET_CLIENTS = gql`
@@ -112,7 +113,7 @@ export class ClientsService {
         mutation: SET_NAME,
         variables: { id, name },
       })
-      .pipe(map((result) => result.data!.setClientName));
+      .pipe(mapMutationResult((data) => data.setClientName));
   }
 
   grantAuthorization(clientId: string): Observable<Client> {
@@ -121,7 +122,7 @@ export class ClientsService {
         mutation: GRANT_AUTHORIZATION,
         variables: { clientId },
       })
-      .pipe(map((result) => result.data!.grantClientAuthorization));
+      .pipe(mapMutationResult((data) => data.grantClientAuthorization));
   }
 
   revokeAuthorization(clientId: string): Observable<Client> {
@@ -130,7 +131,7 @@ export class ClientsService {
         mutation: REVOKE_AUTHORIZATION,
         variables: { clientId },
       })
-      .pipe(map((result) => result.data!.revokeClientAuthorization));
+      .pipe(mapMutationResult((data) => data.revokeClientAuthorization));
   }
 
   delete(id: string): Observable<void> {
