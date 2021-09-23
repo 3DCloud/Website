@@ -1,5 +1,6 @@
-export * from './client';
-export * from './device';
-export * from './printer';
-export * from './printer-definition';
-export * from './user';
+export { Client } from './client';
+export { Device } from './device';
+export { Printer } from './printer';
+export { PrinterDefinition } from './printer-definition';
+export { UploadedFile } from './uploaded-file';
+export { User } from './user';

@@ -13,6 +13,8 @@ import md5 from 'js-md5';
 import { Observable } from 'rxjs';
 import { last, map, tap } from 'rxjs/operators';
 
+import { mapMutationResult } from 'app/core/helpers';
+
 interface UploadFileRequest {
   url: string;
   headers: Record<string, string>;
@@ -115,19 +117,7 @@ export class UploadFileModalComponent {
           checksum,
         },
       })
-      .pipe(
-        map((result) => {
-          if (result.errors) {
-            throw new Error(result.errors[0].message);
-          }
-
-          if (!result.data) {
-            throw new Error('Received empty response');
-          }
-
-          return result.data.createUploadFileRequest;
-        })
-      );
+      .pipe(mapMutationResult((data) => data.createUploadFileRequest));
   }
 
   private uploadFile(
@@ -162,18 +152,6 @@ export class UploadFileModalComponent {
         mutation: RECORD_UPLOAD_MUTATION,
         variables: { signedId },
       })
-      .pipe(
-        map((result) => {
-          if (result.errors) {
-            throw new Error(result.errors[0].message);
-          }
-
-          if (!result.data) {
-            throw new Error('Received empty response');
-          }
-
-          return result.data.recordFileUploaded;
-        })
-      );
+      .pipe(mapMutationResult((data) => data.recordFileUploaded));
   }
 }

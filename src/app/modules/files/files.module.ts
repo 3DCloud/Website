@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { CoreModule } from 'app/core/core.module';
+
 import { FilesComponent, UploadFileModalComponent } from './components';
 import { FilesRouting } from './files.routing';
 
@@ -15,6 +17,7 @@ import { FilesRouting } from './files.routing';
     FormsModule,
     FontAwesomeModule,
     NgbModule,
+    CoreModule,
   ],
 })
 export class FilesModule {}

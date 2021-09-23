@@ -1,2 +1,36 @@
 <h1>My Files</h1>
+
 <button type="button" class="btn btn-lg btn-primary" (click)="showUploadFileModal()"><fa-icon [icon]="icons.faUpload"></fa-icon> Upload</button>
+
+<div class="files-table mt-3">
+  <app-spinner *ngIf="loading"></app-spinner>
+
+  <table *ngIf="!loading && files.length" class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Size</th>
+        <th>Upload Time</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let file of files">
+        <td>{{file.filename ? file.filename : '&mdash;'}}</td>
+        <td>{{file.byteSize}}</td>
+        <td>{{file.createdAt | date: 'medium'}}</td>
+        <td>
+          <button type="button" class="btn btn-primary">Print</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!files.length && !loading && !error" class="alert alert-info">
+    No results.
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    Failed to get files: {{error}}
+  </div>
+</div>

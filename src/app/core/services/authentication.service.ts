@@ -7,8 +7,6 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { gql } from '@apollo/client/core';
-import { Apollo } from 'apollo-angular';
 import { sha256 } from 'js-sha256';
 import jwtDecode from 'jwt-decode';
 import { Observable, of } from 'rxjs';
@@ -16,6 +14,7 @@ import { catchError, concatMap, map } from 'rxjs/operators';
 
 import { apiUrl } from 'app/core/helpers';
 import { User } from 'app/core/models';
+import { UsersService } from 'app/shared/services';
 
 interface TokenResponse {
   access_token: string;
@@ -38,15 +37,6 @@ const CODE_VERIFIER_KEY = '3dcloud-code-verifier';
 const ACCESS_TOKEN_KEY = '3dcloud-access-token';
 const REFRESH_TOKEN_KEY = '3dcloud-refresh-token';
 
-const GET_USER_INFO = gql`
-  {
-    currentUser {
-      name
-      emailAddress
-    }
-  }
-`;
-
 export const HTTP_CONTEXT_AUTHENTICATION_REQUEST_KEY = new HttpContextToken(
   () => false
 );
@@ -62,8 +52,8 @@ export class AuthenticationService {
 
   constructor(
     private _http: HttpClient,
-    private _apollo: Apollo,
-    private _router: Router
+    private _router: Router,
+    private _usersService: UsersService
   ) {
     this._accessToken =
       window.localStorage.getItem(ACCESS_TOKEN_KEY) || undefined;
@@ -215,18 +205,12 @@ export class AuthenticationService {
     window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
     window.localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 
-    return this.getUserInfo().pipe(
-      map((userInfo) => {
-        this._user = userInfo;
+    return this._usersService.getCurrentUser().pipe(
+      map((user) => {
+        this._user = user;
         return true;
       })
     );
-  }
-
-  private getUserInfo(): Observable<User> {
-    return this._apollo
-      .query<{ currentUser: User }>({ query: GET_USER_INFO })
-      .pipe(map((result) => result.data.currentUser));
   }
 
   private generateCodeChallenge() {

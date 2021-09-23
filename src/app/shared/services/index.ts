@@ -1,3 +1,4 @@
-export * from './clients.service';
-export * from './printer-definitions.service';
-export * from './printers.service';
+export { ClientsService } from './clients.service';
+export { PrinterDefinitionsService } from './printer-definitions.service';
+export { PrintersService } from './printers.service';
+export { UsersService } from './users.service';
