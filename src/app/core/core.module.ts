@@ -7,6 +7,7 @@ import {
   AlertComponent,
   AuthenticationCallbackComponent,
   PageNotFoundComponent,
+  SpinnerComponent,
 } from './components';
 import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
 import {
@@ -20,6 +21,7 @@ import {
     AuthenticationCallbackComponent,
     LoadingOverlayComponent,
     AlertComponent,
+    SpinnerComponent,
   ],
   imports: [CommonModule, FontAwesomeModule],
   providers: [

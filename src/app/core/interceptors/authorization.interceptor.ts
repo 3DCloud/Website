@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AuthenticationService } from 'app/core/services';
+import { environment } from 'environments/environment';
 
 @Injectable()
 export class AuthorizationInterceptor implements HttpInterceptor {
@@ -17,12 +18,16 @@ export class AuthorizationInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    return next.handle(
-      request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${this._authenticationService.accessToken}`,
-        },
-      })
-    );
+    if (request.url.startsWith(environment.apiUrl)) {
+      return next.handle(
+        request.clone({
+          setHeaders: {
+            Authorization: `Bearer ${this._authenticationService.accessToken}`,
+          },
+        })
+      );
+    } else {
+      return next.handle(request);
+    }
   }
 }

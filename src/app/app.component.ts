@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { hex } from 'js-md5';
 
 import { AuthenticationService } from 'app/core/services';
 
@@ -22,6 +23,12 @@ export class AppComponent {
 
   public get isAuthenticated(): boolean {
     return this._authenticationService.isAuthenticated;
+  }
+
+  public get gravatarUrl(): string {
+    return `https://www.gravatar.com/avatar/${hex(
+      this.currentUser?.emailAddress.toLowerCase() ?? ''
+    )}`;
   }
 
   public get currentUser(): User | undefined {

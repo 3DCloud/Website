@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { GraphQLModule } from './graphql.module';
 import { ClientsModule } from './modules/clients/clients.module';
+import { FilesModule } from './modules/files/files.module';
 import { PrintersModule } from './modules/printers/printers.module';
 
 @NgModule({
@@ -26,6 +27,7 @@ import { PrintersModule } from './modules/printers/printers.module';
     // AppRoutingModule should always be last
     // for the fallback page to work properly
     ClientsModule,
+    FilesModule,
     PrintersModule,
     CoreModule,
     AppRoutingModule,

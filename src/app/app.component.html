@@ -4,7 +4,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container">
       <a class="navbar-brand" routerLink="/">
-        <img class="d-inline-block align-top" src="../assets/3dcloud.svg" alt="3DCloud" height="30" />
+        <img class="d-inline-block align-top" src="assets/3dcloud.svg" alt="3DCloud" height="30" />
         Dashboard
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,6 +13,9 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+          <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link" routerLink="files">Files</a>
+          </li>
           <li class="nav-item" routerLinkActive="active">
             <a class="nav-link" routerLink="clients">Clients</a>
           </li>
@@ -27,7 +30,7 @@
           </li>
           <li class="nav-item dropdown" ngbDropdown *ngIf="isAuthenticated">
             <a role="button" class="nav-link" ngbDropdownToggle>
-              <img class="avatar" src="https://via.placeholder.com/80x80" alt="" />
+              <img class="avatar" src="{{ gravatarUrl }}" alt="" />
               <span class="user-name">{{ currentUser?.name }}</span>
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
