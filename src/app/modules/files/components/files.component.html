@@ -17,10 +17,10 @@
     <tbody>
       <tr *ngFor="let file of files">
         <td>{{file.filename ? file.filename : '&mdash;'}}</td>
-        <td>{{file.byteSize}}</td>
+        <td>{{bytesToReadable(file.byteSize)}}</td>
         <td>{{file.createdAt | date: 'medium'}}</td>
         <td>
-          <button type="button" class="btn btn-primary">Print</button>
+          <button type="button" class="btn btn-primary" (click)="startPrint(file.id, '1')">Print</button>
         </td>
       </tr>
     </tbody>

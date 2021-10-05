@@ -4,7 +4,8 @@ import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { UploadedFile, User } from 'app/core/models';
+import { mapMutationResult } from 'app/core/helpers';
+import { UploadedFile, User, WebSocketTicket } from 'app/core/models';
 
 const CURRENT_USER_QUERY = gql`
   {
@@ -28,6 +29,14 @@ const CURRENT_USER_FILES_QUERY = gql`
   }
 `;
 
+const GET_TICKET_MUTATION = gql`
+  mutation {
+    generateWebSocketTicket {
+      ticket
+    }
+  }
+`;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -46,5 +55,15 @@ export class UsersService {
         query: CURRENT_USER_FILES_QUERY,
       })
       .pipe(map((result) => result.data.currentUser.uploadedFiles));
+  }
+
+  public getWebSocketTicket(): Observable<string> {
+    return this._apollo
+      .mutate<{ generateWebSocketTicket: WebSocketTicket }>({
+        mutation: GET_TICKET_MUTATION,
+      })
+      .pipe(
+        mapMutationResult((result) => result.generateWebSocketTicket.ticket)
+      );
   }
 }

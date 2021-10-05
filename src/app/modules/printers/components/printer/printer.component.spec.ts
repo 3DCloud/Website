@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PrinterControlPanelComponent } from './printer-control-panel.component';
+import { PrinterComponent } from './printer.component';
 
 describe('PrinterComponent', () => {
-  let component: PrinterControlPanelComponent;
-  let fixture: ComponentFixture<PrinterControlPanelComponent>;
+  let component: PrinterComponent;
+  let fixture: ComponentFixture<PrinterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PrinterControlPanelComponent],
+      declarations: [PrinterComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PrinterControlPanelComponent);
+    fixture = TestBed.createComponent(PrinterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

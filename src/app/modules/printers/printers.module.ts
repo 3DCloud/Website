@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { PrinterControlPanelComponent, PrintersComponent } from './components';
+import { CoreModule } from 'app/core/core.module';
+
+import { PrinterComponent, PrintersComponent } from './components';
 import { PrintersRouting } from './printers.routing';
 
 @NgModule({
-  declarations: [PrintersComponent, PrinterControlPanelComponent],
-  imports: [CommonModule, PrintersRouting, FormsModule],
+  declarations: [PrintersComponent, PrinterComponent],
+  imports: [CommonModule, PrintersRouting, FormsModule, CoreModule],
 })
 export class PrintersModule {}

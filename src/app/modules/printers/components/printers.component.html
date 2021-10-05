@@ -10,15 +10,11 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let printer of printers">
-      <td>{{ printer.name }}</td>
-      <td>
-        <a class="btn btn-primary" routerLink="{{printer.id}}/control-panel">Control Panel</a>
-      </td>
+      <td><a [routerLink]="printer.id">{{ printer.name }}</a></td>
     </tr>
   </tbody>
 </table>

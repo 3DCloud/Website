@@ -1,0 +1,7 @@
+<h1>Printer <small><span *ngIf="printerState" class="badge badge-{{badgeTypeForState(printerState.printer_state)}}">{{printerState.printer_state}}</span></small></h1>
+<div *ngIf="printerState && printerState.temperatures" class="h3">
+  <div *ngFor="let hotend of printerState.temperatures.hotend_temperatures" class="badge badge-primary mr-1"><span class="font-weight-normal">{{hotend.name}}</span> {{hotend.current | number: '1.1-1'}}&nbsp;&deg;C <ng-container *ngIf="hotend.target">({{hotend.target | number: '1.1-1'}}&nbsp;&deg;C)</ng-container></div>
+  <div *ngIf="printerState.temperatures.bed_temperature" class="badge badge-primary mr-1"><span class="font-weight-normal">{{printerState.temperatures.bed_temperature.name}}</span> {{printerState.temperatures.bed_temperature.current | number: '1.1-1'}}&nbsp;&deg;C <ng-container *ngIf="printerState.temperatures.bed_temperature.target">({{printerState.temperatures.bed_temperature.target | number: '1.1-1'}}&nbsp;&deg;C)</ng-container></div>
+</div>
+<app-spinner *ngIf="connecting"></app-spinner>
+<div *ngIf="!printerState">Waiting for data</div>
