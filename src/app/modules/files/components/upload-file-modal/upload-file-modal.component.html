@@ -5,7 +5,7 @@
   </button>
 </div>
 <div class="modal-body">
-  <input [disabled]="busy" type="file" required (change)="selectedFileChanged($event)" />
+  <input [disabled]="busy" type="file" required accept=".gcode" (change)="selectedFileChanged($event)" />
   <ngb-progressbar *ngIf="busy" type="primary" [value]="progress"></ngb-progressbar>
 </div>
 <div class="modal-footer">
