@@ -36,6 +36,6 @@ import {
       multi: true,
     },
   ],
-  exports: [LoadingOverlayComponent, SpinnerComponent],
+  exports: [LoadingOverlayComponent, SpinnerComponent, AlertComponent],
 })
 export class CoreModule {}

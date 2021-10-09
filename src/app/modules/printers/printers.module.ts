@@ -10,5 +10,6 @@ import { PrintersRouting } from './printers.routing';
 @NgModule({
   declarations: [PrintersComponent, PrinterComponent],
   imports: [CommonModule, PrintersRouting, FormsModule, CoreModule],
+  exports: [PrinterComponent],
 })
 export class PrintersModule {}

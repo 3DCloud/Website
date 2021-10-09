@@ -12,9 +12,14 @@ const GET_PRINTERS = gql`
     printers {
       id
       name
+      state
       deviceId
       createdAt
       updatedAt
+      printerDefinition {
+        id
+        name
+      }
     }
   }
 `;
@@ -27,6 +32,10 @@ const GET_PRINTER = gql`
       deviceId
       createdAt
       updatedAt
+      printerDefinition {
+        id
+        name
+      }
     }
   }
 `;

@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UploadedFile } from 'app/core/models';
 import { PrintsService, UsersService } from 'app/shared/services';
 
+import { SelectPrinterModalComponent } from './select-printer-modal/select-printer-modal.component';
 import { UploadFileModalComponent } from './upload-file-modal/upload-file-modal.component';
 
 @Component({
@@ -49,6 +50,19 @@ export class FilesComponent implements OnInit {
     });
   }
 
+  public showSelectPrinterModal(fileId: string): void {
+    const modalRef = this._modalService.open(SelectPrinterModalComponent, {
+      backdrop: 'static',
+      keyboard: false,
+      modalDialogClass: 'printers-modal',
+    });
+
+    const modalComponent =
+      modalRef.componentInstance as SelectPrinterModalComponent;
+
+    modalComponent.fileId = fileId;
+  }
+
   public bytesToReadable(bytes: number): string {
     const dividend = 1024;
     const prefixes = ['B', 'KiB', 'MiB', 'GiB'];
@@ -58,11 +72,5 @@ export class FilesComponent implements OnInit {
     return `${Math.round((bytes / Math.pow(dividend, index)) * 100) / 100} ${
       prefixes[index]
     }`;
-  }
-
-  public startPrint(fileId: string, printerId: string): void {
-    this._printsService.startPrint(fileId, printerId).subscribe(() => {
-      this._router.navigate(['/printers', printerId]);
-    });
   }
 }

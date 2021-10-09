@@ -1,0 +1,43 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+
+.printers {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .printer {
+    margin: 1rem 0;
+    text-align: center;
+    width: 15rem;
+
+    .printer-icon {
+      width: 150px;
+    }
+
+    .printer-name {
+      font-size: 1.2em;
+    }
+
+    .printer-type {
+      color: $text-muted;
+    }
+
+    .select-button {
+      margin-top: 1em;
+      width: 80%;
+    }
+  }
+}
+
+.dot {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  border-radius: 50%;
+}
+
+.starting-print-spinner {
+  text-align: center;
+}

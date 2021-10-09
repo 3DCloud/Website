@@ -20,7 +20,7 @@
         <td>{{bytesToReadable(file.byteSize)}}</td>
         <td>{{file.createdAt | date: 'medium'}}</td>
         <td>
-          <button type="button" class="btn btn-primary" (click)="startPrint(file.id, '1')">Print</button>
+          <button type="button" class="btn btn-primary" (click)="showSelectPrinterModal(file.id)">Print&hellip;</button>
         </td>
       </tr>
     </tbody>

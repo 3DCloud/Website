@@ -2,3 +2,9 @@
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+.printers-modal {
+  display: table;
+  min-width: 20%;
+  max-width: 80%;
+}

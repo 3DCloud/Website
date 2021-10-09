@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Select Printer</h4>
+  <button type="button" class="close" aria-label="Close" [disabled]="busy" (click)="modal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="text-center">
+    <app-spinner *ngIf="loading && !error"></app-spinner>
+  </div>
+
+  <div *ngIf="printers && !busy && !error" class="printers">
+    <div class="printer" *ngFor="let printer of printers">
+      <img class="printer-icon" src="https://via.placeholder.com/150" alt=""/>
+      <div class="printer-name">{{ printer.name }}</div>
+      <div class="printer-type">{{ printer.printerDefinition?.name }}</div>
+      <div class="printer-material">
+        <span class="dot" [style.background-color]="material.color"></span> {{ material.name }} ({{ material.colorName }})
+      </div>
+      <button class="select-button btn btn-primary" [disabled]="busy || printer.state !== 'ready'" (click)="startPrint(printer.id)">Select</button>
+    </div>
+  </div>
+
+  <div *ngIf="busy && !error" class="starting-print-spinner">
+    <app-spinner></app-spinner>
+    <div>Starting your print&hellip;</div>
+  </div>
+
+  <div *ngIf="error">
+    <app-alert [message]="error" type="danger"></app-alert>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-secondary" (click)="modal.dismiss()" [disabled]="busy">Cancel</button>
+</div>
