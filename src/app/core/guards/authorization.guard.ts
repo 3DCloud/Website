@@ -44,7 +44,7 @@ export class AuthorizationGuard
       return of(true);
     }
 
-    return this._authenticationService.signIn().pipe(
+    return this._authenticationService.signInIfSessionExists().pipe(
       catchError(() => {
         return of(false);
       })

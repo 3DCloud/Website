@@ -82,6 +82,18 @@ export class AuthenticationService {
     }
   }
 
+  public signInIfSessionExists(): Observable<boolean> {
+    if (this._accessToken || this._refreshToken) {
+      return this.refreshAuthorization(
+        this._accessToken,
+        this._refreshToken,
+        true
+      );
+    } else {
+      return of(false);
+    }
+  }
+
   public signOut(): void {
     this.post(apiUrl('/sessions/logout'), {
       token: this._refreshToken,
@@ -112,7 +124,7 @@ export class AuthenticationService {
     );
   }
 
-  public refreshAccessToken(): Observable<boolean> {
+  public refreshAccessToken(bailIfRefreshFails = false): Observable<boolean> {
     if (!this._refreshToken) {
       this.initiateAuthorization();
       return of(false);
@@ -125,11 +137,15 @@ export class AuthenticationService {
       concatMap((response) => {
         return this.processTokens(
           response.access_token,
-          response.refresh_token
+          response.refresh_token,
+          bailIfRefreshFails
         );
       }),
       catchError(() => {
-        this.initiateAuthorization();
+        if (!bailIfRefreshFails) {
+          this.initiateAuthorization();
+        }
+
         return of(false);
       })
     );
@@ -150,15 +166,19 @@ export class AuthenticationService {
   }
 
   private refreshAuthorization(
-    accessToken?: string,
-    refreshToken?: string
+    accessToken: string | undefined,
+    refreshToken: string | undefined,
+    bailIfRefreshFails = false
   ): Observable<boolean> {
     if (
       !refreshToken ||
       jwtDecode<TokenPayload>(refreshToken).exp * 1000 <=
         Date.now() - TOKEN_REFRESH_EXPIRY_DELAY
     ) {
-      this.initiateAuthorization();
+      if (!bailIfRefreshFails) {
+        this.initiateAuthorization();
+      }
+
       return of(false);
     }
 
@@ -167,15 +187,16 @@ export class AuthenticationService {
       jwtDecode<TokenPayload>(accessToken).exp * 1000 <=
         Date.now() - TOKEN_REFRESH_EXPIRY_DELAY
     ) {
-      return this.refreshAccessToken();
+      return this.refreshAccessToken(bailIfRefreshFails);
     }
 
-    return this.processTokens(accessToken, refreshToken);
+    return this.processTokens(accessToken, refreshToken, bailIfRefreshFails);
   }
 
   private processTokens(
     accessToken: string,
-    refreshToken: string
+    refreshToken: string,
+    bailIfExpiredOrRefreshFails = false
   ): Observable<boolean> {
     if (this._refreshTimer) {
       clearInterval(this._refreshTimer);
@@ -185,11 +206,13 @@ export class AuthenticationService {
     const timeout = expiry * 1000 - Date.now() - TOKEN_REFRESH_EXPIRY_DELAY;
 
     if (timeout <= 0) {
-      return this.refreshAccessToken();
+      return this.refreshAccessToken(bailIfExpiredOrRefreshFails);
     }
 
     this._refreshTimer = setInterval(() => {
-      const subscription = this.refreshAccessToken().subscribe(
+      const subscription = this.refreshAccessToken(
+        bailIfExpiredOrRefreshFails
+      ).subscribe(
         () => {
           subscription.unsubscribe();
         },

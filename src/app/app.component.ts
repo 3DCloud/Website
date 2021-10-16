@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { hex } from 'js-md5';
+import { Subscription } from 'rxjs';
 
 import { AuthenticationService } from 'app/core/services';
 
@@ -11,14 +12,32 @@ import { User } from './core/models';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
+  public loaded = false;
+  public error?: string;
+
+  private _subscriptions: Subscription[] = [];
+
   public constructor(
     private _authenticationService: AuthenticationService,
     private _router: Router
   ) {}
 
-  public get loaded(): boolean {
-    return this._router.navigated;
+  public ngOnInit(): void {
+    this._authenticationService.signInIfSessionExists().subscribe(
+      () => {
+        this.loaded = true;
+      },
+      (err) => {
+        this.error = err;
+      }
+    );
+  }
+
+  public ngOnDestroy(): void {
+    for (const subscription of this._subscriptions) {
+      subscription.unsubscribe();
+    }
   }
 
   public get isAuthenticated(): boolean {
@@ -33,6 +52,13 @@ export class AppComponent {
 
   public get currentUser(): User | undefined {
     return this._authenticationService.currentUser;
+  }
+
+  public signIn(): void {
+    this.loaded = false;
+    this._subscriptions.push(
+      this._authenticationService.signIn().subscribe(() => undefined)
+    );
   }
 
   public signOut(): void {

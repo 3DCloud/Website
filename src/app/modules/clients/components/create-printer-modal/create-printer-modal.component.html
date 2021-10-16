@@ -13,6 +13,7 @@
     <div class="form-group">
       <label for="printer-definition">Printer Type</label>
       <select class="form-control" id="printer-definition" formControlName="printerDefinition">
+        <option *ngIf="form.get('printerDefinition')?.disabled">Loading&hellip;</option>
         <option *ngFor="let def of printerDefinitions" [value]="def.id">{{ def.name }}</option>
       </select>
     </div>
