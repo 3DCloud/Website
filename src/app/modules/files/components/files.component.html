@@ -40,7 +40,7 @@
       <tr *ngFor="let file of files">
         <td>{{file.filename ? file.filename : '&mdash;'}}</td>
         <td>{{bytesToReadable(file.byteSize)}}</td>
-        <td>{{file.createdAt | date: 'medium'}}</td>
+        <td><span [ngbTooltip]="file.createdAt | amDateFormat: 'LLL'">{{file.createdAt | amTimeAgo}}</span></td>
         <td>
           <button type="button" class="btn btn-primary" (click)="showSelectPrinterModal(file.id)">Print&hellip;</button>
         </td>

@@ -7,7 +7,7 @@ import {
 } from './core/components';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'clients', pathMatch: 'full' },
+  { path: '', redirectTo: 'files', pathMatch: 'full' },
   { path: 'auth/callback', component: AuthenticationCallbackComponent },
   { path: '**', component: PageNotFoundComponent },
 ];

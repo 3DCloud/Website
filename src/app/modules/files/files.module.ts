@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MomentModule } from 'ngx-moment';
 
 import { CoreModule } from 'app/core/core.module';
 
@@ -19,6 +20,7 @@ import { FilesRouting } from './files.routing';
     FontAwesomeModule,
     NgbModule,
     CoreModule,
+    MomentModule,
   ],
 })
 export class FilesModule {}

@@ -38,7 +38,7 @@
         <td>{{ device.deviceName }}</td>
         <td>{{ device.hardwareIdentifier }}</td>
         <td>{{ device.isPortableHardwareIdentifier ? 'Yes' : 'No' }}</td>
-        <td>{{ device.lastSeen | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+        <td><span [ngbTooltip]="device.lastSeen | amDateFormat: 'LLL'">{{ device.lastSeen | amTimeAgo }}</span></td>
         <td>
           <button [disabled]="device.printer" class="btn btn-success" (click)="createPrinter(device)">{{ device.printer ? 'Printer Assigned' : 'Assign Printer' }}</button>
         </td>
