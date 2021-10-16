@@ -66,4 +66,20 @@ export class SelectPrinterModalComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+  public badgeTypeForState(state: string): string {
+    switch (state) {
+      case 'ready':
+        return 'success';
+
+      case 'printing':
+        return 'warning';
+
+      case 'connecting':
+        return 'light';
+
+      default:
+        return 'danger';
+    }
+  }
 }

@@ -13,6 +13,7 @@
     <div class="printer" *ngFor="let printer of printers">
       <img class="printer-icon" src="https://via.placeholder.com/150" alt=""/>
       <div class="printer-name">{{ printer.name }}</div>
+      <div class="badge badge-pill badge-{{badgeTypeForState(printer.state)}}">{{printer.state}}</div>
       <div class="printer-type">{{ printer.printerDefinition?.name }}</div>
       <div class="printer-material">
         <span class="dot" [style.background-color]="material.color"></span> {{ material.name }} ({{ material.colorName }})
