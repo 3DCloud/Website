@@ -27,8 +27,7 @@
     <thead>
       <tr>
         <th>Name</th>
-        <th>Hardware Identifier</th>
-        <th>Portable ID?</th>
+        <th>Identifier</th>
         <th>Last Seen</th>
         <th>Actions</th>
       </tr>
@@ -36,11 +35,17 @@
     <tbody>
       <tr *ngFor="let device of client.devices">
         <td>{{ device.deviceName }}</td>
-        <td>{{ device.hardwareIdentifier }}</td>
-        <td>{{ device.isPortableHardwareIdentifier ? 'Yes' : 'No' }}</td>
+        <td>
+          {{ device.hardwareIdentifier }}
+          <span class="text-warning"
+            *ngIf="!device.isPortableHardwareIdentifier"
+            ngbTooltip="This device did not report a serial number. It will not be detected properly if the USB port it is connected to changes.">
+            <fa-icon [icon]="icons.faExclamationTriangle"></fa-icon>
+          </span>
+        </td>
         <td><span [ngbTooltip]="device.lastSeen | amDateFormat: 'LLL'">{{ device.lastSeen | amTimeAgo }}</span></td>
         <td>
-          <button [disabled]="device.printer" class="btn btn-success" (click)="createPrinter(device)">{{ device.printer ? 'Printer Assigned' : 'Assign Printer' }}</button>
+          <button *ngIf="!device.printer" class="btn btn-success" (click)="createPrinter(device)">Add printer&hellip;</button>
         </td>
       </tr>
     </tbody>

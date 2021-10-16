@@ -7,7 +7,10 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { faSave } from '@fortawesome/free-regular-svg-icons';
+import {
+  faExclamationTriangle,
+  faSave,
+} from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 
@@ -30,7 +33,7 @@ export class ClientComponent implements OnInit, OnDestroy {
   public busy = false;
   public client?: Client;
 
-  public icons = { faSave };
+  public icons = { faExclamationTriangle, faSave };
 
   public name = new FormControl();
 
