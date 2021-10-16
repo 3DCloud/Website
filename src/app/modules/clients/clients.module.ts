@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { CoreModule } from 'app/core/core.module';
+
 import { ClientsRouting } from './clients.routing';
 import {
   ClientComponent,
@@ -23,6 +25,7 @@ import {
     ReactiveFormsModule,
     ClientsRouting,
     FontAwesomeModule,
+    CoreModule,
   ],
 })
 export class ClientsModule {}

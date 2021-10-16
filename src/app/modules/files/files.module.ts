@@ -6,16 +6,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { CoreModule } from 'app/core/core.module';
 
-import { FilesComponent, UploadFileModalComponent } from './components';
+import { FilesComponent } from './components';
 import { SelectPrinterModalComponent } from './components/select-printer-modal/select-printer-modal.component';
 import { FilesRouting } from './files.routing';
 
 @NgModule({
-  declarations: [
-    FilesComponent,
-    UploadFileModalComponent,
-    SelectPrinterModalComponent,
-  ],
+  declarations: [FilesComponent, SelectPrinterModalComponent],
   imports: [
     CommonModule,
     FilesRouting,

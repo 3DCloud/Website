@@ -5,21 +5,14 @@ import {
   HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { gql } from '@apollo/client/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Apollo } from 'apollo-angular';
-import md5 from 'js-md5';
 import { Observable } from 'rxjs';
 import { last, map, tap } from 'rxjs/operators';
 
 import { mapMutationResult } from 'app/core/helpers';
-
-interface UploadFileRequest {
-  url: string;
-  headers: Record<string, string>;
-  signedId: string;
-}
+import { UploadFileRequest, UploadedFile } from 'app/core/models';
 
 const UPLOAD_MUTATION = gql`
   mutation createUploadFileRequest(
@@ -45,63 +38,20 @@ const RECORD_UPLOAD_MUTATION = gql`
   mutation recordFileUploaded($signedId: String!) {
     recordFileUploaded(signedId: $signedId) {
       id
+      filename
+      byteSize
+      createdAt
     }
   }
 `;
 
-@Component({
-  selector: 'app-upload-file-modal',
-  templateUrl: './upload-file-modal.component.html',
-  styleUrls: ['./upload-file-modal.component.scss'],
+@Injectable({
+  providedIn: 'root',
 })
-export class UploadFileModalComponent {
-  public busy = false;
-  public status = '';
-  public progress = 0;
-  public error?: unknown;
+export class FilesService {
+  constructor(private _apollo: Apollo, private _http: HttpClient) {}
 
-  private _selectedFile?: File;
-
-  constructor(
-    public modal: NgbActiveModal,
-    private _apollo: Apollo,
-    private _http: HttpClient
-  ) {}
-
-  public selectedFileChanged(event: Event): void {
-    const files = (event.target as HTMLInputElement).files;
-
-    if (!files) {
-      return;
-    }
-
-    this._selectedFile = files[0];
-  }
-
-  public upload(): void {
-    if (!this._selectedFile) {
-      return;
-    }
-
-    this.busy = true;
-    const file = this._selectedFile;
-
-    file.arrayBuffer().then((buffer) => {
-      const checksum = md5.base64(buffer);
-
-      this.requestFileUpload(file, checksum).subscribe(
-        ({ url, headers, signedId }) => {
-          this.uploadFile(url, buffer, headers).subscribe(() => {
-            this.recordUpload(signedId).subscribe(() => {
-              this.busy = false;
-            });
-          });
-        }
-      );
-    });
-  }
-
-  private requestFileUpload(
+  public requestFileUpload(
     file: File,
     checksum: string
   ): Observable<UploadFileRequest> {
@@ -120,10 +70,11 @@ export class UploadFileModalComponent {
       .pipe(mapMutationResult((data) => data.createUploadFileRequest));
   }
 
-  private uploadFile(
+  public uploadFile(
     url: string,
     body: unknown,
-    headers: Record<string, string>
+    headers: Record<string, string>,
+    progressCallback: (progress: number) => void
   ): Observable<HttpResponse<unknown>> {
     const request = new HttpRequest('PUT', url, body, {
       headers: new HttpHeaders(headers),
@@ -134,10 +85,7 @@ export class UploadFileModalComponent {
       tap((event) => {
         if (event.type == HttpEventType.UploadProgress) {
           if (event.total) {
-            this.progress = (event.loaded / event.total) * 100;
-            this.status = `Uploading... ${this.progress}%`;
-          } else {
-            this.status = `Uploading...`;
+            progressCallback(event.loaded / event.total);
           }
         }
       }),
@@ -146,9 +94,9 @@ export class UploadFileModalComponent {
     );
   }
 
-  private recordUpload(signedId: string): Observable<{ id: string }> {
+  public recordUpload(signedId: string): Observable<UploadedFile> {
     return this._apollo
-      .mutate<{ recordFileUploaded: { id: string } }>({
+      .mutate<{ recordFileUploaded: UploadedFile }>({
         mutation: RECORD_UPLOAD_MUTATION,
         variables: { signedId },
       })

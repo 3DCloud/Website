@@ -1,10 +1,6 @@
 <h1>Printers</h1>
 
-<div *ngIf="loading" class="d-flex justify-content-center">
-  <div class="spinner-border" role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
-</div>
+<app-spinner *ngIf="loading"></app-spinner>
 
 <table *ngIf="!loading && printers.length" class="table">
   <thead>

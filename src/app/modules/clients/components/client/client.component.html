@@ -1,8 +1,4 @@
-<div *ngIf="loading" class="d-flex justify-content-center">
-  <div class="spinner-border" role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
-</div>
+<app-spinner *ngIf="loading"></app-spinner>
 
 <div *ngIf="error" class="alert alert-danger">
   Failed to get clients: {{ error }}

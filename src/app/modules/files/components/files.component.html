@@ -1,6 +1,28 @@
 <h1>My Files</h1>
 
-<button type="button" class="btn btn-lg btn-primary" (click)="showUploadFileModal()"><fa-icon [icon]="icons.faUpload"></fa-icon> Upload</button>
+<div class="file-upload-zone">
+  <label for="file-upload">
+    <span *ngIf="this.uploadStatus.uploading">
+      Uploading '{{this.uploadStatus.fileName}}'&hellip; {{this.uploadStatus.progress | number: '1.1-1' }}%
+      <ngb-progressbar type="primary" [value]="this.uploadStatus.progress"></ngb-progressbar>
+    </span>
+
+    <span *ngIf="this.uploadStatus.success">
+      File '{{this.uploadStatus.fileName}}' uploaded successfully!
+    </span>
+
+    <span *ngIf="this.uploadStatus.error">
+      Failed to upload: {{this.uploadStatus.error}}
+    </span>
+
+    <span *ngIf="!this.uploadStatus.uploading">
+      <fa-icon [icon]="icons.faUpload"></fa-icon>
+      Drag and drop a G-code file here or click to browse&hellip;
+    </span>
+
+    <input id="file-upload" type="file" (change)="upload($event)" accept=".gcode"/>
+  </label>
+</div>
 
 <div class="files-table mt-3">
   <app-spinner *ngIf="loading"></app-spinner>
