@@ -43,7 +43,7 @@
             <fa-icon [icon]="icons.faExclamationTriangle"></fa-icon>
           </span>
         </td>
-        <td><span [ngbTooltip]="device.lastSeen | amDateFormat: 'LLL'">{{ device.lastSeen | amTimeAgo }}</span></td>
+        <td><span [ngbTooltip]="device.lastSeen | djsDateFormat: 'LLL'">{{ device.lastSeen | djsTimeAgo }}</span></td>
         <td>
           <button *ngIf="!device.printer" class="btn btn-success" (click)="createPrinter(device)">Add printer&hellip;</button>
         </td>

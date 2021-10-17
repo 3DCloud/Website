@@ -14,6 +14,8 @@ import {
   AuthorizationInterceptor,
   UnauthorizedInterceptor,
 } from './interceptors';
+import { DjsDateFormatPipe } from './pipes/djs-date-format.pipe';
+import { DjsTimeAgoPipe } from './pipes/djs-time-ago.pipe';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import {
     LoadingOverlayComponent,
     AlertComponent,
     SpinnerComponent,
+    DjsTimeAgoPipe,
+    DjsDateFormatPipe,
   ],
   imports: [CommonModule, FontAwesomeModule],
   providers: [
@@ -36,6 +40,12 @@ import {
       multi: true,
     },
   ],
-  exports: [LoadingOverlayComponent, SpinnerComponent, AlertComponent],
+  exports: [
+    LoadingOverlayComponent,
+    SpinnerComponent,
+    AlertComponent,
+    DjsTimeAgoPipe,
+    DjsDateFormatPipe,
+  ],
 })
 export class CoreModule {}
