@@ -1,14 +1,22 @@
 # 3DCloud Client
 ## Getting Started
-Install [Node.js](https://nodejs.org/en/). It's usually safer to install the LTS version, but anything marked as compatible in [Angular's package.json file](https://github.com/angular/angular/blob/master/package.json) will work. If you already have Node.js installed, you can check the version you have by running `npm -v`.
+### Prerequisites
+Install [Node.js](https://nodejs.org/en/). It's usually safer to install the LTS version, but anything marked as compatible in [Angular's package.json file](https://github.com/angular/angular/blob/master/package.json) will work. If you already have Node.js installed, you can check the version you have by running `node -v`.
 
-Once that's done, install the Angular CLI globally by running
+### Running the project
+First, install the Angular CLI globally by running
 
 ```
 npm install -g @angular/cli
 ```
 
-You are now ready to develop! To run the app, simply run
+Then, check out this repository, open a terminal in the root directory, and run
+
+```
+npm install
+```
+
+Once that's done, you are ready to develop! To run the app, simply run
 
 ```
 ng serve --open
