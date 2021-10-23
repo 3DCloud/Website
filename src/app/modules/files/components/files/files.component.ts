@@ -5,9 +5,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import md5 from 'js-md5';
 
 import { UploadedFile } from 'app/core/models';
+import { SelectPrinterModalComponent } from 'app/modules/files/components';
 import { FilesService, PrintsService, UsersService } from 'app/shared/services';
-
-import { SelectPrinterModalComponent } from './select-printer-modal/select-printer-modal.component';
 
 @Component({
   selector: 'app-files',
