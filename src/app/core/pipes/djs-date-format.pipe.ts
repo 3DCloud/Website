@@ -5,11 +5,11 @@ import dayjs from 'dayjs';
   name: 'djsDateFormat',
 })
 export class DjsDateFormatPipe implements PipeTransform {
-  transform(value: unknown, ...args: unknown[]): string {
+  transform(value: Date | dayjs.Dayjs, ...args: unknown[]): string {
     if (args.length !== 1 || typeof args[0] !== 'string') {
       throw new Error('Expected format to be a string');
     }
 
-    return dayjs().format(args[0] as string);
+    return dayjs(value).format(args[0]);
   }
 }
