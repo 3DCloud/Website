@@ -9,4 +9,6 @@ export interface Print {
   status: PrintState;
   createdAt: Date;
   updatedAt: Date;
+  startedAt: Date;
+  completedAt: Date;
 }

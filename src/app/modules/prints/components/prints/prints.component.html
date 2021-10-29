@@ -14,7 +14,9 @@
     <tr *ngFor="let print of prints">
       <td>{{ print.uploadedFile.filename }} <app-print-state-badge [state]="print.status" [pill]="true"></app-print-state-badge></td>
       <td><span [ngbTooltip]="print.createdAt | djsDateFormat: 'LLL'">{{ print.createdAt | djsTimeAgo }}</span></td>
-      <td></td>
+      <td>
+        <span *ngIf="print.startedAt && print.completedAt">{{ print.startedAt | djsDiff: print.completedAt | djsDuration }}</span>
+      </td>
     </tr>
   </tbody>
 </table>

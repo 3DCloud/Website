@@ -22,6 +22,8 @@ const GET_PRINTS = gql`
       status
       createdAt
       updatedAt
+      startedAt
+      completedAt
     }
   }
 `;
