@@ -8,7 +8,7 @@ import { mapMutationResult } from 'app/core/helpers';
 import { Printer } from 'app/core/models';
 
 const GET_PRINTERS = gql`
-  query GetPrinters {
+  query getPrinters {
     printers {
       id
       name
@@ -25,7 +25,7 @@ const GET_PRINTERS = gql`
 `;
 
 const GET_PRINTER = gql`
-  query GetPrinter($id: ID!) {
+  query getPrinter($id: ID!) {
     printer(id: $id) {
       id
       name
@@ -41,7 +41,7 @@ const GET_PRINTER = gql`
 `;
 
 const CREATE_PRINTER = gql`
-  mutation CreatePrinter(
+  mutation createPrinter(
     $deviceId: ID!
     $printerDefinitionId: ID!
     $name: String!
@@ -61,9 +61,30 @@ const CREATE_PRINTER = gql`
 `;
 
 const DELETE_PRINTER = gql`
-  mutation DeletePrinter($id: ID!) {
+  mutation deletePrinter($id: ID!) {
     deletePrinter(id: $id) {
       deleteCount
+    }
+  }
+`;
+
+const CANCEL_CURRENT_PRINT = gql`
+  mutation cancelCurrentPrint($id: ID!) {
+    cancelCurrentPrint(id: $id) {
+      id
+      currentPrintId
+    }
+  }
+`;
+
+const RECONNECT_PRINTER = gql`
+  mutation reconnectPrinter($id: ID!) {
+    reconnectPrinter(id: $id) {
+      id
+      name
+      deviceId
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -103,5 +124,23 @@ export class PrintersService {
     return this._apollo
       .mutate({ mutation: DELETE_PRINTER, variables: { id } })
       .pipe(map(() => undefined));
+  }
+
+  public cancelCurrentPrint(id: string): Observable<Printer> {
+    return this._apollo
+      .mutate<{ cancelCurrentPrint: Printer }>({
+        mutation: CANCEL_CURRENT_PRINT,
+        variables: { id },
+      })
+      .pipe(mapMutationResult((data) => data.cancelCurrentPrint));
+  }
+
+  public reconnectPrinter(id: string): Observable<Printer> {
+    return this._apollo
+      .mutate<{ reconnectPrinter: Printer }>({
+        mutation: RECONNECT_PRINTER,
+        variables: { id },
+      })
+      .pipe(mapMutationResult((data) => data.reconnectPrinter));
   }
 }

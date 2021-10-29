@@ -1,5 +1,6 @@
 import { Device } from './device';
 import { PrinterDefinition } from './printer-definition';
+import { PrinterState } from './printer-state';
 
 export interface Printer {
   id: string;
@@ -8,6 +9,6 @@ export interface Printer {
   updatedAt: Date;
   deviceId: string;
   device?: Device;
-  state: string;
+  state: PrinterState;
   printerDefinition?: PrinterDefinition;
 }

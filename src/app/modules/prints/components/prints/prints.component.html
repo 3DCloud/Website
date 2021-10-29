@@ -1,0 +1,20 @@
+<h1>My Prints</h1>
+
+<app-spinner *ngIf="loading"></app-spinner>
+
+<table *ngIf="!loading && prints.length" class="table">
+  <thead>
+    <tr>
+      <th>File Name</th>
+      <th>Started At</th>
+      <th>Duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let print of prints">
+      <td>{{ print.uploadedFile.filename }} <app-print-state-badge [state]="print.status" [pill]="true"></app-print-state-badge></td>
+      <td><span [ngbTooltip]="print.createdAt | djsDateFormat: 'LLL'">{{ print.createdAt | djsTimeAgo }}</span></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>

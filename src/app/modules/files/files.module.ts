@@ -5,9 +5,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { CoreModule } from 'app/core/core.module';
+import { SharedModule } from 'app/shared/shared.module';
 
-import { FilesComponent } from './components';
-import { SelectPrinterModalComponent } from './components/select-printer-modal/select-printer-modal.component';
+import { FilesComponent, SelectPrinterModalComponent } from './components';
 import { FilesRouting } from './files.routing';
 
 @NgModule({
@@ -19,6 +19,7 @@ import { FilesRouting } from './files.routing';
     FontAwesomeModule,
     NgbModule,
     CoreModule,
+    SharedModule,
   ],
 })
 export class FilesModule {}

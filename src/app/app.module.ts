@@ -12,6 +12,7 @@ import { GraphQLModule } from './graphql.module';
 import { ClientsModule } from './modules/clients/clients.module';
 import { FilesModule } from './modules/files/files.module';
 import { PrintersModule } from './modules/printers/printers.module';
+import { PrintsModule } from './modules/prints/prints.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,11 +25,11 @@ import { PrintersModule } from './modules/printers/printers.module';
     NgbModule,
     ReactiveFormsModule,
 
-    // AppRoutingModule should always be last
-    // for the fallback page to work properly
+    // AppRoutingModule should always be last for the fallback page to work properly
     ClientsModule,
     FilesModule,
     PrintersModule,
+    PrintsModule,
     CoreModule,
     AppRoutingModule,
   ],
