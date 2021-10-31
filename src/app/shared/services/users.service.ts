@@ -24,6 +24,7 @@ const CURRENT_USER_FILES_QUERY = gql`
         filename
         byteSize
         createdAt
+        estimatedDuration
       }
     }
   }

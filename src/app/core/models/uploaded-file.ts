@@ -6,4 +6,5 @@ export interface UploadedFile {
   filename: string;
   byteSize: number;
   createdAt: Date;
+  estimatedDuration: number;
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import md5 from 'js-md5';
 
@@ -15,6 +15,7 @@ import { FilesService, PrintsService, UsersService } from 'app/shared/services';
 })
 export class FilesComponent implements OnInit {
   public icons = {
+    faDownload,
     faUpload,
   };
 
@@ -120,6 +121,12 @@ export class FilesComponent implements OnInit {
       modalRef.componentInstance as SelectPrinterModalComponent;
 
     modalComponent.fileId = fileId;
+  }
+
+  public downloadFile(fileId: string): void {
+    this._filesService.getDownloadUrl(fileId).subscribe((url) => {
+      location.assign(url);
+    });
   }
 
   public bytesToReadable(bytes: number): string {

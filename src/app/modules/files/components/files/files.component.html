@@ -33,6 +33,7 @@
         <th>Name</th>
         <th>Size</th>
         <th>Upload Time</th>
+        <th>Estimated Duration</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -42,7 +43,12 @@
         <td>{{bytesToReadable(file.byteSize)}}</td>
         <td><span [ngbTooltip]="file.createdAt | djsDateFormat: 'LLL'">{{file.createdAt | djsTimeAgo}}</span></td>
         <td>
-          <button type="button" class="btn btn-primary" (click)="showSelectPrinterModal(file.id)">Print&hellip;</button>
+          <span *ngIf="file.estimatedDuration">{{ file.estimatedDuration * 1000 | djsDuration: true }}</span>
+          <span *ngIf="!file.estimatedDuration">&ndash;</span>
+        </td>
+        <td>
+          <button type="button" class="btn btn-light" (click)="downloadFile(file.id)"><fa-icon [icon]="icons.faDownload"></fa-icon></button>
+          <button type="button" class="ml-1 btn btn-primary" (click)="showSelectPrinterModal(file.id)">Print&hellip;</button>
         </td>
       </tr>
     </tbody>

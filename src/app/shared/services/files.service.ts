@@ -45,6 +45,12 @@ const RECORD_UPLOAD_MUTATION = gql`
   }
 `;
 
+const GET_DOWNLOAD_URL_QUERY = gql`
+  query getFileDownloadUrl($id: ID!) {
+    getFileDownloadUrl(id: $id)
+  }
+`;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -101,5 +107,14 @@ export class FilesService {
         variables: { signedId },
       })
       .pipe(mapMutationResult((data) => data.recordFileUploaded));
+  }
+
+  public getDownloadUrl(id: string): Observable<string> {
+    return this._apollo
+      .query<{ getFileDownloadUrl: string }>({
+        query: GET_DOWNLOAD_URL_QUERY,
+        variables: { id },
+      })
+      .pipe(map((result) => result.data.getFileDownloadUrl));
   }
 }
