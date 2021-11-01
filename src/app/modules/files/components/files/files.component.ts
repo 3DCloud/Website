@@ -1,8 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { faDownload, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import md5 from 'js-md5';
+import { Subscription } from 'rxjs';
 
 import { UploadedFile } from 'app/core/models';
 import { SelectPrinterModalComponent } from 'app/modules/files/components';
@@ -13,22 +20,36 @@ import { FilesService, PrintsService, UsersService } from 'app/shared/services';
   templateUrl: './files.component.html',
   styleUrls: ['./files.component.scss'],
 })
-export class FilesComponent implements OnInit {
+export class FilesComponent implements OnInit, OnDestroy {
   public icons = {
     faDownload,
     faUpload,
   };
 
+  @ViewChild('uploadFileInput') public uploadFileInput: ElementRef | undefined;
+
   public loading = true;
+  public hover = false;
   public error?: unknown;
   public files: UploadedFile[] = [];
   public uploadStatus = {
     uploading: false,
+    step: 'starting',
     progress: 0,
     error: '',
     success: false,
     fileName: '',
   };
+
+  private dragEnter = (event: DragEvent) => {
+    this.hover = event.target === this.uploadFileInput?.nativeElement;
+  };
+
+  private dragStop = () => {
+    this.hover = false;
+  };
+
+  private _subscriptions: Subscription[] = [];
 
   constructor(
     private _modalService: NgbModal,
@@ -39,16 +60,34 @@ export class FilesComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this._usersService.getCurrentUserFiles().subscribe(
-      (files) => {
-        this.loading = false;
-        this.files = files;
-      },
-      (err) => {
-        this.loading = false;
-        this.error = err;
-      }
+    document.addEventListener('dragenter', this.dragEnter);
+    document.addEventListener('dragexit', this.dragStop);
+    document.addEventListener('dragend', this.dragStop);
+    document.addEventListener('drop', this.dragStop);
+
+    this._subscriptions.push(
+      this._usersService.getCurrentUserFiles().subscribe(
+        (files) => {
+          this.loading = false;
+          this.files = files;
+        },
+        (err) => {
+          this.loading = false;
+          this.error = err;
+        }
+      )
     );
+  }
+
+  public ngOnDestroy(): void {
+    document.removeEventListener('dragenter', this.dragEnter);
+    document.removeEventListener('dragexit', this.dragStop);
+    document.removeEventListener('dragend', this.dragStop);
+    document.removeEventListener('drop', this.dragStop);
+
+    for (const subscription of this._subscriptions) {
+      subscription.unsubscribe();
+    }
   }
 
   public upload(event: Event): void {
@@ -68,6 +107,8 @@ export class FilesComponent implements OnInit {
       return;
     }
 
+    this.uploadStatus.step = 'starting';
+    this.uploadStatus.progress = 0;
     this.uploadStatus.error = '';
     this.uploadStatus.uploading = true;
 
@@ -78,34 +119,43 @@ export class FilesComponent implements OnInit {
     file.arrayBuffer().then((buffer) => {
       const checksum = md5.base64(buffer);
 
-      this._filesService.requestFileUpload(file, checksum).subscribe(
-        ({ url, headers, signedId }) => {
-          this._filesService
-            .uploadFile(url, buffer, headers, progressCallback)
-            .subscribe(
-              () => {
-                this._filesService.recordUpload(signedId).subscribe(
-                  (file) => {
-                    this.files.splice(0, 0, file);
-                    this.uploadStatus.uploading = false;
-                    this.uploadStatus.success = true;
+      this._subscriptions.push(
+        this._filesService.requestFileUpload(file, checksum).subscribe(
+          ({ url, headers, signedId }) => {
+            this.uploadStatus.step = 'uploading';
+
+            this._subscriptions.push(
+              this._filesService
+                .uploadFile(url, buffer, headers, progressCallback)
+                .subscribe(
+                  () => {
+                    this.uploadStatus.step = 'processing';
+                    this._subscriptions.push(
+                      this._filesService.recordUpload(signedId).subscribe(
+                        (file) => {
+                          this.files.splice(0, 0, file);
+                          this.uploadStatus.uploading = false;
+                          this.uploadStatus.success = true;
+                        },
+                        (err) => {
+                          this.uploadStatus.uploading = false;
+                          this.uploadStatus.error = err;
+                        }
+                      )
+                    );
                   },
                   (err) => {
                     this.uploadStatus.uploading = false;
                     this.uploadStatus.error = err;
                   }
-                );
-              },
-              (err) => {
-                this.uploadStatus.uploading = false;
-                this.uploadStatus.error = err;
-              }
+                )
             );
-        },
-        (err) => {
-          this.uploadStatus.uploading = false;
-          this.uploadStatus.error = err;
-        }
+          },
+          (err) => {
+            this.uploadStatus.uploading = false;
+            this.uploadStatus.error = err;
+          }
+        )
       );
     });
   }
