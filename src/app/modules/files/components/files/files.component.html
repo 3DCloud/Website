@@ -2,30 +2,34 @@
 
 <div class="file-upload-zone">
   <label for="file-upload" [class.bg-primary]="hover">
-    <span *ngIf="uploadStatus.uploading">
-      <span [ngSwitch]="uploadStatus.step">
-        <ng-template ngSwitchCase="starting">Preparing&hellip;</ng-template>
-        <ng-template ngSwitchCase="uploading">Uploading '{{uploadStatus.fileName}}'&hellip; {{uploadStatus.progress | number: '1.1-1' }}%</ng-template>
-        <ng-template ngSwitchCase="processing">Processing&hellip;</ng-template>
+    <span class="row">
+      <span class="col-12 col-lg-10 offset-lg-1 offset-xl-2 col-xl-8">
+        <span *ngIf="uploadStatus.uploading">
+          <span [ngSwitch]="uploadStatus.step" class="mb-1">
+            <ng-template ngSwitchCase="starting">Preparing&hellip;</ng-template>
+            <ng-template ngSwitchCase="uploading">Uploading '{{uploadStatus.fileName}}'&hellip; {{uploadStatus.progress | number: '1.1-1' }}%</ng-template>
+            <ng-template ngSwitchCase="processing">Processing&hellip;</ng-template>
+          </span>
+          <ngb-progressbar *ngIf="uploadStatus.step === 'uploading'" type="primary" [value]="uploadStatus.progress"></ngb-progressbar>
+          <ngb-progressbar *ngIf="uploadStatus.step !== 'uploading'" type="primary" [value]="100" [animated]="true" [striped]="true"></ngb-progressbar>
+        </span>
+
+        <span *ngIf="uploadStatus.success">
+          File '{{uploadStatus.fileName}}' uploaded successfully!
+        </span>
+
+        <span *ngIf="uploadStatus.error">
+          Failed to upload: {{uploadStatus.error}}
+        </span>
+
+        <span *ngIf="!uploadStatus.uploading" class="mt-1">
+          <fa-icon [icon]="icons.faUpload"></fa-icon>
+          Drag and drop a G-code file here or click to browse&hellip;
+        </span>
+
+        <input #uploadFileInput id="file-upload" type="file" (change)="upload($event)" accept=".gcode"/>
       </span>
-      <ngb-progressbar *ngIf="uploadStatus.step === 'uploading'" type="primary" [value]="uploadStatus.progress"></ngb-progressbar>
-      <ngb-progressbar *ngIf="uploadStatus.step !== 'uploading'" type="primary" [value]="100" [animated]="true" [striped]="true"></ngb-progressbar>
     </span>
-
-    <span *ngIf="uploadStatus.success">
-      File '{{uploadStatus.fileName}}' uploaded successfully!
-    </span>
-
-    <span *ngIf="uploadStatus.error">
-      Failed to upload: {{uploadStatus.error}}
-    </span>
-
-    <span *ngIf="!uploadStatus.uploading">
-      <fa-icon [icon]="icons.faUpload"></fa-icon>
-      Drag and drop a G-code file here or click to browse&hellip;
-    </span>
-
-    <input #uploadFileInput id="file-upload" type="file" (change)="upload($event)" accept=".gcode"/>
   </label>
 </div>
 

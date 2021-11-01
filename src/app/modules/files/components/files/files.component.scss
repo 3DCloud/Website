@@ -3,17 +3,17 @@
 
   label {
     display: block;
+    padding: 4rem 2rem;
     background-color: rgba(0, 0, 0, 0.03);
     border: 1px solid rgba(0, 0, 0, 0.1);
     text-align: center;
-    padding: 3rem 1rem;
     color: rgba(0, 0, 0, 0.7);
     margin: 1rem 0;
     transition: background-color 200ms;
+    cursor: pointer;
 
     span {
       display: block;
-      margin: 0.5rem 0;
     }
   }
 
@@ -26,5 +26,6 @@
     opacity: 0;
     display: block;
     cursor: pointer;
+    z-index: -1000;
   }
 }
