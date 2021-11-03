@@ -24,6 +24,7 @@ export class PrinterStateBadgeComponent {
         return 'success';
 
       case 'printing':
+      case 'heating':
       case 'canceling':
         return 'warning';
 
@@ -34,6 +35,12 @@ export class PrinterStateBadgeComponent {
 
   public get text(): string {
     switch (this.state) {
+      case 'busy':
+        return 'Busy';
+
+      case 'canceling':
+        return 'Canceling';
+
       case 'connecting':
         return 'Connecting';
 
@@ -49,8 +56,17 @@ export class PrinterStateBadgeComponent {
       case 'errored':
         return 'Errored';
 
+      case 'heating':
+        return 'Heating';
+
       case 'offline':
         return 'Offline';
+
+      case 'paused':
+        return 'Paused';
+
+      case 'pausing':
+        return 'Pausing';
 
       case 'printing':
         return 'Printing';
@@ -58,8 +74,8 @@ export class PrinterStateBadgeComponent {
       case 'ready':
         return 'Ready';
 
-      case 'canceling':
-        return 'Canceling';
+      case 'resuming':
+        return 'Resuming';
 
       default:
         return 'Unknown';
