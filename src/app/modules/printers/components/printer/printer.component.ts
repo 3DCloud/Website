@@ -11,7 +11,7 @@ import { faBan, faSync } from '@fortawesome/free-solid-svg-icons';
 import * as actioncable from 'actioncable';
 import { Subscription } from 'rxjs';
 
-import { PrinterState } from 'app/core/models';
+import { Printer, PrinterState } from 'app/core/models';
 import { AuthenticationService } from 'app/core/services';
 import { PrintersService, UsersService } from 'app/shared/services';
 
@@ -31,6 +31,8 @@ interface PrinterStateObj {
   hardware_identifier: string;
   printer_state: PrinterState;
   temperatures?: Temperatures;
+  progress?: number;
+  time_remaining?: number;
 }
 
 @Component({
@@ -47,6 +49,7 @@ export class PrinterComponent implements OnInit, AfterViewInit, OnDestroy {
     faSync,
   };
 
+  public printer: Printer | undefined;
   public connecting = true;
   public printerState?: PrinterStateObj;
   public scrollToBottom = true;
@@ -67,6 +70,10 @@ export class PrinterComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this._route.params.subscribe((params) => {
       this._printerId = params.id;
+
+      this._printersService.getPrinter(params.id).subscribe((printer) => {
+        this.printer = printer;
+      });
 
       this._usersService.getWebSocketTicket().subscribe((ticket) => {
         this._consumer = actioncable.createConsumer(
@@ -132,22 +139,6 @@ export class PrinterComponent implements OnInit, AfterViewInit, OnDestroy {
         .reconnectPrinter(this._printerId)
         .subscribe(() => undefined)
     );
-  }
-
-  public badgeTypeForState(state: string): string {
-    switch (state) {
-      case 'ready':
-        return 'success';
-
-      case 'printing':
-        return 'warning';
-
-      case 'connecting':
-        return 'light';
-
-      default:
-        return 'danger';
-    }
   }
 
   private received(data: Record<string, unknown>): void {
