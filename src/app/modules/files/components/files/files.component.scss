@@ -10,7 +10,6 @@
     color: rgba(0, 0, 0, 0.7);
     margin: 1rem 0;
     transition: background-color 200ms;
-    cursor: pointer;
 
     span {
       display: block;
@@ -26,6 +25,5 @@
     opacity: 0;
     display: block;
     cursor: pointer;
-    z-index: -1000;
   }
 }

@@ -26,10 +26,10 @@
           <fa-icon [icon]="icons.faUpload"></fa-icon>
           Drag and drop a G-code file here or click to browse&hellip;
         </span>
-
-        <input #uploadFileInput id="file-upload" type="file" (change)="upload($event)" accept=".gcode"/>
       </span>
     </span>
+
+    <input #uploadFileInput id="file-upload" type="file" (change)="upload($event)" accept=".gcode"/>
   </label>
 </div>
 

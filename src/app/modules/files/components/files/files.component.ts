@@ -51,7 +51,9 @@ export class FilesComponent implements OnInit, OnDestroy {
   };
 
   private dragEnter = (event: DragEvent) => {
-    this.hover = event.target === this.uploadFileInput?.nativeElement;
+    console.log('dragEnter');
+    console.log(event.target);
+    this.hover = this.uploadFileInput?.nativeElement.contains(event.target);
   };
 
   private dragStop = () => {
