@@ -9,10 +9,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { GraphQLModule } from './graphql.module';
-import { ClientsModule } from './modules/clients/clients.module';
-import { FilesModule } from './modules/files/files.module';
-import { PrintersModule } from './modules/printers/printers.module';
-import { PrintsModule } from './modules/prints/prints.module';
+import {
+  ClientsModule,
+  FilesModule,
+  PrintersModule,
+  PrintsModule,
+  SettingsModule,
+} from './modules';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,6 +33,7 @@ import { PrintsModule } from './modules/prints/prints.module';
     FilesModule,
     PrintersModule,
     PrintsModule,
+    SettingsModule,
     CoreModule,
     AppRoutingModule,
   ],

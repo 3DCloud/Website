@@ -10,6 +10,5 @@ import { BootstrapColorClass } from 'app/shared/types';
 })
 export class AlertComponent {
   @Input() public type: BootstrapColorClass = 'info';
-  @Input() public message = '';
   @Input() public icon = faInfoCircle;
 }

@@ -16,7 +16,7 @@
       <app-printer-state-badge [state]="printer.state"></app-printer-state-badge>
       <div class="printer-type">{{ printer.printerDefinition?.name }}</div>
       <div class="printer-material">
-        <span class="dot" [style.background-color]="material.color"></span> {{ material.name }} ({{ material.colorName }})
+        <span class="dot" [style.background-color]="'#' + materialColor.color"></span> {{ materialColor.material?.name }} ({{ materialColor.name }})
       </div>
       <button class="select-button btn btn-primary" [disabled]="busy || printer.state !== 'ready'" (click)="startPrint(printer.id)">Select</button>
     </div>
@@ -28,7 +28,7 @@
   </div>
 
   <div *ngIf="error">
-    <app-alert [message]="error" type="danger"></app-alert>
+    <app-alert type="danger">{{ error }}</app-alert>
   </div>
 </div>
 <div class="modal-footer">
