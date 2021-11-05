@@ -1,0 +1,23 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+
+.status-dot {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: black;
+  margin: 0 0.5rem;
+
+  &.status-dot-connecting {
+    background-color: $warning;
+  }
+
+  &.status-dot-connected {
+    background-color: $success;
+  }
+
+  &.status-dot-disconnected {
+    background-color: $danger;
+  }
+}

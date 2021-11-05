@@ -22,7 +22,6 @@ interface Temperature {
 }
 
 interface Temperatures {
-  active_hotend_temperature: Temperature;
   bed_temperature?: Temperature;
   hotend_temperatures: Temperature[];
 }
@@ -34,6 +33,8 @@ interface PrinterStateObj {
   progress?: number;
   time_remaining?: number;
 }
+
+type WebSocketState = 'connecting' | 'connected' | 'disconnected';
 
 @Component({
   selector: 'app-printer',
@@ -50,10 +51,10 @@ export class PrinterComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   public printer: Printer | undefined;
-  public connecting = true;
   public printerState?: PrinterStateObj;
   public scrollToBottom = true;
   public command = '';
+  public webSocketState: WebSocketState = 'connecting';
 
   private _printerId?: string;
   private _consumer?: actioncable.Cable;
@@ -67,33 +68,32 @@ export class PrinterComponent implements OnInit, AfterViewInit, OnDestroy {
     private _printersService: PrintersService
   ) {}
 
+  public get webSocketStateTooltip(): string {
+    switch (this.webSocketState) {
+      case 'connecting':
+        return 'Connecting to live data feed...';
+
+      case 'connected':
+        return 'Connected to live data feed';
+
+      case 'disconnected':
+        return 'Disconnected from live data feed';
+    }
+  }
+
   ngOnInit(): void {
-    this._route.params.subscribe((params) => {
-      this._printerId = params.id;
+    this._subscriptions.push(
+      this._route.params.subscribe((params) => {
+        this._printerId = params.id;
 
-      this._printersService.getPrinter(params.id).subscribe((printer) => {
-        this.printer = printer;
-      });
-
-      this._usersService.getWebSocketTicket().subscribe((ticket) => {
-        this._consumer = actioncable.createConsumer(
-          'ws://user:pass@localhost:3000/cable?ticket=' +
-            encodeURIComponent(ticket ?? '')
+        this._subscriptions.push(
+          this._printersService.getPrinter(params.id).subscribe((printer) => {
+            this.printer = printer;
+            this.connectToSocket();
+          })
         );
-
-        this._consumer.connect();
-
-        const received = this.received.bind(this);
-
-        this._consumer?.ensureActiveConnection();
-        this._channel = this._consumer?.subscriptions.create(
-          { channel: 'PrinterListenerChannel', id: params.id },
-          {
-            received,
-          }
-        );
-      });
-    });
+      })
+    );
   }
 
   ngAfterViewInit(): void {
@@ -141,6 +141,44 @@ export class PrinterComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
+  private connectToSocket() {
+    this.webSocketState = 'connecting';
+
+    if (this._consumer) {
+      this._consumer.disconnect();
+      this._consumer = undefined;
+    }
+
+    this._subscriptions.push(
+      this._usersService.getWebSocketTicket().subscribe((ticket) => {
+        this._consumer = actioncable.createConsumer(
+          'ws://user:pass@localhost:3000/cable?ticket=' +
+            encodeURIComponent(ticket ?? '')
+        );
+
+        this._consumer.connect();
+
+        const connected = this.connected.bind(this);
+        const received = this.received.bind(this);
+        const disconnected = this.disconnected.bind(this);
+
+        this._consumer?.ensureActiveConnection();
+        this._channel = this._consumer?.subscriptions.create(
+          { channel: 'PrinterListenerChannel', id: this._printerId },
+          {
+            connected,
+            received,
+            disconnected,
+          }
+        );
+      })
+    );
+  }
+
+  private connected(): void {
+    this.webSocketState = 'connected';
+  }
+
   private received(data: Record<string, unknown>): void {
     if (!data.action) {
       return;
@@ -148,10 +186,13 @@ export class PrinterComponent implements OnInit, AfterViewInit, OnDestroy {
 
     switch (data.action) {
       case 'state':
-        this.connecting = false;
         this.printerState = data.state as PrinterStateObj;
         break;
     }
+  }
+
+  private disconnected(): void {
+    this.webSocketState = 'disconnected';
   }
 
   private onScroll(): void {
