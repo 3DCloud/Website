@@ -70,8 +70,7 @@ export class PrinterComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this._usersService.getWebSocketTicket().subscribe((ticket) => {
         this._consumer = actioncable.createConsumer(
-          'ws://user:pass@localhost:3000/cable?ticket=' +
-            encodeURIComponent(ticket ?? '')
+          'ws://localhost:3000/cable?ticket=' + encodeURIComponent(ticket ?? '')
         );
 
         this._consumer.connect();
