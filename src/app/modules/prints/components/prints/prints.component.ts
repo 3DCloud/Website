@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 
 import { Print } from 'app/core/models';
@@ -10,9 +11,13 @@ import { PrintsService } from 'app/shared/services';
   styleUrls: ['./prints.component.scss'],
 })
 export class PrintsComponent implements OnInit, OnDestroy {
+  public icons = {
+    faExclamationTriangle,
+  };
+
   public loading = true;
   public error?: string;
-  public prints: Print[] = [];
+  public prints?: Print[];
 
   private _subscriptions: Subscription[] = [];
 

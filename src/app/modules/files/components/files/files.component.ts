@@ -6,7 +6,11 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { faDownload, faUpload } from '@fortawesome/free-solid-svg-icons';
+import {
+  faDownload,
+  faTrash,
+  faUpload,
+} from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import md5 from 'js-md5';
 import { Subscription } from 'rxjs';
@@ -14,6 +18,10 @@ import { Subscription } from 'rxjs';
 import { UploadedFile } from 'app/core/models';
 import { SelectPrinterModalComponent } from 'app/modules/files/components';
 import { FilesService, PrintsService, UsersService } from 'app/shared/services';
+
+interface UploadedFileUI extends UploadedFile {
+  busy: boolean;
+}
 
 @Component({
   selector: 'app-files',
@@ -23,6 +31,7 @@ import { FilesService, PrintsService, UsersService } from 'app/shared/services';
 export class FilesComponent implements OnInit, OnDestroy {
   public icons = {
     faDownload,
+    faTrash,
     faUpload,
   };
 
@@ -31,7 +40,7 @@ export class FilesComponent implements OnInit, OnDestroy {
   public loading = true;
   public hover = false;
   public error?: unknown;
-  public files: UploadedFile[] = [];
+  public files: UploadedFileUI[] = [];
   public uploadStatus = {
     uploading: false,
     step: 'starting',
@@ -69,7 +78,7 @@ export class FilesComponent implements OnInit, OnDestroy {
       this._usersService.getCurrentUserFiles().subscribe(
         (files) => {
           this.loading = false;
-          this.files = files;
+          this.files = files.map((f) => ({ ...f, busy: false }));
         },
         (err) => {
           this.loading = false;
@@ -133,7 +142,7 @@ export class FilesComponent implements OnInit, OnDestroy {
                     this._subscriptions.push(
                       this._filesService.recordUpload(signedId).subscribe(
                         (file) => {
-                          this.files.splice(0, 0, file);
+                          this.files.splice(0, 0, { ...file, busy: false });
                           this.uploadStatus.uploading = false;
                           this.uploadStatus.success = true;
                         },
@@ -176,6 +185,13 @@ export class FilesComponent implements OnInit, OnDestroy {
   public downloadFile(fileId: string): void {
     this._filesService.getDownloadUrl(fileId).subscribe((url) => {
       location.assign(url);
+    });
+  }
+
+  public deleteFile(file: UploadedFileUI): void {
+    file.busy = true;
+    this._filesService.delete(file.id).subscribe((deleted) => {
+      this.files = this.files.filter((f) => f.id != deleted.id);
     });
   }
 

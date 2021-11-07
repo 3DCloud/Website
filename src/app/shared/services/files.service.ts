@@ -51,6 +51,14 @@ const GET_DOWNLOAD_URL_QUERY = gql`
   }
 `;
 
+const DELETE_UPLOADED_FILE_MUTATION = gql`
+  mutation deleteUploadedFile($id: ID!) {
+    deleteUploadedFile(id: $id) {
+      id
+    }
+  }
+`;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -116,5 +124,14 @@ export class FilesService {
         variables: { id },
       })
       .pipe(map((result) => result.data.getFileDownloadUrl));
+  }
+
+  public delete(id: string): Observable<UploadedFile> {
+    return this._apollo
+      .mutate<{ deleteUploadedFile: UploadedFile }>({
+        mutation: DELETE_UPLOADED_FILE_MUTATION,
+        variables: { id },
+      })
+      .pipe(mapMutationResult((data) => data.deleteUploadedFile));
   }
 }

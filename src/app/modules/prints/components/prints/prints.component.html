@@ -2,7 +2,11 @@
 
 <app-spinner *ngIf="loading"></app-spinner>
 
-<table *ngIf="!loading && prints.length" class="table">
+<app-alert *ngIf="error" type="danger" [icon]="icons.faExclamationTriangle">{{ error }}</app-alert>
+
+<app-alert *ngIf="!loading && !error && !prints?.length">You haven't printed anything yet.</app-alert>
+
+<table *ngIf="!loading && prints?.length" class="table">
   <thead>
     <tr>
       <th>File Name</th>

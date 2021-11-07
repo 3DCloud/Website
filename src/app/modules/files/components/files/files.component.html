@@ -58,13 +58,14 @@
         <td>
           <button type="button" class="btn btn-light" (click)="downloadFile(file.id)"><fa-icon [icon]="icons.faDownload"></fa-icon></button>
           <button type="button" class="ml-1 btn btn-primary" (click)="showSelectPrinterModal(file.id)">Print&hellip;</button>
+          <button type="button" class="ml-1 btn btn-danger" (click)="deleteFile(file)" [disabled]="file.busy"><fa-icon [icon]="icons.faTrash"></fa-icon></button>
         </td>
       </tr>
     </tbody>
   </table>
 
   <div *ngIf="!files.length && !loading && !error" class="alert alert-info">
-    No results.
+    No files found. Try uploading one by using the box above!
   </div>
 
   <div *ngIf="error" class="alert alert-danger">
