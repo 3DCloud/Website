@@ -4,6 +4,7 @@ query GetPrints {
     uploadedFile {
       id
       filename
+      byteSize
     }
     printer {
       id

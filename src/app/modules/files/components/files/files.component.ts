@@ -6,11 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  faDownload,
-  faTrash,
-  faUpload,
-} from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import md5 from 'js-md5';
 import { Subscription } from 'rxjs';
@@ -30,7 +26,6 @@ interface UploadedFileUI extends UploadedFile {
 })
 export class FilesComponent implements OnInit, OnDestroy {
   public icons = {
-    faDownload,
     faTrash,
     faUpload,
   };
