@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 
-import { Material, Printer } from 'app/core/models';
+import { MaterialColor, Printer } from 'app/core/models';
 import { PrintersService, PrintsService } from 'app/shared/services';
 
 @Component({
@@ -17,11 +17,17 @@ export class SelectPrinterModalComponent implements OnInit, OnDestroy {
   public busy = false;
   public printers?: Printer[];
   public error?: string;
-  public material: Material = {
+  public materialColor: MaterialColor = {
     id: '1',
-    name: 'PLA',
-    colorName: 'Black',
-    color: '#111',
+    name: 'Black',
+    color: '111',
+    material: {
+      id: '1',
+      name: 'PLA',
+      brand: 'Generic',
+    },
+    createdAt: new Date(),
+    updatedAt: new Date(),
   };
 
   private _subscriptions: Subscription[] = [];

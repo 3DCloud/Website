@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-12">
+    <h2>Printer Definitions</h2>
+
+    <div class="mb-2">
+      <a class="btn btn-success" routerLink="new"><fa-icon [icon]="icons.faPlus"></fa-icon> Add</a>
+    </div>
+
+    <app-spinner *ngIf="loading"></app-spinner>
+
+    <app-alert *ngIf="error" [icon]="icons.faExclamationTriangle" type="danger">{{ error }}</app-alert>
+    <app-alert *ngIf="printerDefinitions && !printerDefinitions.length" [icon]="icons.faInfoCircle" type="info">No results.</app-alert>
+
+    <table class="table" *ngIf="printerDefinitions && printerDefinitions.length">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let printerDefinition of printerDefinitions">
+          <td>{{ printerDefinition.name }}</td>
+          <td>
+            <a role="button" class="btn btn-light" [routerLink]="printerDefinition.id" title="Edit"><fa-icon [icon]="icons.faEdit"></fa-icon></a>
+            <button class="btn btn-danger ml-1" (click)="deletePrinterDefinition(printerDefinition.id)" title="Delete"><fa-icon [icon]="icons.faTrash"></fa-icon></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

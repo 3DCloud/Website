@@ -1,6 +1,8 @@
+import { MaterialColor } from './material-color';
+
 export interface Material {
   id: string;
   name: string;
-  colorName: string;
-  color: string;
+  brand: string;
+  colors?: MaterialColor[];
 }

@@ -5,5 +5,7 @@
 
   <app-spinner *ngIf="showSpinner"></app-spinner>
 
-  <app-alert *ngIf="message" [type]="alertType" [message]="message" [icon]="messageIcon"></app-alert>
+  <app-alert *ngIf="message" [type]="alertType" [icon]="messageIcon">
+    {{ message }}
+  </app-alert>
 </div>

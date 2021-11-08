@@ -3,6 +3,8 @@
     <div class="alert-icon" >
       <fa-icon *ngIf="icon" [icon]="icon" size="lg"></fa-icon>
     </div>
-    <div class="message-text">{{ message }}</div>
+    <div class="message-text">
+      <ng-content></ng-content>
+    </div>
   </div>
 </div>

@@ -10,3 +10,5 @@ export { Material } from './material';
 export { UploadFileRequest } from './upload-file-request';
 export { PrinterState } from './printer-state';
 export { PrintState } from './print-state';
+export { GCodeSettings } from './g-code-settings';
+export { MaterialColor } from './material-color';

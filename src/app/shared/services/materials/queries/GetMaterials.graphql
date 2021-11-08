@@ -1,0 +1,7 @@
+query {
+  materials {
+    id
+    name
+    brand
+  }
+}
