@@ -12,6 +12,7 @@ import {
   ClientsComponent,
   CreatePrinterModalComponent,
   DeletePrinterModalComponent,
+  ReassignPrinterModalComponent,
 } from './components';
 
 @NgModule({
@@ -20,6 +21,7 @@ import {
     ClientComponent,
     CreatePrinterModalComponent,
     DeletePrinterModalComponent,
+    ReassignPrinterModalComponent,
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,20 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Reassign Printer</h4>
+</div>
+<div class="modal-body">
+  <div *ngIf="error" class="alert alert-danger">Failed to reassign printer: {{ error }}</div>
+
+  <form [formGroup]="form">
+    <div class="form-group">
+      <label for="printer">Printer</label>
+      <select class="form-control" id="printer" formControlName="printer">
+        <option *ngIf="form.get('printerDefinition')?.disabled">Loading&hellip;</option>
+        <option *ngFor="let def of printers" [value]="def.id">{{ def.name }}</option>
+      </select>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" [disabled]="busy || form.invalid" class="btn btn-primary" (click)="reassignPrinter()">Create</button>
+  <button type="button" [disabled]="busy" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+</div>

@@ -26,15 +26,14 @@
   <table class="table" *ngIf="client.devices?.length">
     <thead>
       <tr>
-        <th>Name</th>
         <th>Identifier</th>
+        <th>Name</th>
         <th>Last Seen</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let device of client.devices">
-        <td>{{ device.deviceName }}</td>
         <td>
           {{ device.hardwareIdentifier }}
           <span class="text-warning"
@@ -43,9 +42,11 @@
             <fa-icon [icon]="icons.faExclamationTriangle"></fa-icon>
           </span>
         </td>
+        <td>{{ device.deviceName }}</td>
         <td><span [ngbTooltip]="device.lastSeen | djsDateFormat: 'LLL'">{{ device.lastSeen | djsTimeAgo }}</span></td>
         <td>
-          <button *ngIf="!device.printer" class="btn btn-success" (click)="createPrinter(device)">Add printer&hellip;</button>
+          <button *ngIf="!device.printer" class="btn btn-success mr-1" (click)="createPrinter(device)">Add printer&hellip;</button>
+          <button class="btn btn-success" (click)="reassignPrinter(device)">Reassign to&hellip;</button>
         </td>
       </tr>
     </tbody>

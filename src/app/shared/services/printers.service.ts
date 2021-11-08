@@ -16,6 +16,13 @@ const GET_PRINTERS = gql`
       deviceId
       createdAt
       updatedAt
+      device {
+        id
+        hardwareIdentifier
+        client {
+          id
+        }
+      }
       printerDefinition {
         id
         name
@@ -51,6 +58,18 @@ const CREATE_PRINTER = gql`
       printerDefinitionId: $printerDefinitionId
       name: $name
     ) {
+      id
+      name
+      deviceId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+const REASSIGN_PRINTER = gql`
+  mutation reassignPrinter($deviceId: ID!, $printerId: ID!) {
+    reassignPrinter(deviceId: $deviceId, printerId: $printerId) {
       id
       name
       deviceId
@@ -118,6 +137,18 @@ export class PrintersService {
         variables: { deviceId, printerDefinitionId, name },
       })
       .pipe(mapMutationResult((data) => data.createPrinter));
+  }
+
+  public reassignPrinter(
+    deviceId: string,
+    printerId: string
+  ): Observable<Printer> {
+    return this._apollo
+      .mutate<{ reassignPrinter: Printer }>({
+        mutation: REASSIGN_PRINTER,
+        variables: { deviceId, printerId },
+      })
+      .pipe(mapMutationResult((data) => data.reassignPrinter));
   }
 
   public deletePrinter(id: string): Observable<void> {
