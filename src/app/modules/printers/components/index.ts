@@ -1,2 +1,2 @@
-export * from './printers/printers.component';
-export * from './printer/printer.component';
+export { PrinterComponent } from './printer/printer.component';
+export { PrintersComponent } from './printers/printers.component';
