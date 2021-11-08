@@ -1,0 +1,8 @@
+mutation ($id: ID!) {
+  deletePrinterDefinition(id: $id) {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}

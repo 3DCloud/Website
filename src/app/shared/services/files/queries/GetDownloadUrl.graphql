@@ -1,0 +1,5 @@
+query getFileDownloadUrl($id: ID!) {
+  uploadedFile(id: $id) {
+    url
+  }
+}

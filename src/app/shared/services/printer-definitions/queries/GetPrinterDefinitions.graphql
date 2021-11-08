@@ -1,0 +1,8 @@
+query {
+  printerDefinitions {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}

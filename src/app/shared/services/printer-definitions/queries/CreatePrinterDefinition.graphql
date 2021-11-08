@@ -1,0 +1,10 @@
+mutation (
+  $printerDefinition: PrinterDefinitionInput!
+) {
+  createPrinterDefinition(printerDefinition: $printerDefinition) {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}

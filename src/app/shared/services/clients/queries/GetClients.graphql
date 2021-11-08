@@ -1,0 +1,9 @@
+query {
+  clients {
+    id
+    name
+    authorized
+    createdAt
+    updatedAt
+  }
+}

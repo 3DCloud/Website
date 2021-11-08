@@ -1,0 +1,9 @@
+mutation ($clientId: ID!) {
+  grantClientAuthorization(id: $clientId) {
+    id
+    name
+    authorized
+    createdAt
+    updatedAt
+  }
+}

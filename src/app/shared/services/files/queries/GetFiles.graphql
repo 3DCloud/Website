@@ -1,0 +1,9 @@
+query {
+  uploadedFiles {
+    id
+    filename
+    byteSize
+    createdAt
+    estimatedDuration
+  }
+}

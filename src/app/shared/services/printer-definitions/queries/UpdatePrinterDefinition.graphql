@@ -1,0 +1,8 @@
+mutation ($id: ID!, $printerDefinition: PrinterDefinitionInput!) {
+  updatePrinterDefinition(id: $id, printerDefinition: $printerDefinition) {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}

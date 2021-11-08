@@ -1,0 +1,17 @@
+mutation (
+  $filename: String!
+  $byteSize: Int!
+  $checksum: String!
+  $contentType: String!
+) {
+  createUploadFileRequest(
+    filename: $filename
+    byteSize: $byteSize
+    checksum: $checksum
+    contentType: $contentType
+  ) {
+    url
+    headers
+    signedId
+  }
+}

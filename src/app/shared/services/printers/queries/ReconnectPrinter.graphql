@@ -1,0 +1,9 @@
+mutation ($id: ID!) {
+  reconnectPrinter(id: $id) {
+    id
+    name
+    deviceId
+    createdAt
+    updatedAt
+  }
+}

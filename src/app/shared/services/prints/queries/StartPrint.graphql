@@ -1,0 +1,5 @@
+mutation ($fileId: ID!, $printerId: ID!) {
+  startPrint(fileId: $fileId, printerId: $printerId) {
+    id
+  }
+}

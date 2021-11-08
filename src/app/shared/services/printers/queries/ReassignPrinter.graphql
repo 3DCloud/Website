@@ -1,0 +1,9 @@
+mutation ($deviceId: ID!, $printerId: ID!) {
+  reassignPrinter(deviceId: $deviceId, printerId: $printerId) {
+    id
+    name
+    deviceId
+    createdAt
+    updatedAt
+  }
+}

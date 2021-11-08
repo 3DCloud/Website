@@ -1,0 +1,18 @@
+query GetPrints {
+  prints {
+    id
+    uploadedFile {
+      id
+      filename
+    }
+    printer {
+      id
+      name
+    }
+    status
+    createdAt
+    updatedAt
+    startedAt
+    completedAt
+  }
+}

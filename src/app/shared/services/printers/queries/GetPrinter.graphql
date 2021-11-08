@@ -1,0 +1,13 @@
+query ($id: ID!) {
+  printer(id: $id) {
+    id
+    name
+    deviceId
+    createdAt
+    updatedAt
+    printerDefinition {
+      id
+      name
+    }
+  }
+}

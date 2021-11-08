@@ -1,0 +1,26 @@
+query ($clientId: ID!) {
+  client(id: $clientId) {
+    id
+    name
+    authorized
+    createdAt
+    updatedAt
+    devices {
+      id
+      deviceName
+      hardwareIdentifier
+      isPortableHardwareIdentifier
+      lastSeen
+      createdAt
+      updatedAt
+      printer {
+        id
+      }
+    }
+    printers {
+      id
+      name
+      deviceId
+    }
+  }
+}

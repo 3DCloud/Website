@@ -1,0 +1,8 @@
+mutation ($signedId: String!) {
+  recordFileUploaded(signedId: $signedId) {
+    id
+    filename
+    byteSize
+    createdAt
+  }
+}

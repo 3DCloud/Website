@@ -1,0 +1,29 @@
+query ($id: ID!) {
+  printerDefinition(id: $id) {
+    id
+    name
+    extruderCount
+    gCodeSettings {
+      id
+      startGCode
+      endGCode
+      cancelGCode
+    }
+    ultiGCodeSettings {
+      id
+      materialId
+      material {
+        id
+        name
+        brand
+      }
+      hotendTemperature
+      buildPlateTemperature
+      retractionLength
+      endOfPrintRetractionLength
+      retractionSpeed
+      fanSpeed
+      flowRate
+    }
+  }
+}

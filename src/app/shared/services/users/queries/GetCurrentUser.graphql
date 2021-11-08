@@ -1,0 +1,6 @@
+{
+  currentUser {
+    name
+    emailAddress
+  }
+}

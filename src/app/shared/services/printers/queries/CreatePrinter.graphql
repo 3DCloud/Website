@@ -1,0 +1,17 @@
+mutation (
+  $deviceId: ID!
+  $printerDefinitionId: ID!
+  $name: String!
+) {
+  createPrinter(
+    deviceId: $deviceId
+    printerDefinitionId: $printerDefinitionId
+    name: $name
+  ) {
+    id
+    name
+    deviceId
+    createdAt
+    updatedAt
+  }
+}
