@@ -2,9 +2,9 @@
 
 <app-spinner *ngIf="loading"></app-spinner>
 
-<app-alert *ngIf="error" type="danger" [icon]="icons.faExclamationTriangle">{{ error }}</app-alert>
+<app-alert *ngIf="error" type="danger" [icon]="icons.faExclamationTriangle" [message]="error"></app-alert>
 
-<app-alert *ngIf="!loading && !error && !prints?.length">You haven't printed anything yet.</app-alert>
+<app-alert *ngIf="!loading && !error && !prints?.length" message="Your print history is empty."></app-alert>
 
 <table *ngIf="!loading && prints?.length" class="table">
   <thead>
