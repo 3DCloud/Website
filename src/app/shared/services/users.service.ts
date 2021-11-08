@@ -5,27 +5,13 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { mapMutationResult } from 'app/core/helpers';
-import { UploadedFile, User, WebSocketTicket } from 'app/core/models';
+import { User, WebSocketTicket } from 'app/core/models';
 
 const CURRENT_USER_QUERY = gql`
   {
     currentUser {
       name
       emailAddress
-    }
-  }
-`;
-
-const CURRENT_USER_FILES_QUERY = gql`
-  {
-    currentUser {
-      uploadedFiles {
-        id
-        filename
-        byteSize
-        createdAt
-        estimatedDuration
-      }
     }
   }
 `;
@@ -48,14 +34,6 @@ export class UsersService {
     return this._apollo
       .query<{ currentUser: User }>({ query: CURRENT_USER_QUERY })
       .pipe(map((result) => result.data.currentUser));
-  }
-
-  public getCurrentUserFiles(): Observable<UploadedFile[]> {
-    return this._apollo
-      .query<{ currentUser: User }>({
-        query: CURRENT_USER_FILES_QUERY,
-      })
-      .pipe(map((result) => result.data.currentUser.uploadedFiles));
   }
 
   public getWebSocketTicket(): Observable<string> {

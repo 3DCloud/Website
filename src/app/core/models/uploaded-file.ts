@@ -7,4 +7,5 @@ export interface UploadedFile {
   byteSize: number;
   createdAt: Date;
   estimatedDuration: number;
+  url: string;
 }

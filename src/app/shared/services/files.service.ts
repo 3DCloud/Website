@@ -14,6 +14,18 @@ import { last, map, tap } from 'rxjs/operators';
 import { mapMutationResult } from 'app/core/helpers';
 import { UploadFileRequest, UploadedFile } from 'app/core/models';
 
+const CURRENT_USER_FILES_QUERY = gql`
+  {
+    uploadedFiles {
+      id
+      filename
+      byteSize
+      createdAt
+      estimatedDuration
+    }
+  }
+`;
+
 const UPLOAD_MUTATION = gql`
   mutation createUploadFileRequest(
     $filename: String!
@@ -47,7 +59,9 @@ const RECORD_UPLOAD_MUTATION = gql`
 
 const GET_DOWNLOAD_URL_QUERY = gql`
   query getFileDownloadUrl($id: ID!) {
-    getFileDownloadUrl(id: $id)
+    uploadedFile(id: $id) {
+      url
+    }
   }
 `;
 
@@ -64,6 +78,14 @@ const DELETE_UPLOADED_FILE_MUTATION = gql`
 })
 export class FilesService {
   constructor(private _apollo: Apollo, private _http: HttpClient) {}
+
+  public getFiles(): Observable<UploadedFile[]> {
+    return this._apollo
+      .query<{ uploadedFiles: UploadedFile[] }>({
+        query: CURRENT_USER_FILES_QUERY,
+      })
+      .pipe(map((result) => result.data.uploadedFiles));
+  }
 
   public requestFileUpload(
     file: File,
@@ -119,11 +141,11 @@ export class FilesService {
 
   public getDownloadUrl(id: string): Observable<string> {
     return this._apollo
-      .query<{ getFileDownloadUrl: string }>({
+      .query<{ uploadedFile: UploadedFile }>({
         query: GET_DOWNLOAD_URL_QUERY,
         variables: { id },
       })
-      .pipe(map((result) => result.data.getFileDownloadUrl));
+      .pipe(map((result) => result.data.uploadedFile.url));
   }
 
   public delete(id: string): Observable<UploadedFile> {

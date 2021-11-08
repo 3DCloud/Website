@@ -75,7 +75,7 @@ export class FilesComponent implements OnInit, OnDestroy {
     document.addEventListener('drop', this.dragStop);
 
     this._subscriptions.push(
-      this._usersService.getCurrentUserFiles().subscribe(
+      this._filesService.getFiles().subscribe(
         (files) => {
           this.loading = false;
           this.files = files.map((f) => ({ ...f, busy: false }));
