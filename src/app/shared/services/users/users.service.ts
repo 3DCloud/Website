@@ -13,7 +13,7 @@ import GetCurrentUser from './queries/GetCurrentUser.graphql';
   providedIn: 'root',
 })
 export class UsersService {
-  constructor(private _apollo: Apollo) {}
+  public constructor(private _apollo: Apollo) {}
 
   public getCurrentUser(): Observable<User> {
     return this._apollo

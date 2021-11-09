@@ -17,21 +17,21 @@ import SetName from './queries/SetName.graphql';
   providedIn: 'root',
 })
 export class ClientsService {
-  constructor(private _apollo: Apollo) {}
+  public constructor(private _apollo: Apollo) {}
 
-  getClients(): Observable<Client[]> {
+  public getClients(): Observable<Client[]> {
     return this._apollo
       .query<{ clients: Client[] }>({ query: GetClients })
       .pipe(map((result) => result.data.clients));
   }
 
-  getClient(clientId: string): Observable<Client> {
+  public getClient(clientId: string): Observable<Client> {
     return this._apollo
       .query<{ client: Client }>({ query: GetClient, variables: { clientId } })
       .pipe(map((result) => result.data.client));
   }
 
-  setName(id: string, name?: string): Observable<Client> {
+  public setName(id: string, name?: string): Observable<Client> {
     return this._apollo
       .mutate<{ setClientName: Client }>({
         mutation: SetName,
@@ -40,7 +40,7 @@ export class ClientsService {
       .pipe(mapMutationResult((data) => data.setClientName));
   }
 
-  grantAuthorization(clientId: string): Observable<Client> {
+  public grantAuthorization(clientId: string): Observable<Client> {
     return this._apollo
       .mutate<{ grantClientAuthorization: Client }>({
         mutation: GrantAuthorization,
@@ -49,7 +49,7 @@ export class ClientsService {
       .pipe(mapMutationResult((data) => data.grantClientAuthorization));
   }
 
-  revokeAuthorization(clientId: string): Observable<Client> {
+  public revokeAuthorization(clientId: string): Observable<Client> {
     return this._apollo
       .mutate<{ revokeClientAuthorization: Client }>({
         mutation: RevokeAuthorization,
@@ -58,7 +58,7 @@ export class ClientsService {
       .pipe(mapMutationResult((data) => data.revokeClientAuthorization));
   }
 
-  delete(id: string): Observable<void> {
+  public delete(id: string): Observable<void> {
     return this._apollo
       .mutate({ mutation: DeleteClient, variables: { id } })
       .pipe(map(() => undefined));

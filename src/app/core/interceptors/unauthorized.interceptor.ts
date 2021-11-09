@@ -16,9 +16,9 @@ import {
 
 @Injectable()
 export class UnauthorizedInterceptor implements HttpInterceptor {
-  constructor(private _authenticationService: AuthenticationService) {}
+  public constructor(private _authenticationService: AuthenticationService) {}
 
-  intercept(
+  public intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {

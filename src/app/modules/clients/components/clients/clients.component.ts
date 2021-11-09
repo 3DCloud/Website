@@ -17,7 +17,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
 
   private _subscriptions: Subscription[] = [];
 
-  constructor(private _clientsService: ClientsService) {}
+  public constructor(private _clientsService: ClientsService) {}
 
   public ngOnInit(): void {
     this._subscriptions.push(

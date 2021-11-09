@@ -55,7 +55,7 @@ export class FilesComponent implements OnInit, OnDestroy {
 
   private _subscriptions: Subscription[] = [];
 
-  constructor(
+  public constructor(
     private _modalService: NgbModal,
     private _usersService: UsersService,
     private _printsService: PrintsService,

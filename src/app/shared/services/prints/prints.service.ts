@@ -13,7 +13,7 @@ import StartPrint from './queries/StartPrint.graphql';
   providedIn: 'root',
 })
 export class PrintsService {
-  constructor(private _apollo: Apollo) {}
+  public constructor(private _apollo: Apollo) {}
 
   public getPrints(): Observable<Print[]> {
     return this._apollo

@@ -18,7 +18,7 @@ export class DeletePrinterModalComponent implements OnDestroy {
 
   private _subscriptions: Subscription[] = [];
 
-  constructor(
+  public constructor(
     public modal: NgbActiveModal,
     private _printersService: PrintersService
   ) {}

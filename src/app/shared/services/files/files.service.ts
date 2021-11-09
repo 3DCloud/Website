@@ -23,7 +23,7 @@ import RecordFileUploaded from './queries/RecordFileUploaded.graphql';
   providedIn: 'root',
 })
 export class FilesService {
-  constructor(private _apollo: Apollo, private _http: HttpClient) {}
+  public constructor(private _apollo: Apollo, private _http: HttpClient) {}
 
   public getFiles(): Observable<UploadedFile[]> {
     return this._apollo

@@ -29,8 +29,9 @@ import {
   styleUrls: ['./client.component.scss'],
 })
 export class ClientComponent implements OnInit, OnDestroy {
-  @ViewChild('addPrinterModal') addPrinterModal?: ElementRef = undefined;
-  @ViewChild('deletePrinterModal') deletePrinterModal?: ElementRef = undefined;
+  @ViewChild('addPrinterModal') public addPrinterModal?: ElementRef = undefined;
+  @ViewChild('deletePrinterModal') public deletePrinterModal?: ElementRef =
+    undefined;
 
   public loading = true;
   public error?: unknown;
@@ -43,7 +44,7 @@ export class ClientComponent implements OnInit, OnDestroy {
 
   private _subscriptions: Subscription[] = [];
 
-  constructor(
+  public constructor(
     private _route: ActivatedRoute,
     private _clientsService: ClientsService,
     private _modalService: NgbModal

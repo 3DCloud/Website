@@ -21,7 +21,7 @@ export class PrintsComponent implements OnInit, OnDestroy {
 
   private _subscriptions: Subscription[] = [];
 
-  constructor(
+  public constructor(
     private _printsService: PrintsService,
     private _filesService: FilesService
   ) {}

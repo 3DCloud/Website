@@ -26,7 +26,7 @@ export class ReassignPrinterModalComponent implements OnInit, OnDestroy {
 
   private _subscriptions: Subscription[] = [];
 
-  constructor(
+  public constructor(
     public modal: NgbActiveModal,
     private _printersService: PrintersService
   ) {}

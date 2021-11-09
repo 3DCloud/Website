@@ -16,7 +16,7 @@ export class PrintersComponent implements OnInit, OnDestroy {
 
   private _subscriptions: Subscription[] = [];
 
-  constructor(private _printersService: PrintersService) {}
+  public constructor(private _printersService: PrintersService) {}
 
   public ngOnInit(): void {
     this._subscriptions.push(

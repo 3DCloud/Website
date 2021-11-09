@@ -16,7 +16,7 @@ import UpdatePrinterDefinition from './queries/UpdatePrinterDefinition.graphql';
   providedIn: 'root',
 })
 export class PrinterDefinitionsService {
-  constructor(private _apollo: Apollo) {}
+  public constructor(private _apollo: Apollo) {}
 
   public getPrinterDefinitions(): Observable<PrinterDefinition[]> {
     return this._apollo

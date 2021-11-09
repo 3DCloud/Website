@@ -50,7 +50,7 @@ export class AuthenticationService {
   private _refreshToken?: string;
   private _refreshTimer?: number;
 
-  constructor(
+  public constructor(
     private _http: HttpClient,
     private _router: Router,
     private _usersService: UsersService

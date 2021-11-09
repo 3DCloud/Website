@@ -3,6 +3,7 @@ export { Device } from './device';
 export { GCodeSettings } from './g-code-settings';
 export { Material } from './material';
 export { MaterialColor } from './material-color';
+export { NozzleSettings } from './nozzle-settings';
 export { Print } from './print';
 export { PrintState } from './print-state';
 export { Printer } from './printer';

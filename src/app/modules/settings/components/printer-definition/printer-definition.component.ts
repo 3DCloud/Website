@@ -22,6 +22,22 @@ import { AddMaterialModalComponent } from '..';
   styleUrls: ['./printer-definition.component.scss'],
 })
 export class PrinterDefinitionComponent implements OnInit, OnDestroy {
+  public readonly nozzleSizes = [
+    'size025',
+    'size040',
+    'size060',
+    'size080',
+    'size100',
+  ];
+
+  public readonly nozzleSizeNames = [
+    '0.25 mm',
+    '0.40 mm',
+    '0.60 mm',
+    '0.80 mm',
+    '1.00 mm',
+  ];
+
   public formControls = {
     name: new FormControl(null, Validators.required),
     extruderCount: new FormControl(1, Validators.required),
@@ -50,7 +66,8 @@ export class PrinterDefinitionComponent implements OnInit, OnDestroy {
     faSave,
   };
   public loading = { printerDefinition: true, submit: false };
-  public currentUltiGCodeIndex = 0;
+  public selectedUltiGCodeIndex = 0;
+  public selectedNozzleSize: string = this.nozzleSizes[0];
   public materials: Material[] = [];
 
   public printerDefinitionId: string | null = null;
@@ -59,12 +76,24 @@ export class PrinterDefinitionComponent implements OnInit, OnDestroy {
 
   private _subscriptions: Subscription[] = [];
 
-  constructor(
+  public constructor(
     private _route: ActivatedRoute,
     private _router: Router,
     private _printerDefinitionsService: PrinterDefinitionsService,
     private _modal: NgbModal
   ) {}
+
+  public get materialFormGroup(): FormGroup {
+    return this.form
+      .get('ultiGCodeSettings')!
+      .get(this.selectedUltiGCodeIndex.toString()) as FormGroup;
+  }
+
+  public get nozzleFormGroup(): FormGroup {
+    return this.materialFormGroup
+      .get('perNozzleSettings')!
+      .get([this.selectedNozzleSize]) as FormGroup;
+  }
 
   public ngOnInit(): void {
     this._subscriptions.push(
@@ -83,14 +112,13 @@ export class PrinterDefinitionComponent implements OnInit, OnDestroy {
             this.printerDefinition = printerDefinition;
 
             if (printerDefinition.ultiGCodeSettings) {
+              const formArray = this.form.get('ultiGCodeSettings') as FormArray;
               for (
                 let i = 0;
                 i < printerDefinition.ultiGCodeSettings.length;
                 i++
               ) {
-                (this.form.get('ultiGCodeSettings') as FormArray).push(
-                  this.createUltiGCodeSettings()
-                );
+                formArray.push(this.createUltiGCodeSettings());
               }
 
               this.materials = printerDefinition.ultiGCodeSettings?.map(
@@ -118,34 +146,52 @@ export class PrinterDefinitionComponent implements OnInit, OnDestroy {
     return Math.max(formControl.value.split('\n').length, 3);
   }
 
-  public get formGroup(): FormGroup {
-    return (this.form.get('ultiGCodeSettings') as FormArray).get(
-      this.currentUltiGCodeIndex.toString()
-    ) as FormGroup;
-  }
-
   public openAddMaterialDialog(): void {
     const modalRef = this._modal.open(AddMaterialModalComponent);
     modalRef.componentInstance.existingMaterials = this.materials;
 
     this._subscriptions.push(
-      modalRef.closed.subscribe((material: Material) => {
-        this.formControls.ultiGCodeSettings.push(
-          this.createUltiGCodeSettings(material)
-        );
-        this.materials.push(material);
-        this.currentUltiGCodeIndex = this.materials.length - 1;
-      })
+      modalRef.closed.subscribe(
+        ({ material, copyFrom }: { material: Material; copyFrom: number }) => {
+          const group = this.createUltiGCodeSettings(material);
+
+          if (copyFrom >= 0) {
+            group.patchValue({
+              ...this.formControls.ultiGCodeSettings.get([copyFrom])?.value,
+              id: undefined,
+              materialId: material.id,
+            });
+          }
+
+          this.formControls.ultiGCodeSettings.push(group);
+          this.materials.push(material);
+          this.selectedUltiGCodeIndex = this.materials.length - 1;
+        }
+      )
     );
   }
 
   public removeMaterial(index: number): void {
     this.formControls.ultiGCodeSettings.removeAt(index);
     this.materials.splice(index, 1);
-    this.currentUltiGCodeIndex = Math.min(
-      this.currentUltiGCodeIndex,
+    this.selectedUltiGCodeIndex = Math.min(
+      this.selectedUltiGCodeIndex,
       this.materials.length - 1
     );
+  }
+
+  public copyNozzleSettings(): void {
+    const selectedGroupValue = this.nozzleFormGroup.value;
+
+    for (const [size, group] of Object.entries(
+      (this.materialFormGroup.get('perNozzleSettings') as FormGroup).controls
+    )) {
+      if (size === this.selectedNozzleSize) {
+        continue;
+      }
+
+      group.patchValue(selectedGroupValue);
+    }
   }
 
   public submit(): void {
@@ -183,13 +229,25 @@ export class PrinterDefinitionComponent implements OnInit, OnDestroy {
     return new FormGroup({
       id: new FormControl(null),
       materialId: new FormControl(material?.id, Validators.required),
-      hotendTemperature: new FormControl(200, Validators.required),
-      buildPlateTemperature: new FormControl(60, Validators.required),
-      retractionLength: new FormControl(6.5, Validators.required),
-      endOfPrintRetractionLength: new FormControl(20, Validators.required),
-      retractionSpeed: new FormControl(25, Validators.required),
-      flowRate: new FormControl(100, Validators.required),
-      fanSpeed: new FormControl(100, Validators.required),
+      buildPlateTemperature: new FormControl(null, Validators.required),
+      endOfPrintRetractionLength: new FormControl(null, Validators.required),
+      flowRate: new FormControl(null, Validators.required),
+      fanSpeed: new FormControl(null, Validators.required),
+      perNozzleSettings: this.createPerNozzleSettings(),
     });
+  }
+
+  private createPerNozzleSettings(): FormGroup {
+    const obj: Record<string, FormGroup> = {};
+
+    for (const nozzleSize of this.nozzleSizes) {
+      obj[nozzleSize] = new FormGroup({
+        hotendTemperature: new FormControl(null, Validators.required),
+        retractionLength: new FormControl(null, Validators.required),
+        retractionSpeed: new FormControl(null, Validators.required),
+      });
+    }
+
+    return new FormGroup(obj);
   }
 }

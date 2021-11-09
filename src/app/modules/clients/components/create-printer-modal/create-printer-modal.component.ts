@@ -30,7 +30,7 @@ export class CreatePrinterModalComponent implements OnInit, OnDestroy {
 
   private _subscriptions: Subscription[] = [];
 
-  constructor(
+  public constructor(
     public modal: NgbActiveModal,
     private _printerService: PrintersService,
     private _printerDefinitionsService: PrinterDefinitionsService

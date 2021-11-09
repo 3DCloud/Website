@@ -18,7 +18,7 @@ import ReconnectPrinter from './queries/ReconnectPrinter.graphql';
   providedIn: 'root',
 })
 export class PrintersService {
-  constructor(private _apollo: Apollo) {}
+  public constructor(private _apollo: Apollo) {}
 
   public getPrinters(): Observable<Printer[]> {
     return this._apollo

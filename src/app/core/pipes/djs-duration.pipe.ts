@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
   name: 'djsDuration',
 })
 export class DjsDurationPipe implements PipeTransform {
-  transform(value: number, ...args: unknown[]): string {
+  public transform(value: number, ...args: unknown[]): string {
     if (args[0]) {
       if (value > 1_000 * 60 * 60) {
         return dayjs.duration(value).format('H [hours], m [minutes]');

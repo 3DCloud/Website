@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
   name: 'djsTimeAgo',
 })
 export class DjsTimeAgoPipe implements PipeTransform {
-  transform(value: Date | dayjs.Dayjs, ...args: unknown[]): string {
+  public transform(value: Date | dayjs.Dayjs, ...args: unknown[]): string {
     let withoutSuffix = false;
 
     if (args.length >= 1) {

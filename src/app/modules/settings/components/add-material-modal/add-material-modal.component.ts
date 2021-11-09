@@ -13,6 +13,7 @@ import { MaterialsService } from 'app/shared/services';
 export class AddMaterialModalComponent implements OnInit, OnDestroy {
   public existingMaterials: Material[] = [];
   public materialIndex = 0;
+  public copyFromIndex = -1;
   public loading = true;
   public busy = false;
   public materials?: Material[];
@@ -20,7 +21,7 @@ export class AddMaterialModalComponent implements OnInit, OnDestroy {
 
   private _subscriptions: Subscription[] = [];
 
-  constructor(
+  public constructor(
     public modal: NgbActiveModal,
     private _materialsService: MaterialsService
   ) {}
@@ -49,7 +50,10 @@ export class AddMaterialModalComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.modal.close(this.materials[this.materialIndex]);
+    this.modal.close({
+      material: this.materials[this.materialIndex],
+      copyFrom: this.copyFromIndex,
+    });
   }
 
   public ngOnDestroy(): void {

@@ -11,7 +11,7 @@ import GetMaterials from './queries/GetMaterials.graphql';
   providedIn: 'root',
 })
 export class MaterialsService {
-  constructor(private _apollo: Apollo) {}
+  public constructor(private _apollo: Apollo) {}
 
   public getMaterials(): Observable<Material[]> {
     return this._apollo

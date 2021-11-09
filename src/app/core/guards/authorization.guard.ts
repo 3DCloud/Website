@@ -24,15 +24,15 @@ export class AuthorizationGuard
     private _authenticationService: AuthenticationService
   ) {}
 
-  canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
+  public canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     return this.checkAuthorization(route.data);
   }
 
-  canActivateChild(route: ActivatedRouteSnapshot): Observable<boolean> {
+  public canActivateChild(route: ActivatedRouteSnapshot): Observable<boolean> {
     return this.checkAuthorization(route.data);
   }
 
-  canLoad(route: Route): Observable<boolean> {
+  public canLoad(route: Route): Observable<boolean> {
     return this.checkAuthorization(route.data);
   }
 

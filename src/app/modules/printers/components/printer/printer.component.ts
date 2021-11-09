@@ -60,14 +60,14 @@ export class PrinterComponent implements OnInit, AfterViewInit, OnDestroy {
   private _channel?: actioncable.Channel;
   private _subscriptions: Subscription[] = [];
 
-  constructor(
+  public constructor(
     private _route: ActivatedRoute,
     private _authenticationService: AuthenticationService,
     private _usersService: UsersService,
     private _printersService: PrintersService
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this._route.params.subscribe((params) => {
       this._printerId = params.id;
 
@@ -95,7 +95,7 @@ export class PrinterComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     if (this.logElement) {
       this.logElement.nativeElement.addEventListener('scroll', () =>
         this.onScroll()
@@ -103,7 +103,7 @@ export class PrinterComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this._consumer?.disconnect();
 
     for (const subscription of this._subscriptions) {

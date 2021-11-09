@@ -31,7 +31,9 @@ export class PrinterDefinitionsComponent implements OnInit, OnDestroy {
 
   private _subscriptions: Subscription[] = [];
 
-  constructor(private _printerDefinitionsService: PrinterDefinitionsService) {}
+  public constructor(
+    private _printerDefinitionsService: PrinterDefinitionsService
+  ) {}
 
   public ngOnInit(): void {
     this._subscriptions.push(

@@ -14,13 +14,13 @@ export class AuthenticationCallbackComponent implements OnInit {
   public message?: string;
   public messageIcon = faExclamationCircle;
 
-  constructor(
+  public constructor(
     private _authenticationService: AuthenticationService,
     private _route: ActivatedRoute,
     private _router: Router
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this._route.queryParamMap.subscribe((params) => {
       const code = params.get('code');
 

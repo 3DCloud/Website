@@ -5,7 +5,10 @@ import dayjs from 'dayjs';
   name: 'djsDiff',
 })
 export class DjsDiffPipe implements PipeTransform {
-  transform(value: string | Date | dayjs.Dayjs, ...args: unknown[]): number {
+  public transform(
+    value: string | Date | dayjs.Dayjs,
+    ...args: unknown[]
+  ): number {
     if (!args.length) {
       throw new Error('Missing argument');
     }

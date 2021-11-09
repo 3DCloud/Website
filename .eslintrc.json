@@ -111,6 +111,7 @@
         ],
         "import/no-extraneous-dependencies": "error",
         "import/no-useless-path-segments": "error",
+        "@typescript-eslint/explicit-member-accessibility": "error",
         "@typescript-eslint/naming-convention": [
           "error",
           {
@@ -126,6 +127,7 @@
             "leadingUnderscore": "require"
           }
         ],
+        "@typescript-eslint/no-non-null-assertion": "off",
         "no-restricted-imports": [
           "error",
           {
@@ -136,8 +138,7 @@
           }
         ],
         "unused-imports/no-unused-imports": "error",
-        "unused-imports/no-unused-vars": "warn",
-        "no-unused-vars": "off"
+        "unused-imports/no-unused-vars": "warn"
       }
     },
     {

@@ -17,13 +17,37 @@ query ($id: ID!) {
         name
         brand
       }
-      hotendTemperature
       buildPlateTemperature
-      retractionLength
       endOfPrintRetractionLength
-      retractionSpeed
       fanSpeed
       flowRate
+      perNozzleSettings {
+        size025 {
+          hotendTemperature
+          retractionLength
+          retractionSpeed
+        }
+        size040 {
+          hotendTemperature
+          retractionLength
+          retractionSpeed
+        }
+        size060 {
+          hotendTemperature
+          retractionLength
+          retractionSpeed
+        }
+        size080{
+          hotendTemperature
+          retractionLength
+          retractionSpeed
+        }
+        size100 {
+          hotendTemperature
+          retractionLength
+          retractionSpeed
+        }
+      }
     }
   }
 }

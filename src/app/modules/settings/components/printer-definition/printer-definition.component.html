@@ -4,7 +4,9 @@
 
     <app-spinner *ngIf="loading.printerDefinition"></app-spinner>
 
-    <app-alert *ngIf="!loading.printerDefinition && !printerDefinition && printerDefinitionId" [icon]="icons.faExclamationTriangle" type="warning">Printer definition not found.</app-alert>
+    <app-alert *ngIf="!loading.printerDefinition && !printerDefinition && printerDefinitionId"
+               [icon]="icons.faExclamationTriangle" type="warning">Printer definition not found.
+    </app-alert>
     <app-alert *ngIf="error" [icon]="icons.faExclamationTriangle" type="danger">{{ error }}</app-alert>
 
     <form *ngIf="!loading.printerDefinition" [formGroup]="form" (ngSubmit)="submit()">
@@ -13,14 +15,18 @@
       <div class="row">
         <div class="form-group col-md-6 col-12">
           <label for="name">Name</label>
-          <input id="name" formControlName="name" class="form-control" type="text" [class.is-invalid]="formControls.name | isInvalid" />
+          <input id="name" formControlName="name" class="form-control" type="text"
+                 [class.is-invalid]="formControls.name | isInvalid" />
         </div>
 
         <div class="form-group col-md-6 col-12">
           <label for="extruder-count">Extruder Count</label>
-          <input id="extruder-count" formControlName="extruderCount" class="form-control" type="number" min="1" max="8" [class.is-invalid]="formControls.extruderCount | isInvalid" />
+          <input id="extruder-count" formControlName="extruderCount" class="form-control" type="number" min="1" max="8"
+                 [class.is-invalid]="formControls.extruderCount | isInvalid" />
         </div>
       </div>
+
+      <hr/>
 
       <h4>G-code Settings</h4>
 
@@ -43,74 +49,111 @@
 
         <div class="form-group col-12">
           <label for="name">Cancel G-code</label>
-          <textarea class="form-control" formControlName="cancelGCode" [rows]="rows(formControls.cancelGCode)"></textarea>
+          <textarea class="form-control" formControlName="cancelGCode"
+                    [rows]="rows(formControls.cancelGCode)"></textarea>
           <small class="form-text text-muted">
             This G-code is run after a print is canceled.
           </small>
         </div>
       </div>
 
+      <hr/>
+
       <h4>UltiGCode Settings</h4>
-      <div class="text-muted">UltiGCode is a special flavor of G-code used by the Ultimaker 2+ and Ultimaker 3. By default, Cura does not generate start/end G-code when slicing for these machines, so these settings are used instead.</div>
-
-      <button class="btn btn-primary mt-2 mb-3" type="button" (click)="openAddMaterialDialog()"><fa-icon [icon]="icons.faPlus"></fa-icon> Add Material</button>
-
-      <ng-container *ngIf="materials?.length; else noFormGroup">
-      <div class="form-group">
-        <label for="material">Material</label>
-        <div class="input-group">
-          <select class="form-control" id="material" [(ngModel)]="currentUltiGCodeIndex" [ngModelOptions]="{ standalone: true }">
-            <option *ngFor="let material of materials; let i = index" [value]="i">{{ material.name }} ({{ material.brand }})</option>
-          </select>
-          <span class="input-group-append">
-            <button class="btn btn-danger" type="button" (click)="removeMaterial(currentUltiGCodeIndex)" title="Remove Material"><fa-icon [icon]="icons.faMinus"></fa-icon></button>
-          </span>
-        </div>
+      <div class="text-muted">
+        UltiGCode is a special flavor of G-code used by the Ultimaker 2+ and Ultimaker 3. By
+        default, Cura does not generate start/end G-code when slicing for these machines, so these settings are used
+        instead.
       </div>
 
-        <div class="row" [formGroup]="formGroup">
-          <div class="form-group col-md-4 col-12">
-            <label for="hotend-temperature">Hotend Temperature (&deg;C)</label>
-            <input id="hotend-temperature" formControlName="hotendTemperature" class="form-control" type="number" min="0" max="400" [class.is-invalid]="formGroup.get('hotendTemperature') | isInvalid" />
-          </div>
+      <button class="btn btn-primary mt-2 mb-3" type="button" (click)="openAddMaterialDialog()">
+        <fa-icon [icon]="icons.faPlus"></fa-icon>
+        Add Material Configuration
+      </button>
 
-          <div class="form-group col-md-4 col-12">
-            <label for="build-plate-temperature">Build Plate Temperature (&deg;C)</label>
-            <input id="build-plate-temperature" formControlName="buildPlateTemperature" class="form-control" type="number" min="0" max="150" />
-          </div>
-
-          <div class="form-group col-md-4 col-12">
-            <label for="retraction-length">Retraction Length (mm)</label>
-            <input id="retraction-length" formControlName="retractionLength" class="form-control" type="number" min="0" max="150" step="0.1" />
-          </div>
-
-          <div class="form-group col-md-4 col-12">
-            <label for="end-of-print-retraction-length">End of Print Retraction Length (mm)</label>
-            <input id="end-of-print-retraction-length" formControlName="endOfPrintRetractionLength" class="form-control" type="number" min="0" max="150" step="0.1" />
-          </div>
-
-          <div class="form-group col-md-4 col-12">
-            <label for="retraction-speed">Retraction Speed (mm/s)</label>
-            <input id="retraction-speed" formControlName="retractionSpeed" class="form-control" type="number" min="1" max="200" />
-          </div>
-
-          <div class="form-group col-md-4 col-12">
-            <label for="fan-speed">Fan Speed (%)</label>
-            <input id="fan-speed" formControlName="fanSpeed" class="form-control" type="number" min="0" max="100" />
-          </div>
-
-          <div class="form-group col-md-4 col-12">
-            <label for="flow-rate">Flow Rate (%)</label>
-            <input id="flow-rate" formControlName="flowRate" class="form-control" type="number" min="50" max="150" />
+      <ng-container *ngIf="materials?.length; else noFormGroup">
+        <div class="form-group">
+          <label for="material">Material</label>
+          <div class="input-group">
+            <select class="form-control" id="material" [(ngModel)]="selectedUltiGCodeIndex"
+                    [ngModelOptions]="{ standalone: true }">
+              <option *ngFor="let material of materials; let i = index" [value]="i">{{ material.name }}
+                ({{ material.brand }})
+              </option>
+            </select>
+            <span class="input-group-append">
+            <button class="btn btn-danger" type="button" (click)="removeMaterial(selectedUltiGCodeIndex)"
+                    title="Remove Material"><fa-icon [icon]="icons.faMinus"></fa-icon></button>
+          </span>
           </div>
         </div>
+
+        <ng-container [formGroup]="materialFormGroup">
+          <h5>General</h5>
+          <div class="row">
+            <div class="form-group col-lg-6 col-12">
+              <label for="end-of-print-retraction-length">End of Print Retraction Length (mm)</label>
+              <input id="end-of-print-retraction-length" formControlName="endOfPrintRetractionLength" class="form-control" type="number" min="0" max="150" step="0.1" [class.is-invalid]="materialFormGroup.get('endOfPrintRetractionLength') | isInvalid" />
+            </div>
+
+            <div class="form-group col-lg-6 col-12">
+              <label for="fan-speed">Fan Speed (%)</label>
+              <input id="fan-speed" formControlName="fanSpeed" class="form-control" type="number" min="0" max="100" [class.is-invalid]="materialFormGroup.get('fanSpeed') | isInvalid" />
+            </div>
+
+            <div class="form-group col-lg-6 col-12">
+              <label for="flow-rate">Flow Rate (%)</label>
+              <input id="flow-rate" formControlName="flowRate" class="form-control" type="number" min="50" max="150" [class.is-invalid]="materialFormGroup.get('flowRate') | isInvalid" />
+            </div>
+
+            <div class="form-group col-lg-6 col-12">
+              <label for="build-plate-temperature">Build Plate Temperature (&deg;C)</label>
+              <input id="build-plate-temperature" formControlName="buildPlateTemperature" class="form-control" type="number" min="0" max="150" [class.is-invalid]="materialFormGroup.get('buildPlateTemperature') | isInvalid" />
+            </div>
+          </div>
+
+          <h5>Per Nozzle Size</h5>
+
+          <div class="form-group">
+            <label for="nozzle-size">Nozzle Size</label>
+            <select class="form-control" id="nozzle-size" [(ngModel)]="selectedNozzleSize" [ngModelOptions]="{ standalone: true }">
+              <option *ngFor="let nozzleSize of nozzleSizes; let i = index" [value]="nozzleSize">{{ nozzleSizeNames[i] }}</option>
+            </select>
+          </div>
+
+          <ng-container [formGroup]="nozzleFormGroup">
+            <div class="row">
+              <div class="form-group col-lg-4 col-md-6 col-12">
+                <label for="retraction-length">Retraction Length (mm)</label>
+                <input id="retraction-length" formControlName="retractionLength" class="form-control" type="number" min="0" max="150" step="0.1" [class.is-invalid]="nozzleFormGroup.get('retractionLength') | isInvalid" />
+              </div>
+
+              <div class="form-group col-lg-4 col-md-6 col-12">
+                <label for="retraction-speed">Retraction Speed (mm/s)</label>
+                <input id="retraction-speed" formControlName="retractionSpeed" class="form-control" type="number" min="1" max="200" [class.is-invalid]="nozzleFormGroup.get('retractionSpeed') | isInvalid" />
+              </div>
+
+              <div class="form-group col-lg-4 col-md-6 col-12">
+                <label for="hotend-temperature">Hotend Temperature (&deg;C)</label>
+                <input id="hotend-temperature" formControlName="hotendTemperature" class="form-control" type="number" min="0" max="400" [class.is-invalid]="nozzleFormGroup.get('hotendTemperature') | isInvalid" />
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-light" (click)="copyNozzleSettings()">Copy to all sizes</button>
+          </ng-container>
+        </ng-container>
       </ng-container>
       <ng-template #noFormGroup>
         <app-alert>No materials configured.</app-alert>
       </ng-template>
 
-      <a class="btn btn-light" routerLink="..">Cancel</a>
-      <button class="btn btn-success ml-1" type="submit" [disabled]="loading.submit"><fa-icon [icon]="icons.faSave"></fa-icon> Save</button>
+      <hr/>
+
+      <a class="btn btn-secondary" routerLink="..">Cancel</a>
+      <button class="btn btn-success ml-1" type="submit" [disabled]="loading.submit">
+        <fa-icon [icon]="icons.faSave"></fa-icon>
+        Save
+      </button>
     </form>
   </div>
 </div>
