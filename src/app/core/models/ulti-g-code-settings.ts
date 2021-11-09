@@ -11,11 +11,11 @@ export interface UltiGCodeSettings {
   fanSpeed: number;
   flowRate: number;
   perNozzleSettings: {
-    size_0_25: NozzleSettings;
-    size_0_40: NozzleSettings;
-    size_0_60: NozzleSettings;
-    size_0_80: NozzleSettings;
-    size_1_00: NozzleSettings;
+    size025: NozzleSettings;
+    size040: NozzleSettings;
+    size060: NozzleSettings;
+    size080: NozzleSettings;
+    size100: NozzleSettings;
   };
   createdAt: Date;
   updatedAt: Date;

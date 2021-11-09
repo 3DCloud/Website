@@ -11,7 +11,11 @@ import {
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 
-import { Material, PrinterDefinition } from 'app/core/models';
+import {
+  Material,
+  PrinterDefinition,
+  UltiGCodeSettings,
+} from 'app/core/models';
 import { PrinterDefinitionsService } from 'app/shared/services';
 
 import { AddMaterialModalComponent } from '..';
@@ -152,10 +156,24 @@ export class PrinterDefinitionComponent implements OnInit, OnDestroy {
 
     this._subscriptions.push(
       modalRef.closed.subscribe(
-        ({ material, copyFrom }: { material: Material; copyFrom: number }) => {
+        ({
+          material,
+          copyFrom,
+          useMaterialTxt,
+        }: {
+          material: Material;
+          copyFrom: number;
+          useMaterialTxt: UltiGCodeSettings;
+        }) => {
           const group = this.createUltiGCodeSettings(material);
 
-          if (copyFrom >= 0) {
+          if (useMaterialTxt) {
+            group.patchValue({
+              ...useMaterialTxt,
+              id: undefined,
+              materialId: material.id,
+            });
+          } else if (copyFrom >= 0) {
             group.patchValue({
               ...this.formControls.ultiGCodeSettings.get([copyFrom])?.value,
               id: undefined,

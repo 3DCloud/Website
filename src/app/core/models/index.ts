@@ -9,6 +9,7 @@ export { PrintState } from './print-state';
 export { Printer } from './printer';
 export { PrinterDefinition } from './printer-definition';
 export { PrinterState } from './printer-state';
+export { UltiGCodeSettings } from './ulti-g-code-settings';
 export { UploadFileRequest } from './upload-file-request';
 export { UploadedFile } from './uploaded-file';
 export { User } from './user';
