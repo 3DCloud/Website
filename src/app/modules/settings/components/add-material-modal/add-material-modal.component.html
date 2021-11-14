@@ -8,52 +8,54 @@
 
   <app-alert *ngIf="!loading && !materials?.length">There are no materials to add.</app-alert>
 
-  <div class="form-group" *ngIf="materials?.length">
-    <label for="material">Material</label>
-    <select class="form-control" id="material" [(ngModel)]="materialIndex" [disabled]="loading">
-      <option *ngFor="let material of materials; let i = index" [value]="i">{{ material.name }} ({{ material.brand }})</option>
-    </select>
-  </div>
-
-  <div class="custom-control custom-radio">
-    <input type="radio" id="blank" [(ngModel)]="importSelection" value="blank" class="custom-control-input">
-    <label class="custom-control-label" for="blank">Don't copy settings</label>
-  </div>
-
-  <div class="custom-control custom-radio">
-    <input type="radio" id="use-existing" [(ngModel)]="importSelection" value="use-existing" class="custom-control-input" [disabled]="!existingMaterials?.length" [title]="!existingMaterials?.length ? 'No materials are configured yet' : undefined">
-    <label class="custom-control-label" for="use-existing">Copy settings from existing material</label>
-  </div>
-
-  <div class="custom-control custom-radio">
-    <input type="radio" id="use-material-txt" [(ngModel)]="importSelection" value="use-material-txt" class="custom-control-input">
-    <label class="custom-control-label" for="use-material-txt">Import from MATERIAL.TXT</label>
-  </div>
-
-  <div class="form-group" *ngIf="importSelection === 'use-existing' && materials?.length && existingMaterials.length">
-    <label for="clone">Copy from</label>
-    <select class="form-control" id="clone" [(ngModel)]="copyFromIndex" [disabled]="loading">
-      <option *ngFor="let existing of existingMaterials; let i = index" [value]="i">{{ existing.name }} ({{ existing.brand }})</option>
-    </select>
-  </div>
-
-  <ng-container *ngIf="importSelection === 'use-material-txt'">
-    <div class="form-group mt-2">
-      <label for="material-txt-file">MATERIAL.TXT file</label>
-      <input id="material-txt-file" class="d-block" type="file" (change)="readFile($event)" />
-    </div>
-
-    <div class="form-group" *ngIf="materialTxtOptions && materialTxtOptions.length">
-      <label for="material-txt-file">Entry</label>
-      <select class="form-control" [(ngModel)]="useMaterialTxtIndex">
-        <option *ngFor="let option of materialTxtOptions; let i = index" [value]="i">{{ option.name }}</option>
+  <ng-container *ngIf="materials?.length">
+    <div class="form-group">
+      <label for="material">Material</label>
+      <select class="form-control" id="material" [(ngModel)]="materialIndex" [disabled]="loading">
+        <option *ngFor="let material of materials; let i = index" [value]="i">{{ material.name }} ({{ material.brand }})</option>
       </select>
     </div>
 
-    <app-alert *ngIf="materialTxtOptions && !materialTxtOptions.length">No materials found in file.</app-alert>
+    <div class="custom-control custom-radio">
+      <input type="radio" id="blank" [(ngModel)]="importSelection" value="blank" class="custom-control-input">
+      <label class="custom-control-label" for="blank">Don't copy settings</label>
+    </div>
+
+    <div class="custom-control custom-radio">
+      <input type="radio" id="use-existing" [(ngModel)]="importSelection" value="use-existing" class="custom-control-input" [disabled]="!existingMaterials?.length" [title]="!existingMaterials?.length ? 'No materials are configured yet' : undefined">
+      <label class="custom-control-label" for="use-existing">Copy settings from existing material</label>
+    </div>
+
+    <div class="custom-control custom-radio">
+      <input type="radio" id="use-material-txt" [(ngModel)]="importSelection" value="use-material-txt" class="custom-control-input">
+      <label class="custom-control-label" for="use-material-txt">Import from MATERIAL.TXT</label>
+    </div>
+
+    <div class="form-group mt-2" *ngIf="importSelection === 'use-existing' && existingMaterials.length">
+      <label for="clone">Copy from</label>
+      <select class="form-control" id="clone" [(ngModel)]="copyFromIndex" [disabled]="loading">
+        <option *ngFor="let existing of existingMaterials; let i = index" [value]="i">{{ existing.name }} ({{ existing.brand }})</option>
+      </select>
+    </div>
+
+    <ng-container *ngIf="importSelection === 'use-material-txt'">
+      <div class="form-group mt-2">
+        <label for="material-txt-file">MATERIAL.TXT file</label>
+        <input id="material-txt-file" class="d-block" type="file" (change)="readFile($event)" />
+      </div>
+
+      <div class="form-group" *ngIf="materialTxtOptions && materialTxtOptions.length">
+        <label for="material-txt-file">Entry</label>
+        <select class="form-control" [(ngModel)]="useMaterialTxtIndex">
+          <option *ngFor="let option of materialTxtOptions; let i = index" [value]="i">{{ option.name }}</option>
+        </select>
+      </div>
+
+      <app-alert *ngIf="materialTxtOptions && !materialTxtOptions.length">No materials found in file.</app-alert>
+    </ng-container>
   </ng-container>
 </div>
 <div class="modal-footer">
-  <button type="submit" class="btn btn-primary" (click)="submit()">Add</button>
+  <button type="submit" class="btn btn-primary" (click)="submit()" [disabled]="!isValid">Add</button>
   <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
 </div>

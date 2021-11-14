@@ -34,6 +34,15 @@ export class AddMaterialModalComponent implements OnInit, OnDestroy {
     private _materialsService: MaterialsService
   ) {}
 
+  public get isValid(): boolean {
+    return (
+      this.materials !== undefined &&
+      this.materials.length > 0 &&
+      (this.importSelection !== 'use-material-txt' ||
+        this.materialTxtOptions?.length !== undefined)
+    );
+  }
+
   public ngOnInit(): void {
     this._subscriptions.push(
       this._materialsService
@@ -174,7 +183,7 @@ export class AddMaterialModalComponent implements OnInit, OnDestroy {
   }
 
   public submit(): void {
-    if (!this.materials) {
+    if (!this.materials || !this.isValid) {
       return;
     }
 
