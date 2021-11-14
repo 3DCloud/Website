@@ -1,0 +1,60 @@
+<h2>{{ materialId ? 'Edit Material' : 'Create Material' }}</h2>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <h3>General</h3>
+  <div class="row">
+    <div class="col-lg-6 col-12">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input class="form-control" id="name" type="text" formControlName="name" [class.is-invalid]="form.get('name') | isInvalid" />
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-12">
+      <div class="form-group">
+        <label for="brand">Brand</label>
+        <input class="form-control" id="brand" type="text" formControlName="brand" [class.is-invalid]="form.get('name') | isInvalid" />
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-12">
+      <div class="form-group">
+        <label for="net-filament-weight">Net Filament Weight (g)</label>
+        <input class="form-control" id="net-filament-weight" type="number" formControlName="netFilamentWeight" [class.is-invalid]="form.get('netFilamentWeight') | isInvalid" />
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-12">
+      <div class="form-group">
+        <label for="empty-spool-weight">Empty Spool Weight (g)</label>
+        <input class="form-control" id="empty-spool-weight" type="number" formControlName="emptySpoolWeight" [class.is-invalid]="form.get('emptySpoolWeight') | isInvalid" />
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-12">
+      <div class="form-group">
+        <label for="filament-diameter">Filament Diameter</label>
+        <input class="form-control" id="filament-diameter" type="number" formControlName="filamentDiameter" [class.is-invalid]="form.get('filamentDiameter') | isInvalid" />
+      </div>
+    </div>
+  </div>
+
+  <h3>Colors</h3>
+  <ng-container formGroupName="materialColors">
+    <div class="form-group" *ngFor="let control of materialColors.controls; let i = index" [formArrayName]="i">
+      <div class="input-group">
+        <input class="form-control" id="color" type="text" formControlName="name" title="Color" [class.is-invalid]="control.get('name') | isInvalid" />
+        <input class="input-group-append form-control" type="color" style="flex-grow: 0; width: 3.2rem" formControlName="color" [class.is-invalid]="control.get('color') | isInvalid" />
+        <div class="input-group-append">
+          <button type="button" class="btn btn-danger" (click)="removeColor(i)"><fa-icon [icon]="icons.faMinus"></fa-icon></button>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" (click)="addColor()"><fa-icon [icon]="icons.faPlus"></fa-icon></button>
+  </ng-container>
+
+  <hr/>
+
+  <button type="submit" class="btn btn-success"><fa-icon [icon]="icons.faSave"></fa-icon> Save</button>
+  <a class="btn btn-secondary ml-1" routerLink="..">Cancel</a>
+</form>

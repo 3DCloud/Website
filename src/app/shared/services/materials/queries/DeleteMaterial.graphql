@@ -1,0 +1,7 @@
+mutation ($id: ID!) {
+  deleteMaterial (id: $id) {
+    id
+    name
+    brand
+  }
+}

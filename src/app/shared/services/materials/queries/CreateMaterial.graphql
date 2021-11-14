@@ -1,0 +1,12 @@
+mutation ($material: MaterialInput!) {
+  createMaterial(material: $material) {
+    id
+    name
+    brand
+    materialColors {
+      id
+      name
+      color
+    }
+  }
+}

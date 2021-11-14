@@ -8,6 +8,8 @@ import { SharedModule } from 'app/shared/shared.module';
 
 import {
   AddMaterialModalComponent,
+  MaterialComponent,
+  MaterialsComponent,
   PrinterDefinitionComponent,
   PrinterDefinitionsComponent,
   SettingsComponent,
@@ -20,6 +22,8 @@ import { SettingsRouting } from './settings.routing';
     PrinterDefinitionsComponent,
     PrinterDefinitionComponent,
     AddMaterialModalComponent,
+    MaterialsComponent,
+    MaterialComponent,
   ],
   imports: [
     CommonModule,

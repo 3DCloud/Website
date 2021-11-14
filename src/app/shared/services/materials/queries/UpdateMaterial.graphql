@@ -1,0 +1,12 @@
+mutation ($id: ID!, $material: MaterialInput!) {
+  updateMaterial(id: $id, material: $material) {
+    id
+    name
+    brand
+    materialColors {
+      id
+      name
+      color
+    }
+  }
+}

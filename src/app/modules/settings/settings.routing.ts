@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthorizationGuard } from 'app/core/guards';
 
 import {
+  MaterialComponent,
+  MaterialsComponent,
   PrinterDefinitionComponent,
   PrinterDefinitionsComponent,
   SettingsComponent,
@@ -31,6 +33,18 @@ const routes: Routes = [
       {
         path: 'printer-definitions/:id',
         component: PrinterDefinitionComponent,
+      },
+      {
+        path: 'materials',
+        component: MaterialsComponent,
+      },
+      {
+        path: 'materials/new',
+        component: MaterialComponent,
+      },
+      {
+        path: 'materials/:id',
+        component: MaterialComponent,
       },
     ],
   },

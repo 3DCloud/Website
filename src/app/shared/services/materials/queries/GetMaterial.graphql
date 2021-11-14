@@ -1,0 +1,15 @@
+query ($id: ID!) {
+  material(id: $id) {
+    id
+    name
+    brand
+    netFilamentWeight
+    emptySpoolWeight
+    filamentDiameter
+    materialColors {
+      id
+      name
+      color
+    }
+  }
+}
