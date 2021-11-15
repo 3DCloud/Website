@@ -4,7 +4,8 @@ on:
 - push
 
 jobs:
-  build:
+  build-and-deploy:
+    needs: [lint]
     runs-on: ubuntu-latest
 
     steps:
@@ -20,6 +21,14 @@ jobs:
       run: |
         npm install
         npm run build -- --configuration production
+
+    - name: Deploy
+      run: |
+        mkdir ~/.ssh
+        echo "${{ secrets.SSH_HOST_KEY }}" >> ~/.ssh/known_hosts
+        eval $(ssh-agent -s)
+        ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
+        rsync -r --delete dist/Website/ print3dcloud@server.makerepo.com:/var/www/print3dcloud/frontend/
 
   lint:
     runs-on: ubuntu-latest
