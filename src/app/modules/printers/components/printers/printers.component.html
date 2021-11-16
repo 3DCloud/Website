@@ -12,7 +12,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let printer of printers">
-      <td><a [routerLink]="printer.id">{{ printer.name }}</a></td>
+      <td><a [routerLink]="[printer.id, 'status']">{{ printer.name }}</a></td>
       <td><app-printer-state-badge [state]="printer.state"></app-printer-state-badge></td>
       <td>
         <a *ngIf="printer.device" [routerLink]="['/clients', printer.device?.client!.id]">{{ printer.device.client!.id }}</a>

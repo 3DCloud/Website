@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { mapMutationResult } from 'app/core/helpers';
-import { User, WebSocketTicket } from 'app/core/models';
+import { AbilityRule, User, WebSocketTicket } from 'app/core/models';
 
 import GenerateWebSocketTicket from './queries/GenerateWebSocketTicket.graphql';
 import GetCurrentUser from './queries/GetCurrentUser.graphql';
@@ -15,10 +15,15 @@ import GetCurrentUser from './queries/GetCurrentUser.graphql';
 export class UsersService {
   public constructor(private _apollo: Apollo) {}
 
-  public getCurrentUser(): Observable<User> {
+  public getCurrentUser(): Observable<{
+    currentUser: User;
+    currentAbility: AbilityRule[];
+  }> {
     return this._apollo
-      .query<{ currentUser: User }>({ query: GetCurrentUser })
-      .pipe(map((result) => result.data.currentUser));
+      .query<{ currentUser: User; currentAbility: AbilityRule[] }>({
+        query: GetCurrentUser,
+      })
+      .pipe(map((result) => result.data));
   }
 
   public getWebSocketTicket(): Observable<string> {

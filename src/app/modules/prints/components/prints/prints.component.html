@@ -10,6 +10,7 @@
   <thead>
     <tr>
       <th>File Name</th>
+      <th>Printed On</th>
       <th>Started</th>
       <th>Duration</th>
     </tr>
@@ -21,6 +22,7 @@
         <ng-template #noFile><span title="File has been deleted.">{{ print.uploadedFile.filename }}</span></ng-template>
         <app-print-state-badge [state]="print.status" [pill]="true" class="ml-1"></app-print-state-badge>
       </td>
+      <td><a [routerLink]="['/printers', print.printer.id, 'status']">{{ print.printer.name }}</a></td>
       <td><span [ngbTooltip]="print.createdAt | djsDateFormat: 'LLL'">{{ print.createdAt | djsTimeAgo }}</span></td>
       <td>
         <span *ngIf="print.startedAt && print.completedAt">{{ print.startedAt | djsDiff: print.completedAt | djsDuration }}</span>

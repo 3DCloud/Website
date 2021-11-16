@@ -11,7 +11,7 @@ const routes: Routes = [
     canActivateChild: [AuthorizationGuard],
     children: [
       { path: '', component: PrintersComponent },
-      { path: ':id', component: PrinterComponent },
+      { path: ':id/status', component: PrinterComponent },
     ],
   },
 ];

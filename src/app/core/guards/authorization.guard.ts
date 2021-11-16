@@ -37,11 +37,8 @@ export class AuthorizationGuard
   }
 
   private checkAuthorization(data: Data | undefined): Observable<boolean> {
-    if (
-      this._authenticationService.isAuthenticated &&
-      this._authenticationService.hasRole(data?.requiredRole)
-    ) {
-      return of(true);
+    if (this._authenticationService.isAuthenticated) {
+      return of(this._authenticationService.can(data?.action, data?.subject));
     }
 
     return this._authenticationService.signInIfSessionExists().pipe(

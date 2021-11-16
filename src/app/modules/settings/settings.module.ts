@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbilityModule } from '@casl/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { CoreModule } from 'app/core/core.module';
@@ -33,6 +34,7 @@ import { SettingsRouting } from './settings.routing';
     CoreModule,
     SharedModule,
     FormsModule,
+    AbilityModule,
   ],
 })
 export class SettingsModule {}

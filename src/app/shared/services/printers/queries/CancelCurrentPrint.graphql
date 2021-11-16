@@ -1,6 +1,5 @@
 mutation ($id: ID!) {
   cancelCurrentPrint(id: $id) {
     id
-    currentPrintId
   }
 }

@@ -13,7 +13,12 @@ import { Observable, of } from 'rxjs';
 import { catchError, concatMap, map } from 'rxjs/operators';
 
 import { apiUrl } from 'app/core/helpers';
-import { User } from 'app/core/models';
+import {
+  AbilityAction,
+  AbilitySubject,
+  User,
+  UserAbility,
+} from 'app/core/models';
 import { UsersService } from 'app/shared/services';
 
 interface TokenResponse {
@@ -53,7 +58,8 @@ export class AuthenticationService {
   public constructor(
     private _http: HttpClient,
     private _router: Router,
-    private _usersService: UsersService
+    private _usersService: UsersService,
+    private _ability: UserAbility
   ) {
     this._accessToken =
       window.localStorage.getItem(ACCESS_TOKEN_KEY) || undefined;
@@ -95,6 +101,8 @@ export class AuthenticationService {
   }
 
   public signOut(): void {
+    this._ability.update([]);
+
     this.post(apiUrl('/sessions/logout'), {
       token: this._refreshToken,
     }).subscribe(() => {
@@ -151,8 +159,12 @@ export class AuthenticationService {
     );
   }
 
-  public hasRole(role: string | undefined): boolean {
-    return true; // TODO: get role from back-end
+  public can(action: AbilityAction, subject: AbilitySubject): boolean {
+    if (!subject) {
+      return true;
+    }
+
+    return this._ability.can(action || 'read', subject);
   }
 
   private initiateAuthorization() {
@@ -229,8 +241,9 @@ export class AuthenticationService {
     window.localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 
     return this._usersService.getCurrentUser().pipe(
-      map((user) => {
-        this._user = user;
+      map((result) => {
+        this._user = result.currentUser;
+        this._ability.update(result.currentAbility);
         return true;
       })
     );

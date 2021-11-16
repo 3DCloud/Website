@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { Ability, PureAbility } from '@casl/ability';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import {
@@ -44,6 +45,14 @@ import {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthorizationInterceptor,
       multi: true,
+    },
+    {
+      provide: Ability,
+      useValue: new Ability(),
+    },
+    {
+      provide: PureAbility,
+      useExisting: Ability,
     },
   ],
   exports: [

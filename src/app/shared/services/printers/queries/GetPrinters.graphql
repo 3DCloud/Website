@@ -6,16 +6,5 @@ query {
     deviceId
     createdAt
     updatedAt
-    device {
-      id
-      hardwareIdentifier
-      client {
-        id
-      }
-    }
-    printerDefinition {
-      id
-      name
-    }
   }
 }

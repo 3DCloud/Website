@@ -3,4 +3,10 @@
     name
     emailAddress
   }
+  currentAbility {
+    action
+    subject
+    conditions
+    inverted
+  }
 }

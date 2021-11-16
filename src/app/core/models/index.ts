@@ -1,3 +1,5 @@
+export { AbilityAction, AbilitySubject, UserAbility } from './user-ability';
+export { AbilityRule } from './ability-rule';
 export { Client } from './client';
 export { Device } from './device';
 export { GCodeSettings } from './g-code-settings';
