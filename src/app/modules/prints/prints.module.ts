@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { AbilityModule } from '@casl/angular';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { CoreModule } from 'app/core/core.module';
@@ -16,6 +17,7 @@ import { PrintsRouting } from './prints.routing';
     CoreModule,
     NgbTooltipModule,
     SharedModule,
+    AbilityModule,
   ],
 })
 export class PrintsModule {}

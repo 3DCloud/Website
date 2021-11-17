@@ -9,7 +9,9 @@ const routes: Routes = [
   {
     path: 'prints',
     canActivateChild: [AuthorizationGuard],
-    children: [{ path: '', component: PrintsComponent }],
+    children: [
+      { path: '', component: PrintsComponent, data: { subject: 'Print' } },
+    ],
   },
 ];
 

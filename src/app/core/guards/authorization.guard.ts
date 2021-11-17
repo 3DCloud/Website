@@ -9,7 +9,7 @@ import {
   Router,
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { AuthenticationService } from 'app/core/services';
 
@@ -36,15 +36,14 @@ export class AuthorizationGuard
     return this.checkAuthorization(route.data);
   }
 
-  private checkAuthorization(data: Data | undefined): Observable<boolean> {
+  public checkAuthorization(data: Data | undefined): Observable<boolean> {
     if (this._authenticationService.isAuthenticated) {
       return of(this._authenticationService.can(data?.action, data?.subject));
     }
 
     return this._authenticationService.signInIfSessionExists().pipe(
-      catchError(() => {
-        return of(false);
-      })
+      map(() => this._authenticationService.can(data?.action, data?.subject)),
+      catchError(() => of(false))
     );
   }
 }

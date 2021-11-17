@@ -9,7 +9,13 @@ const routes: Routes = [
   {
     path: 'files',
     canActivateChild: [AuthorizationGuard],
-    children: [{ path: '', component: FilesComponent }],
+    children: [
+      {
+        path: '',
+        component: FilesComponent,
+        data: { subject: 'UploadedFile' },
+      },
+    ],
   },
 ];
 

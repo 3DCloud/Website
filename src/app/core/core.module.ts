@@ -20,6 +20,7 @@ import {
   DjsDiffPipe,
   DjsDurationPipe,
   DjsTimeAgoPipe,
+  SubjectPipe,
 } from './pipes';
 
 @NgModule({
@@ -33,6 +34,7 @@ import {
     DjsDateFormatPipe,
     DjsDurationPipe,
     DjsDiffPipe,
+    SubjectPipe,
   ],
   imports: [CommonModule, FontAwesomeModule],
   providers: [
@@ -63,6 +65,7 @@ import {
     DjsDateFormatPipe,
     DjsDiffPipe,
     DjsDurationPipe,
+    SubjectPipe,
   ],
 })
 export class CoreModule {}

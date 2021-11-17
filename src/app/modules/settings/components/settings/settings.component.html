@@ -2,7 +2,8 @@
 <div class="row mt-3">
   <div class="col-lg-3 col-md-4 col-12">
     <ul class="nav nav-pills flex-column" *ngFor="let page of pages">
-      <li class="nav-item" *ngIf="'read' | ablePure: page.ability | async">
+      <!--suppress TypeScriptValidateTypes -->
+      <li class="nav-item" *ngIf="'index' | ablePure: page.ability | async">
         <a role="button" class="nav-link" routerLinkActive="active" routerLink="{{page.path}}">{{page.name}}</a>
       </li>
     </ul>

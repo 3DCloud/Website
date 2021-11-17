@@ -10,8 +10,12 @@ const routes: Routes = [
     path: 'printers',
     canActivateChild: [AuthorizationGuard],
     children: [
-      { path: '', component: PrintersComponent },
-      { path: ':id/status', component: PrinterComponent },
+      { path: '', component: PrintersComponent, data: { subject: 'Printer' } },
+      {
+        path: ':id/status',
+        component: PrinterComponent,
+        data: { subject: 'Printer' },
+      },
     ],
   },
 ];

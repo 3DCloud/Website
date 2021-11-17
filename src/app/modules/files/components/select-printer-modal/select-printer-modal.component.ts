@@ -64,7 +64,7 @@ export class SelectPrinterModalComponent implements OnInit, OnDestroy {
     this._printsService.startPrint(this.fileId, printerId).subscribe(
       () => {
         this.modal.dismiss();
-        this._router.navigate(['/printers', printerId]);
+        this._router.navigate(['/printers', printerId, 'status']).then();
       },
       (err) => {
         this.busy = false;

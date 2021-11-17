@@ -164,7 +164,7 @@ export class AuthenticationService {
       return true;
     }
 
-    return this._ability.can(action || 'read', subject);
+    return this._ability.can(action || 'index', subject);
   }
 
   private initiateAuthorization() {

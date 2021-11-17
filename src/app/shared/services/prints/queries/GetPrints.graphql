@@ -3,6 +3,7 @@ query GetPrints {
     id
     uploadedFile {
       id
+      userId
       filename
       byteSize
     }
