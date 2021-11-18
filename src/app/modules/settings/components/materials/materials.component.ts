@@ -11,6 +11,10 @@ import { Subscription } from 'rxjs';
 import { Material } from 'app/core/models';
 import { MaterialsService } from 'app/shared/services';
 
+interface MaterialItem extends Material {
+  deleting: boolean;
+}
+
 @Component({
   selector: 'app-materials',
   templateUrl: './materials.component.html',
@@ -27,7 +31,7 @@ export class MaterialsComponent implements OnInit, OnDestroy {
 
   public loading = true;
   public error?: string;
-  public materials?: Material[];
+  public materials?: MaterialItem[];
 
   private _subscriptions: Subscription[] = [];
 
@@ -39,7 +43,10 @@ export class MaterialsComponent implements OnInit, OnDestroy {
         .getMaterials()
         .subscribe(
           (materials) => {
-            this.materials = materials;
+            this.materials = materials.map((material) => ({
+              ...material,
+              deleting: false,
+            }));
           },
           (err) => {
             this.error = err;
@@ -51,11 +58,19 @@ export class MaterialsComponent implements OnInit, OnDestroy {
     );
   }
 
-  public delete(id: string): void {
+  public delete(material: MaterialItem): void {
+    material.deleting = true;
+
     this._subscriptions.push(
-      this._materialsService.deleteMaterial(id).subscribe(() => {
-        this.materials = this.materials?.filter((m) => m.id !== id);
-      })
+      this._materialsService.deleteMaterial(material.id).subscribe(
+        () => {
+          this.materials = this.materials?.filter((m) => m.id !== material.id);
+        },
+        (error) => {
+          this.error = error;
+          material.deleting = false;
+        }
+      )
     );
   }
 

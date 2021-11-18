@@ -11,6 +11,10 @@ import { Subscription } from 'rxjs';
 import { PrinterDefinition } from 'app/core/models';
 import { PrinterDefinitionsService } from 'app/shared/services';
 
+interface PrinterDefinitionItem extends PrinterDefinition {
+  deleting: boolean;
+}
+
 @Component({
   selector: 'app-printer-definitions',
   templateUrl: './printer-definitions.component.html',
@@ -18,7 +22,7 @@ import { PrinterDefinitionsService } from 'app/shared/services';
 })
 export class PrinterDefinitionsComponent implements OnInit, OnDestroy {
   public loading = true;
-  public printerDefinitions?: PrinterDefinition[];
+  public printerDefinitions?: PrinterDefinitionItem[];
   public error?: string;
 
   public icons = {
@@ -39,7 +43,12 @@ export class PrinterDefinitionsComponent implements OnInit, OnDestroy {
     this._subscriptions.push(
       this._printerDefinitionsService.getPrinterDefinitions().subscribe(
         (printerDefinitions) => {
-          this.printerDefinitions = printerDefinitions;
+          this.printerDefinitions = printerDefinitions.map(
+            (printerDefinition) => ({
+              ...printerDefinition,
+              deleting: false,
+            })
+          );
           this.loading = false;
         },
         (err) => {
@@ -56,16 +65,23 @@ export class PrinterDefinitionsComponent implements OnInit, OnDestroy {
     }
   }
 
-  public deletePrinterDefinition(id: string): void {
-    this._printerDefinitionsService.deletePrinterDefinition(id).subscribe(
-      () => {
-        this.printerDefinitions = this.printerDefinitions?.filter(
-          (pd) => pd.id !== id
-        );
-      },
-      (err) => {
-        this.error = err;
-      }
-    );
+  public deletePrinterDefinition(
+    printerDefinition: PrinterDefinitionItem
+  ): void {
+    printerDefinition.deleting = true;
+
+    this._printerDefinitionsService
+      .deletePrinterDefinition(printerDefinition.id)
+      .subscribe(
+        () => {
+          this.printerDefinitions = this.printerDefinitions?.filter(
+            (pd) => pd.id !== printerDefinition.id
+          );
+        },
+        (err) => {
+          this.error = err;
+          printerDefinition.deleting = false;
+        }
+      );
   }
 }

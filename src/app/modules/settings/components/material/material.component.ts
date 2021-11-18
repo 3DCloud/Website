@@ -19,6 +19,9 @@ export class MaterialComponent implements OnInit, OnDestroy {
     faSave,
   };
 
+  public loading = true;
+  public error?: unknown;
+
   public materialId: string | null = null;
   public materialColors = new FormArray([]);
   public form = new FormGroup({
@@ -47,13 +50,23 @@ export class MaterialComponent implements OnInit, OnDestroy {
           this._subscriptions.push(
             this._materialsService
               .getMaterial(this.materialId)
-              .subscribe((material) => {
-                for (let i = 0; i < material.materialColors!.length; i++) {
-                  this.materialColors.push(this.createColor());
+              .subscribe(
+                (material) => {
+                  for (let i = 0; i < material.materialColors!.length; i++) {
+                    this.materialColors.push(this.createColor());
+                  }
+                  this.form.patchValue(material);
+                },
+                (err) => {
+                  this.error = err;
                 }
-                this.form.patchValue(material);
+              )
+              .add(() => {
+                this.loading = false;
               })
           );
+        } else {
+          this.loading = false;
         }
       })
     );
@@ -87,9 +100,16 @@ export class MaterialComponent implements OnInit, OnDestroy {
       );
     }
 
-    request.subscribe(() => {
-      this._router.navigate(['..'], { relativeTo: this._route }).then();
-    });
+    this._subscriptions.push(
+      request.subscribe(
+        () => {
+          this._router.navigate(['..'], { relativeTo: this._route }).then();
+        },
+        (err) => {
+          this.error = err;
+        }
+      )
+    );
   }
 
   public ngOnDestroy(): void {
@@ -102,7 +122,7 @@ export class MaterialComponent implements OnInit, OnDestroy {
     return new FormGroup({
       id: new FormControl(null),
       name: new FormControl(null, Validators.required),
-      color: new FormControl(null, Validators.required),
+      color: new FormControl('#000000', Validators.required),
     });
   }
 }

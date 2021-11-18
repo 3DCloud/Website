@@ -23,7 +23,7 @@
           <td>{{ printerDefinition.name }}</td>
           <td>
             <a role="button" class="btn btn-light" [routerLink]="printerDefinition.id" title="Edit"><fa-icon [icon]="icons.faEdit"></fa-icon></a>
-            <button class="btn btn-danger ml-1" (click)="deletePrinterDefinition(printerDefinition.id)" title="Delete"><fa-icon [icon]="icons.faTrash"></fa-icon></button>
+            <button class="btn btn-danger ml-1" (click)="deletePrinterDefinition(printerDefinition)" title="Delete" [disabled]="printerDefinition.deleting"><fa-icon [icon]="icons.faTrash"></fa-icon></button>
           </td>
         </tr>
       </tbody>
