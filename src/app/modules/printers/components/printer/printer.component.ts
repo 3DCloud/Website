@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 import { Printer, PrinterState } from 'app/core/models';
 import { AuthenticationService } from 'app/core/services';
 import { PrintersService, UsersService } from 'app/shared/services';
+import { environment } from 'environments/environment';
 
 interface Temperature {
   name: string;
@@ -76,7 +77,7 @@ export class PrinterComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this._usersService.getWebSocketTicket().subscribe((ticket) => {
         this._consumer = actioncable.createConsumer(
-          'ws://localhost:3000/cable?ticket=' + encodeURIComponent(ticket ?? '')
+          `${environment.cableUrl}?ticket=${encodeURIComponent(ticket)}`
         );
 
         this._consumer.connect();
