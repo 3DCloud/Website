@@ -28,7 +28,6 @@ interface Temperatures {
 }
 
 interface PrinterStateObj {
-  hardware_identifier: string;
   printer_state: PrinterState;
   temperatures?: Temperatures;
   progress?: number;

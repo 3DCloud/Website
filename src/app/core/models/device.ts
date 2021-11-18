@@ -3,9 +3,9 @@ import { Printer } from './printer';
 
 export interface Device {
   id: string;
-  deviceName: string;
-  hardwareIdentifier: string;
-  isPortableHardwareIdentifier: boolean;
+  name: string;
+  path: string;
+  serialNumber?: string;
   lastSeen: Date;
   clientId: string;
   client?: Client;

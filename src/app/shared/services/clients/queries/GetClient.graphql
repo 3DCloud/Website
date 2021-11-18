@@ -7,9 +7,8 @@ query ($clientId: ID!) {
     updatedAt
     devices {
       id
-      deviceName
-      hardwareIdentifier
-      isPortableHardwareIdentifier
+      path
+      serialNumber
       lastSeen
       createdAt
       updatedAt
