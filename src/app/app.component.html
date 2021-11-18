@@ -5,63 +5,71 @@
   [message]="error"></app-loading-overlay>
 
 <ng-container *ngIf="loaded">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-    <div class="container">
-      <a class="navbar-brand" routerLink="/">
-        <img class="d-inline-block align-top" src="assets/maker-repo-print.svg" alt="MakerRepo Print" height="40" />
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+  <div class="page-container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+      <div class="container">
+        <a class="navbar-brand" routerLink="/">
+          <img class="d-inline-block align-top" src="assets/maker-repo-print.svg" alt="MakerRepo Print" height="40" />
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <!--suppress TypeScriptValidateTypes -->
-          <li class="nav-item" routerLinkActive="active" *ngIf="'index' | ablePure: 'UploadedFile' | async">
-            <a class="nav-link" routerLink="files">Files</a>
-          </li>
-          <!--suppress TypeScriptValidateTypes -->
-          <li class="nav-item" routerLinkActive="active" *ngIf="'index' | ablePure: 'Printer' | async">
-            <a class="nav-link" routerLink="prints">Prints</a>
-          </li>
-          <!--suppress TypeScriptValidateTypes -->
-          <li class="nav-item" routerLinkActive="active" *ngIf="'index' | ablePure: 'Client' | async">
-            <a class="nav-link" routerLink="clients">Clients</a>
-          </li>
-          <!--suppress TypeScriptValidateTypes -->
-          <li class="nav-item" routerLinkActive="active" *ngIf="'index' | ablePure: 'Printer' | async">
-            <a class="nav-link" routerLink="printers">Printers</a>
-          </li>
-          <!--suppress TypeScriptValidateTypes -->
-          <li class="nav-item"
-              routerLinkActive="active"
-              *ngIf="('index' | ablePure: 'GeneralSetting' | async) ||
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <!--suppress TypeScriptValidateTypes -->
+            <li class="nav-item" routerLinkActive="active" *ngIf="'index' | ablePure: 'UploadedFile' | async">
+              <a class="nav-link" routerLink="files">Files</a>
+            </li>
+            <!--suppress TypeScriptValidateTypes -->
+            <li class="nav-item" routerLinkActive="active" *ngIf="'index' | ablePure: 'Printer' | async">
+              <a class="nav-link" routerLink="prints">Prints</a>
+            </li>
+            <!--suppress TypeScriptValidateTypes -->
+            <li class="nav-item" routerLinkActive="active" *ngIf="'index' | ablePure: 'Client' | async">
+              <a class="nav-link" routerLink="clients">Clients</a>
+            </li>
+            <!--suppress TypeScriptValidateTypes -->
+            <li class="nav-item" routerLinkActive="active" *ngIf="'index' | ablePure: 'Printer' | async">
+              <a class="nav-link" routerLink="printers">Printers</a>
+            </li>
+            <!--suppress TypeScriptValidateTypes -->
+            <li class="nav-item"
+                routerLinkActive="active"
+                *ngIf="('index' | ablePure: 'GeneralSetting' | async) ||
                      ('index' | ablePure: 'PrinterDefinition' | async) ||
                      ('index' | ablePure: 'Material' | async)">
-            <a class="nav-link" routerLink="settings">Settings</a>
-          </li>
-        </ul>
+              <a class="nav-link" routerLink="settings">Settings</a>
+            </li>
+          </ul>
 
-        <ul class="navbar-nav">
-          <li class="nav-item" *ngIf="!isAuthenticated">
-            <a role="button" class="nav-link" (click)="signIn()">Sign In</a>
-          </li>
-          <li class="nav-item dropdown" ngbDropdown *ngIf="isAuthenticated">
-            <a role="button" class="nav-link" ngbDropdownToggle>
-              <img class="avatar" src="{{ gravatarUrl }}" alt="" />
-              <span class="user-name">{{ currentUser?.name }}</span>
-            </a>
-            <div class="dropdown-menu" ngbDropdownMenu>
-              <a role="button" class="dropdown-item" (click)="signOut()">Sign Out</a>
-            </div>
-          </li>
-        </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item" *ngIf="!isAuthenticated">
+              <a role="button" class="nav-link" (click)="signIn()">Sign In</a>
+            </li>
+            <li class="nav-item dropdown" ngbDropdown *ngIf="isAuthenticated">
+              <a role="button" class="nav-link" ngbDropdownToggle>
+                <img class="avatar" src="{{ gravatarUrl }}" alt="" />
+                <span class="user-name">{{ currentUser?.name }}</span>
+              </a>
+              <div class="dropdown-menu" ngbDropdownMenu>
+                <a role="button" class="dropdown-item" (click)="signOut()">Sign Out</a>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
-  <div class="content container">
-    <router-outlet></router-outlet>
+    <div class="content container">
+      <router-outlet></router-outlet>
+    </div>
+
+    <footer class="text-muted">
+      <div class="container">
+        Copyright &copy; 2021 Nicolas Gnyra and <a href="https://github.com/orgs/3DCloud/people">MakerRepo Print contributors</a>.
+      </div>
+    </footer>
   </div>
 
 </ng-container>
