@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { mapMutationResult } from 'app/core/helpers';
 import { PrinterDefinition } from 'app/core/models';
+import { PrinterDefinitionInput } from 'app/core/models/input';
 
 import CreatePrinterDefinition from './queries/CreatePrinterDefinition.graphql';
 import DeletePrinterDefinition from './queries/DeletePrinterDefinition.graphql';
@@ -36,7 +37,7 @@ export class PrinterDefinitionsService {
   }
 
   public createPrinterDefinition(
-    printerDefinition: PrinterDefinition
+    printerDefinition: PrinterDefinitionInput
   ): Observable<PrinterDefinition> {
     return this._apollo
       .mutate<{ createPrinterDefinition: PrinterDefinition }>({
@@ -48,7 +49,7 @@ export class PrinterDefinitionsService {
 
   public updatePrinterDefinition(
     id: string,
-    printerDefinition: PrinterDefinition
+    printerDefinition: PrinterDefinitionInput
   ): Observable<PrinterDefinition> {
     return this._apollo
       .mutate<{ updatePrinterDefinition: PrinterDefinition }>({

@@ -12,6 +12,17 @@
     <form *ngIf="!loading.printerDefinition" [formGroup]="form" (ngSubmit)="submit()">
       <h4>General</h4>
 
+      <div class="form-group">
+        <label class="image-input">
+          Thumbnail
+          <span *ngIf="thumbnailUrl" class="image-preview" [style.background-image]="'url(' + thumbnailUrl + ')'"></span>
+        </label>
+        <input type="file" (change)="fileChanged($event)" accept="image/png, image/jpeg, image/bmp" [class.is-invalid]="formControls.thumbnailSignedId | isInvalid"/>
+        <div class="invalid-feedback">
+          Thumbnail is required.
+        </div>
+      </div>
+
       <div class="row">
         <div class="form-group col-md-6 col-12">
           <label for="name">Name</label>

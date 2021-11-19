@@ -13,7 +13,10 @@
     width: 15rem;
 
     .printer-icon {
-      width: 150px;
+      height: 12rem;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
     }
 
     .printer-name {

@@ -1,0 +1,13 @@
+.image-input {
+  display: block;
+
+  .image-preview {
+    display: block;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    width: 15rem;
+    height: 15rem;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+}

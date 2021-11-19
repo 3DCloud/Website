@@ -11,13 +11,9 @@ import { Observable } from 'rxjs';
 import { last, map, tap } from 'rxjs/operators';
 
 import { mapMutationResult } from 'app/core/helpers';
-import { UploadFileRequest, UploadedFile } from 'app/core/models';
+import { UploadFileRequest } from 'app/core/models';
 
 import CreateUploadFileRequest from './queries/CreateUploadFileRequest.graphql';
-import DeleteUploadedFile from './queries/DeleteUploadedFile.graphql';
-import GetDownloadUrl from './queries/GetDownloadUrl.graphql';
-import GetFiles from './queries/GetFiles.graphql';
-import RecordFileUploaded from './queries/RecordFileUploaded.graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -25,12 +21,24 @@ import RecordFileUploaded from './queries/RecordFileUploaded.graphql';
 export class FilesService {
   public constructor(private _apollo: Apollo, private _http: HttpClient) {}
 
-  public getFiles(): Observable<UploadedFile[]> {
-    return this._apollo
-      .query<{ uploadedFiles: UploadedFile[] }>({
-        query: GetFiles,
-      })
-      .pipe(map((result) => result.data.uploadedFiles));
+  public readAsArrayBuffer(file: File): Observable<ArrayBuffer> {
+    return new Observable<ArrayBuffer>((sub) => {
+      const fileReader = new FileReader();
+
+      fileReader.onloadend = () => {
+        sub.next(fileReader.result as ArrayBuffer);
+      };
+
+      fileReader.onerror = () => {
+        sub.error(fileReader.error);
+      };
+
+      fileReader.onerror = () => {
+        sub.error(fileReader.error);
+      };
+
+      fileReader.readAsArrayBuffer(file);
+    });
   }
 
   public requestFileUpload(
@@ -43,7 +51,7 @@ export class FilesService {
         variables: {
           filename: file.name,
           byteSize: file.size,
-          contentType: file.type.length
+          contentType: file.type?.length
             ? file.type
             : 'application/octet-stream',
           checksum,
@@ -74,32 +82,5 @@ export class FilesService {
       last(),
       map((e) => e as HttpResponse<unknown>)
     );
-  }
-
-  public recordUpload(signedId: string): Observable<UploadedFile> {
-    return this._apollo
-      .mutate<{ recordFileUploaded: UploadedFile }>({
-        mutation: RecordFileUploaded,
-        variables: { signedId },
-      })
-      .pipe(mapMutationResult((data) => data.recordFileUploaded));
-  }
-
-  public getDownloadUrl(id: string): Observable<string> {
-    return this._apollo
-      .query<{ uploadedFile: UploadedFile }>({
-        query: GetDownloadUrl,
-        variables: { id },
-      })
-      .pipe(map((result) => result.data.uploadedFile.url));
-  }
-
-  public delete(id: string): Observable<UploadedFile> {
-    return this._apollo
-      .mutate<{ deleteUploadedFile: UploadedFile }>({
-        mutation: DeleteUploadedFile,
-        variables: { id },
-      })
-      .pipe(mapMutationResult((data) => data.deleteUploadedFile));
   }
 }

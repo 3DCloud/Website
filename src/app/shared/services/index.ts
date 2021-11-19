@@ -4,4 +4,5 @@ export { MaterialsService } from './materials/materials.service';
 export { PrinterDefinitionsService } from './printer-definitions/printer-definitions.service';
 export { PrintersService } from './printers/printers.service';
 export { PrintsService } from './prints/prints.service';
+export { UploadedFilesService } from './uploaded-files/uploaded-files.service';
 export { UsersService } from './users/users.service';

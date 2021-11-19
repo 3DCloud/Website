@@ -10,12 +10,18 @@ import { faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import md5 from 'js-md5';
 import { Subscription } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 
 import { UploadedFile } from 'app/core/models';
 import { SelectPrinterModalComponent } from 'app/modules/files/components';
-import { FilesService, PrintsService, UsersService } from 'app/shared/services';
+import {
+  FilesService,
+  PrintsService,
+  UploadedFilesService,
+  UsersService,
+} from 'app/shared/services';
 
-interface UploadedFileUI extends UploadedFile {
+interface UploadedFileItem extends UploadedFile {
   busy: boolean;
 }
 
@@ -35,7 +41,7 @@ export class FilesComponent implements OnInit, OnDestroy {
   public loading = true;
   public hover = false;
   public error?: unknown;
-  public files: UploadedFileUI[] = [];
+  public files: UploadedFileItem[] = [];
   public uploadStatus = {
     uploading: false,
     step: 'starting',
@@ -60,6 +66,7 @@ export class FilesComponent implements OnInit, OnDestroy {
     private _usersService: UsersService,
     private _printsService: PrintsService,
     private _filesService: FilesService,
+    private _uploadedFilesService: UploadedFilesService,
     private _router: Router
   ) {}
 
@@ -70,7 +77,7 @@ export class FilesComponent implements OnInit, OnDestroy {
     document.addEventListener('drop', this.dragStop);
 
     this._subscriptions.push(
-      this._filesService.getFiles().subscribe(
+      this._uploadedFilesService.getFiles().subscribe(
         (files) => {
           this.loading = false;
           this.files = files.map((f) => ({ ...f, busy: false }));
@@ -120,48 +127,39 @@ export class FilesComponent implements OnInit, OnDestroy {
       this.uploadStatus.progress = progress * 100;
     };
 
-    file.arrayBuffer().then((buffer) => {
-      const checksum = md5.base64(buffer);
+    this._filesService
+      .readAsArrayBuffer(file)
+      .pipe(
+        concatMap((buffer) => {
+          const checksum = md5.base64(buffer);
 
-      this._subscriptions.push(
-        this._filesService.requestFileUpload(file, checksum).subscribe(
-          ({ url, headers, signedId }) => {
-            this.uploadStatus.step = 'uploading';
+          return this._filesService.requestFileUpload(file, checksum).pipe(
+            concatMap(({ url, headers, signedId }) => {
+              this.uploadStatus.step = 'uploading';
 
-            this._subscriptions.push(
-              this._filesService
+              return this._filesService
                 .uploadFile(url, buffer, headers, progressCallback)
-                .subscribe(
-                  () => {
+                .pipe(
+                  concatMap(() => {
                     this.uploadStatus.step = 'processing';
-                    this._subscriptions.push(
-                      this._filesService.recordUpload(signedId).subscribe(
-                        (file) => {
-                          this.files.splice(0, 0, { ...file, busy: false });
-                          this.uploadStatus.uploading = false;
-                          this.uploadStatus.success = true;
-                        },
-                        (err) => {
-                          this.uploadStatus.uploading = false;
-                          this.uploadStatus.error = err;
-                        }
-                      )
-                    );
-                  },
-                  (err) => {
-                    this.uploadStatus.uploading = false;
-                    this.uploadStatus.error = err;
-                  }
-                )
-            );
-          },
-          (err) => {
-            this.uploadStatus.uploading = false;
-            this.uploadStatus.error = err;
-          }
-        )
+                    return this._uploadedFilesService.recordUpload(signedId);
+                  })
+                );
+            })
+          );
+        })
+      )
+      .subscribe(
+        (uploadedFile) => {
+          this.files.splice(0, 0, { ...uploadedFile, busy: false });
+          this.uploadStatus.uploading = false;
+          this.uploadStatus.success = true;
+        },
+        (err) => {
+          this.uploadStatus.uploading = false;
+          this.uploadStatus.error = err;
+        }
       );
-    });
   }
 
   public showSelectPrinterModal(fileId: string): void {
@@ -178,14 +176,14 @@ export class FilesComponent implements OnInit, OnDestroy {
   }
 
   public downloadFile(fileId: string): void {
-    this._filesService.getDownloadUrl(fileId).subscribe((url) => {
+    this._uploadedFilesService.getDownloadUrl(fileId).subscribe((url) => {
       location.assign(url);
     });
   }
 
-  public deleteFile(file: UploadedFileUI): void {
+  public deleteFile(file: UploadedFileItem): void {
     file.busy = true;
-    this._filesService.delete(file.id).subscribe((deleted) => {
+    this._uploadedFilesService.delete(file.id).subscribe((deleted) => {
       this.files = this.files.filter((f) => f.id != deleted.id);
     });
   }

@@ -1,6 +1,12 @@
 query {
   printers {
     id
+    printerDefinition {
+      name
+      thumbnail {
+        url
+      }
+    }
     name
     state
     deviceId

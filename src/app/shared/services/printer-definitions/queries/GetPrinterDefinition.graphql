@@ -3,6 +3,9 @@ query ($id: ID!) {
     id
     name
     extruderCount
+    thumbnail {
+      url
+    }
     gCodeSettings {
       id
       startGCode

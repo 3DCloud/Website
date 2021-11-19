@@ -3,7 +3,7 @@ import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 
 import { Print } from 'app/core/models';
-import { FilesService, PrintsService } from 'app/shared/services';
+import { PrintsService, UploadedFilesService } from 'app/shared/services';
 
 @Component({
   selector: 'app-prints',
@@ -23,7 +23,7 @@ export class PrintsComponent implements OnInit, OnDestroy {
 
   public constructor(
     private _printsService: PrintsService,
-    private _filesService: FilesService
+    private _uploadedFilesService: UploadedFilesService
   ) {}
 
   public ngOnInit(): void {
@@ -42,7 +42,7 @@ export class PrintsComponent implements OnInit, OnDestroy {
   }
 
   public downloadFile(fileId: string): void {
-    this._filesService.getDownloadUrl(fileId).subscribe((url) => {
+    this._uploadedFilesService.getDownloadUrl(fileId).subscribe((url) => {
       location.assign(url);
     });
   }

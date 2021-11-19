@@ -11,7 +11,8 @@
 
   <div *ngIf="printers && !busy && !error" class="printers">
     <div class="printer" *ngFor="let printer of printers">
-      <img class="printer-icon" src="https://via.placeholder.com/150" alt=""/>
+      <div class="printer-icon"
+            [style.background-image]="printer.printerDefinition?.thumbnail?.url ? 'url(' + printer.printerDefinition?.thumbnail?.url + ')' : 'https://via.placeholder.com/150'"></div>
       <div class="printer-name">{{ printer.name }}</div>
       <app-printer-state-badge [state]="printer.state"></app-printer-state-badge>
       <div class="printer-type">{{ printer.printerDefinition?.name }}</div>
