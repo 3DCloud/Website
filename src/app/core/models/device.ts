@@ -8,7 +8,7 @@ export interface Device {
   serialNumber?: string;
   lastSeen: Date;
   clientId: string;
-  client?: Client;
+  client: Client;
   createdAt: Date;
   updatedAt: Date;
   printerId: string;

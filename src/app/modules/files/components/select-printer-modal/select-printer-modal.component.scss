@@ -36,9 +36,11 @@
 
 .dot {
   display: inline-block;
-  width: 0.8em;
-  height: 0.8em;
+  width: 1em;
+  height: 1em;
   border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  vertical-align: -0.125em;
 }
 
 .starting-print-spinner {

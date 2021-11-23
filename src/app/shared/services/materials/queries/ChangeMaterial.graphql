@@ -1,0 +1,11 @@
+mutation ($printerId: ID!, $extruderIndex: Int!, $materialColorId: ID!, $weight: Int) {
+  changeMaterial(printerId: $printerId, extruderIndex: $extruderIndex, materialColorId: $materialColorId, weight: $weight) {
+    extruderIndex
+    materialColor {
+      name
+      material {
+        name
+      }
+    }
+  }
+}

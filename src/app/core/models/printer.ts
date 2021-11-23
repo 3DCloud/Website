@@ -1,5 +1,6 @@
 import { Device } from './device';
 import { PrinterDefinition } from './printer-definition';
+import { PrinterExtruder } from './printer-extruder';
 import { PrinterState } from './printer-state';
 
 export interface Printer {
@@ -8,7 +9,8 @@ export interface Printer {
   createdAt: Date;
   updatedAt: Date;
   deviceId: string;
-  device?: Device;
+  device: Device;
   state: PrinterState;
-  printerDefinition?: PrinterDefinition;
+  printerDefinition: PrinterDefinition;
+  printerExtruders: (PrinterExtruder | undefined)[];
 }

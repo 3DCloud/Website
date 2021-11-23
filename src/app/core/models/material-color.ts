@@ -2,7 +2,7 @@ import { Material } from './material';
 
 export interface MaterialColor {
   id: string;
-  material?: Material;
+  material: Material;
   name: string;
   color: string;
   createdAt: Date;

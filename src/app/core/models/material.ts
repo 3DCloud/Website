@@ -4,5 +4,5 @@ export interface Material {
   id: string;
   name: string;
   brand: string;
-  materialColors?: MaterialColor[];
+  materialColors: MaterialColor[];
 }

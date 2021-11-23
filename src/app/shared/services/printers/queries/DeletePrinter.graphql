@@ -1,5 +1,5 @@
 mutation ($id: ID!) {
   deletePrinter(id: $id) {
-    deleteCount
+    id
   }
 }

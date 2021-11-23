@@ -4,15 +4,17 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { mapMutationResult } from 'app/core/helpers';
-import { Printer } from 'app/core/models';
+import { MaterialColor, Printer, PrinterInput } from 'app/core/models';
 
 import CancelCurrentPrint from './queries/CancelCurrentPrint.graphql';
 import CreatePrinter from './queries/CreatePrinter.graphql';
 import DeletePrinter from './queries/DeletePrinter.graphql';
 import GetPrinter from './queries/GetPrinter.graphql';
+import GetPrinterWithMaterials from './queries/GetPrinterWithMaterials.graphql';
 import GetPrinters from './queries/GetPrinters.graphql';
 import ReassignPrinter from './queries/ReassignPrinter.graphql';
 import ReconnectPrinter from './queries/ReconnectPrinter.graphql';
+import UpdatePrinter from './queries/UpdatePrinter.graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +32,20 @@ export class PrintersService {
     return this._apollo
       .query<{ printer: Printer }>({ query: GetPrinter, variables: { id } })
       .pipe(map((result) => result.data.printer));
+  }
+
+  public getPrinterSettings(
+    id: string
+  ): Observable<{ printer: Printer; materialColors: MaterialColor[] }> {
+    return this._apollo
+      .query<{
+        printer: Printer;
+        materialColors: MaterialColor[];
+      }>({
+        query: GetPrinterWithMaterials,
+        variables: { id },
+      })
+      .pipe(map((result) => result.data));
   }
 
   public createPrinter(
@@ -55,6 +71,15 @@ export class PrintersService {
         variables: { deviceId, printerId },
       })
       .pipe(mapMutationResult((data) => data.reassignPrinter));
+  }
+
+  public updatePrinter(id: string, printer: PrinterInput): Observable<Printer> {
+    return this._apollo
+      .mutate<{ printer: Printer }>({
+        mutation: UpdatePrinter,
+        variables: { id, printer },
+      })
+      .pipe(mapMutationResult((result) => result.printer));
   }
 
   public deletePrinter(id: string): Observable<void> {

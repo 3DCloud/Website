@@ -3,7 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthorizationGuard } from 'app/core/guards';
 
-import { PrinterComponent, PrintersComponent } from './components';
+import {
+  PrinterComponent,
+  PrinterSettingsComponent,
+  PrintersComponent,
+} from './components';
 
 const routes: Routes = [
   {
@@ -11,6 +15,11 @@ const routes: Routes = [
     canActivateChild: [AuthorizationGuard],
     children: [
       { path: '', component: PrintersComponent, data: { subject: 'Printer' } },
+      {
+        path: ':id/settings',
+        component: PrinterSettingsComponent,
+        data: { subject: 'Printer' },
+      },
       {
         path: ':id/status',
         component: PrinterComponent,

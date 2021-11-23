@@ -1,0 +1,6 @@
+mutation ($id: ID!, $printer: PrinterInput!) {
+  updatePrinter(id: $id, printer: $printer) {
+    id
+    name
+  }
+}

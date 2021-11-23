@@ -1,17 +1,27 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { CoreModule } from 'app/core/core.module';
 import { SharedModule } from 'app/shared/shared.module';
 
-import { PrinterComponent, PrintersComponent } from './components';
+import {
+  ChangeMaterialModalComponent,
+  PrinterComponent,
+  PrinterSettingsComponent,
+  PrintersComponent,
+} from './components';
 import { PrintersRouting } from './printers.routing';
 
 @NgModule({
-  declarations: [PrintersComponent, PrinterComponent],
+  declarations: [
+    ChangeMaterialModalComponent,
+    PrinterComponent,
+    PrinterSettingsComponent,
+    PrintersComponent,
+  ],
   imports: [
     CommonModule,
     PrintersRouting,
@@ -20,6 +30,7 @@ import { PrintersRouting } from './printers.routing';
     FontAwesomeModule,
     SharedModule,
     NgbModule,
+    ReactiveFormsModule,
   ],
   exports: [PrinterComponent],
 })

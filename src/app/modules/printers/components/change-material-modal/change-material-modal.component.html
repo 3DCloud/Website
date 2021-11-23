@@ -1,0 +1,38 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Change Material</h4>
+</div>
+<div class="modal-body">
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <app-spinner *ngIf="loading"></app-spinner>
+
+  <app-alert *ngIf="!loading && !materials?.length">There are no materials from which to choose.</app-alert>
+
+  <ng-container *ngIf="materials && materials.length">
+    <div class="form-group" *ngIf="printer && printer.printerDefinition.extruderCount > 1">
+      <label for="extruder">Extruder</label>
+      <select class="form-control" id="extruder" [(ngModel)]="extruderIndex" [disabled]="loading">
+        <option *ngFor="let i of printer.printerDefinition.extruderCount | times" [ngValue]="i">Extruder {{ i + 1 }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="material">Material</label>
+      <select class="form-control" id="material" [(ngModel)]="materialIndex" [disabled]="loading">
+        <option *ngFor="let material of materials; let i = index" [ngValue]="i">{{ material.name }} ({{ material.brand }})</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="material-color">Color</label>
+      <select class="form-control" id="material-color" [(ngModel)]="materialColorIndex" [disabled]="loading">
+        <option *ngFor="let materialColor of materials[materialIndex].materialColors; let i = index" [ngValue]="i">{{ materialColor.name }}</option>
+      </select>
+    </div>
+  </ng-container>
+</div>
+<div class="modal-footer">
+  <button type="submit" class="btn btn-primary" (click)="submit()" [disabled]="!isValid || busy">
+    <ng-container *ngIf="!busy">Save</ng-container>
+    <app-spinner *ngIf="busy" size="medium"></app-spinner>
+  </button>
+  <button type="button" class="btn btn-secondary" (click)="modal.dismiss()" [disabled]="busy">Cancel</button>
+</div>

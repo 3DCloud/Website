@@ -10,6 +10,7 @@ export interface PrinterDefinition {
     contentType: string;
     url: string;
   };
+  extruderCount: number;
   gCodeSettings?: GCodeSettings;
   ultiGCodeSettings?: UltiGCodeSettings[];
 }

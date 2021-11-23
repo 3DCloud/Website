@@ -6,16 +6,23 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th>Model</th>
       <th>State</th>
       <th>Client</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let printer of printers">
       <td><a [routerLink]="[printer.id, 'status']">{{ printer.name }}</a></td>
+      <td>{{ printer.printerDefinition.name }}</td>
       <td><app-printer-state-badge [state]="printer.state"></app-printer-state-badge></td>
       <td>
-        <a *ngIf="printer.device" [routerLink]="['/clients', printer.device?.client!.id]">{{ printer.device.client!.id }}</a>
+        <a *ngIf="printer.device" [routerLink]="['/clients', printer.device.client.id]">{{ printer.device.client.id }}</a>
+      </td>
+      <td>
+        <button type="button" class="btn btn-primary" (click)="showChangeMaterialModal(printer)">Change Material&hellip;</button>
+        <a class="btn btn-light ml-1" [routerLink]="[printer.id, 'settings']"><fa-icon [icon]="icons.faWrench"></fa-icon></a>
       </td>
     </tr>
   </tbody>

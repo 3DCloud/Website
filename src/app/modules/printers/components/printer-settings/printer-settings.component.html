@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-xl-6 offset-xl-3 col-12">
+    <h1>Printer Settings <small class="text-muted" *ngIf="printer">{{ printer.name }}</small></h1>
+
+    <app-spinner *ngIf="loading"></app-spinner>
+
+    <app-alert *ngIf="error" [icon]="icons.faExclamationTriangle" type="danger">{{ error }}</app-alert>
+
+    <form *ngIf="!loading" [formGroup]="form" (ngSubmit)="submit()">
+      <ng-container formGroupName="printerExtruders">
+        <ng-container *ngFor="let extruder of formControls.printerExtruders.controls; let i = index" [formArrayName]="i">
+          <h2>Extruder {{ extruder.get('extruderIndex')!.value + 1 }}</h2>
+
+          <div class="form-group">
+            <label>Loaded Material</label>
+            <div class="form-group d-flex flex-row align-items-center" *ngIf="printer?.printerExtruders![i]?.materialColor as materialColor">
+              <span class="dot" [style.background-color]="materialColor.color"></span>
+              <span class="mr-2 ml-2">{{ materialColor.material.name }} ({{ materialColor.name }})</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Nozzle Size</label>
+            <select class="form-control" formControlName="ultiGCodeNozzleSize">
+              <option [ngValue]="null">None</option>
+              <option *ngFor="let nozzleSize of nozzleSizes; let i = index" [value]="nozzleSize">{{ nozzleSizeNames[i] }}</option>
+            </select>
+          </div>
+        </ng-container>
+      </ng-container>
+
+      <button class="btn btn-success" type="submit"><fa-icon [icon]="icons.faSave"></fa-icon> Save</button>
+      <a class="btn btn-secondary ml-1" routerLink="../..">Cancel</a>
+    </form>
+  </div>
+</div>
