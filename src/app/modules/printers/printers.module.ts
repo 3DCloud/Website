@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbilityModule } from '@casl/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -31,6 +32,7 @@ import { PrintersRouting } from './printers.routing';
     SharedModule,
     NgbModule,
     ReactiveFormsModule,
+    AbilityModule,
   ],
   exports: [PrinterComponent],
 })

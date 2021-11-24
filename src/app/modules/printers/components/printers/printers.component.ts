@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ForcedSubject, subject } from '@casl/ability';
 import { faWrench } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
@@ -45,6 +46,13 @@ export class PrintersComponent implements OnInit, OnDestroy {
           this.loading = false;
         })
     );
+  }
+
+  public subject<T extends string, U>(
+    type: T,
+    object: U
+  ): U & ForcedSubject<T> {
+    return subject(type, object);
   }
 
   public showChangeMaterialModal(printer: Printer): void {

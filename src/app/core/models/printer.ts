@@ -8,8 +8,8 @@ export interface Printer {
   name: string;
   createdAt: Date;
   updatedAt: Date;
-  deviceId: string;
-  device: Device;
+  deviceId?: string;
+  device?: Device;
   state: PrinterState;
   printerDefinition: PrinterDefinition;
   printerExtruders: (PrinterExtruder | undefined)[];

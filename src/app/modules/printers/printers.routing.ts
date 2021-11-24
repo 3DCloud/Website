@@ -12,12 +12,12 @@ import {
 const routes: Routes = [
   {
     path: 'printers',
-    canActivateChild: [AuthorizationGuard],
     children: [
       { path: '', component: PrintersComponent, data: { subject: 'Printer' } },
       {
         path: ':id/settings',
         component: PrinterSettingsComponent,
+        canActivate: [AuthorizationGuard],
         data: { subject: 'Printer' },
       },
       {

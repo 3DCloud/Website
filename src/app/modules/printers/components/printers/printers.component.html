@@ -8,8 +8,10 @@
       <th>Name</th>
       <th>Model</th>
       <th>State</th>
-      <th>Client</th>
-      <th></th>
+      <!--suppress TypeScriptValidateTypes -->
+      <th *ngIf="'read' | ablePure: 'Client' | async">Client</th>
+      <!--suppress TypeScriptValidateTypes -->
+      <th *ngIf="'update' | ablePure: 'Printer' | async"></th>
     </tr>
   </thead>
   <tbody>
@@ -17,10 +19,12 @@
       <td><a [routerLink]="[printer.id, 'status']">{{ printer.name }}</a></td>
       <td>{{ printer.printerDefinition.name }}</td>
       <td><app-printer-state-badge [state]="printer.state"></app-printer-state-badge></td>
-      <td>
+      <!--suppress TypeScriptValidateTypes -->
+      <td *ngIf="'read' | ablePure: subject('Client', printer.device?.client) | async">
         <a *ngIf="printer.device" [routerLink]="['/clients', printer.device.client.id]">{{ printer.device.client.id }}</a>
       </td>
-      <td>
+      <!--suppress TypeScriptValidateTypes -->
+      <td *ngIf="'update' | ablePure: 'Printer' | async">
         <button type="button" class="btn btn-primary" (click)="showChangeMaterialModal(printer)">Change Material&hellip;</button>
         <a class="btn btn-light ml-1" [routerLink]="[printer.id, 'settings']"><fa-icon [icon]="icons.faWrench"></fa-icon></a>
       </td>

@@ -7,11 +7,6 @@ query {
         url
       }
     }
-    device {
-      client {
-        id
-      }
-    }
     printerExtruders {
       materialColor {
         name

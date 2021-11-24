@@ -96,7 +96,7 @@ export class AuthenticationService {
         true
       );
     } else {
-      return of(false);
+      return this.getCurrentUser().pipe(map(() => false));
     }
   }
 
@@ -240,11 +240,14 @@ export class AuthenticationService {
     window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
     window.localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 
+    return this.getCurrentUser().pipe(map(() => true));
+  }
+
+  private getCurrentUser(): Observable<void> {
     return this._usersService.getCurrentUser().pipe(
       map((result) => {
         this._user = result.currentUser;
         this._ability.update(result.currentAbility);
-        return true;
       })
     );
   }

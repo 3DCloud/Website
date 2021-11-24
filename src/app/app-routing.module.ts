@@ -7,7 +7,7 @@ import {
 } from './core/components';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'files', pathMatch: 'full' },
+  { path: '', redirectTo: 'printers', pathMatch: 'full' },
   { path: 'auth/callback', component: AuthenticationCallbackComponent },
   { path: '**', component: PageNotFoundComponent },
 ];
