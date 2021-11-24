@@ -7,6 +7,6 @@ export interface Client {
   authorized: boolean;
   createdAt: Date;
   updatedAt: Date;
-  devices?: Device[];
-  printers?: Printer[];
+  devices: Device[];
+  printers: Printer[];
 }

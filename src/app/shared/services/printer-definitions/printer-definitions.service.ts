@@ -42,7 +42,7 @@ export class PrinterDefinitionsService {
     return this._apollo
       .mutate<{ createPrinterDefinition: PrinterDefinition }>({
         mutation: CreatePrinterDefinition,
-        variables: { printerDefinition },
+        variables: { printerDefinition: printerDefinition },
       })
       .pipe(mapMutationResult((data) => data.createPrinterDefinition));
   }
@@ -54,7 +54,7 @@ export class PrinterDefinitionsService {
     return this._apollo
       .mutate<{ updatePrinterDefinition: PrinterDefinition }>({
         mutation: UpdatePrinterDefinition,
-        variables: { id, printerDefinition },
+        variables: { id, printerDefinition: printerDefinition },
       })
       .pipe(mapMutationResult((data) => data.updatePrinterDefinition));
   }

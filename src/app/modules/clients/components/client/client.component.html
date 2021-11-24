@@ -29,6 +29,7 @@
         <th>Path</th>
         <th>Serial Number</th>
         <th>Latest Connection</th>
+        <th>Assigned To</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -45,36 +46,14 @@
         <td>{{ device.serialNumber || '&mdash;' }}</td>
         <td><span [ngbTooltip]="device.lastSeen | djsDateFormat: 'LLL'">{{ device.lastSeen | djsTimeAgo }}</span></td>
         <td>
-          <button *ngIf="!device.printer" class="btn btn-success mr-1" (click)="createPrinter(device)">Add printer&hellip;</button>
-          <button class="btn btn-success" (click)="reassignPrinter(device)">Reassign to&hellip;</button>
+          <a *ngIf="device.printer" [routerLink]="['/printers', device.printer.id, 'settings']">{{ device.printer.name }}</a>
         </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div *ngIf="!client.devices?.length" class="alert alert-info" role="alert">
-    No devices detected.
-  </div>
-
-  <h2>Printers</h2>
-  <table class="table" *ngIf="client.printers?.length">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let printer of client.printers">
-        <td>{{printer.name}}</td>
         <td>
-          <button class="btn btn-danger" (click)="showDeletePrinterModal(printer)">Delete</button>
+          <button class="btn btn-light" (click)="setUpPrinter(device)">Set up printer&hellip;</button>
         </td>
       </tr>
     </tbody>
   </table>
 
-  <div *ngIf="!client.printers?.length" class="alert alert-info" role="alert">
-    No printers configured. Use the "Assign Printer" button on a device above to configure a printer.
-  </div>
+  <app-alert *ngIf="!client.devices?.length">No devices detected.</app-alert>
 </ng-container>

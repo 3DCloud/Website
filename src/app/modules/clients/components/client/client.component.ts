@@ -17,11 +17,7 @@ import { Subscription } from 'rxjs';
 import { Client, Device, Printer } from 'app/core/models';
 import { ClientsService } from 'app/shared/services';
 
-import {
-  CreatePrinterModalComponent,
-  DeletePrinterModalComponent,
-  ReassignPrinterModalComponent,
-} from '..';
+import { DeletePrinterModalComponent, SetUpPrinterModalComponent } from '..';
 
 @Component({
   selector: 'app-client',
@@ -106,30 +102,15 @@ export class ClientComponent implements OnInit, OnDestroy {
     );
   }
 
-  public createPrinter(device: Device): void {
-    const modalRef = this._modalService.open(CreatePrinterModalComponent, {
+  public setUpPrinter(device: Device): void {
+    const modalRef = this._modalService.open(SetUpPrinterModalComponent, {
       backdrop: 'static',
       keyboard: false,
     });
-    modalRef.componentInstance.device = device;
-    this._subscriptions.push(
-      modalRef.closed.subscribe((printer) => {
-        if (!this.client || !this.client.printers) {
-          return;
-        }
 
-        device.printer = printer;
-        this.client.printers.push(printer);
-      })
-    );
-  }
+    const component = modalRef.componentInstance as SetUpPrinterModalComponent;
+    component.device = device;
 
-  public reassignPrinter(device: Device): void {
-    const modalRef = this._modalService.open(ReassignPrinterModalComponent, {
-      backdrop: 'static',
-      keyboard: false,
-    });
-    modalRef.componentInstance.device = device;
     this._subscriptions.push(
       modalRef.closed.subscribe((printer) => {
         if (!this.client || !this.client.printers) {

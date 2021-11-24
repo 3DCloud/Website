@@ -1,0 +1,53 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Set Up Printer</h4>
+  <h5 class="text-muted">{{ device.name }}</h5>
+</div>
+<div class="modal-body">
+  <app-alert *ngIf="error" type="danger" [icon]="icons.faExclamationTriangle">{{ error }}</app-alert>
+
+  <app-spinner *ngIf="loading"></app-spinner>
+
+  <ng-container *ngIf="!loading">
+    <div class="form-group">
+      <div class="custom-control custom-radio">
+        <input type="radio" id="method-create" [(ngModel)]="method" value="create" class="custom-control-input">
+        <label class="custom-control-label" for="method-create">Create new printer</label>
+      </div>
+
+      <div class="custom-control custom-radio">
+        <input type="radio" id="method-assign" [(ngModel)]="method" value="assign" class="custom-control-input">
+        <label class="custom-control-label" for="method-assign">Assign to existing printer</label>
+      </div>
+    </div>
+
+    <form [formGroup]="form" *ngIf="method === 'create'">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input class="form-control" id="name" formControlName="name" type="text" />
+      </div>
+
+      <div class="form-group">
+        <label for="printer-definition">Printer Type</label>
+        <select class="form-control" id="printer-definition" formControlName="printerDefinitionId">
+          <option *ngFor="let def of printerDefinitions" [value]="def.id">{{ def.name }}</option>
+        </select>
+      </div>
+    </form>
+
+    <ng-container *ngIf="method === 'assign'">
+      <div class="form-group" *ngIf="!loading && printers?.length">
+        <label for="printer">Printer</label>
+        <select class="form-control" id="printer" [(ngModel)]="printerIndex">
+          <option *ngFor="let printer of printers" [value]="printer.id">{{ printer.name }}</option>
+        </select>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
+<div class="modal-footer">
+  <button type="button" [disabled]="busy || !isValid" class="btn btn-primary" (click)="submit()">
+    <ng-container *ngIf="!busy">{{ submitText }}</ng-container>
+    <app-spinner *ngIf="busy" size="medium"></app-spinner>
+  </button>
+  <button type="button" [disabled]="busy" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+</div>

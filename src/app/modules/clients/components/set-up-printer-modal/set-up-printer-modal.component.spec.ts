@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReassignPrinterModalComponent } from './reassign-printer-modal.component';
+import { SetUpPrinterModalComponent } from './set-up-printer-modal.component';
 
 describe('ReassignPrinterModalComponent', () => {
-  let component: ReassignPrinterModalComponent;
-  let fixture: ComponentFixture<ReassignPrinterModalComponent>;
+  let component: SetUpPrinterModalComponent;
+  let fixture: ComponentFixture<SetUpPrinterModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ReassignPrinterModalComponent],
+      declarations: [SetUpPrinterModalComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReassignPrinterModalComponent);
+    fixture = TestBed.createComponent(SetUpPrinterModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

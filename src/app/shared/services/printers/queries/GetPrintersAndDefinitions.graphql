@@ -1,0 +1,11 @@
+query {
+  printers {
+    id
+    deviceId
+    name
+  }
+  printerDefinitions {
+    id
+    name
+  }
+}

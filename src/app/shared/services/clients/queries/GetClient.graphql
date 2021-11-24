@@ -3,17 +3,14 @@ query ($clientId: ID!) {
     id
     name
     authorized
-    createdAt
-    updatedAt
     devices {
       id
       path
       serialNumber
       lastSeen
-      createdAt
-      updatedAt
       printer {
         id
+        name
       }
     }
     printers {
