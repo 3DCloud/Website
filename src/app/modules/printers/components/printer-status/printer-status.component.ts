@@ -37,10 +37,12 @@ interface PrinterStateObj {
 
 @Component({
   selector: 'app-printer',
-  templateUrl: './printer.component.html',
-  styleUrls: ['./printer.component.scss'],
+  templateUrl: './printer-status.component.html',
+  styleUrls: ['./printer-status.component.scss'],
 })
-export class PrinterComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PrinterStatusComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @ViewChild('logElement', { static: true })
   public logElement?: ElementRef<HTMLPreElement>;
 

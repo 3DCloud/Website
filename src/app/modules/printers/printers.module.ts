@@ -10,8 +10,8 @@ import { SharedModule } from 'app/shared/shared.module';
 
 import {
   ChangeMaterialModalComponent,
-  PrinterComponent,
   PrinterSettingsComponent,
+  PrinterStatusComponent,
   PrintersComponent,
 } from './components';
 import { PrintersRouting } from './printers.routing';
@@ -19,7 +19,7 @@ import { PrintersRouting } from './printers.routing';
 @NgModule({
   declarations: [
     ChangeMaterialModalComponent,
-    PrinterComponent,
+    PrinterStatusComponent,
     PrinterSettingsComponent,
     PrintersComponent,
   ],
@@ -34,6 +34,6 @@ import { PrintersRouting } from './printers.routing';
     ReactiveFormsModule,
     AbilityModule,
   ],
-  exports: [PrinterComponent],
+  exports: [PrinterStatusComponent],
 })
 export class PrintersModule {}

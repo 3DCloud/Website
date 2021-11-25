@@ -9,8 +9,8 @@ html, body {
 
 .printers-modal {
   display: table;
-  min-width: 20%;
-  max-width: 80%;
+  width: 80vw;
+  max-width: unset;
 }
 
 .table th, .table td {

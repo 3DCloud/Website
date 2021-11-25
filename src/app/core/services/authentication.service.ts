@@ -246,7 +246,7 @@ export class AuthenticationService {
   private getCurrentUser(): Observable<void> {
     return this._usersService.getCurrentUser().pipe(
       map((result) => {
-        this._user = result.currentUser;
+        this._user = result.currentUser || undefined;
         this._ability.update(result.currentAbility);
       })
     );

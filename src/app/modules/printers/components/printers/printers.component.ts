@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ForcedSubject, subject } from '@casl/ability';
-import { faWrench } from '@fortawesome/free-solid-svg-icons';
+import {
+  faQuestionCircle,
+  faTrash,
+  faWrench,
+} from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 
@@ -9,6 +13,10 @@ import { PrintersService } from 'app/shared/services';
 
 import { ChangeMaterialModalComponent } from '..';
 
+interface PrinterItem extends Printer {
+  deleting: boolean;
+}
+
 @Component({
   selector: 'app-printers',
   templateUrl: './printers.component.html',
@@ -16,11 +24,13 @@ import { ChangeMaterialModalComponent } from '..';
 })
 export class PrintersComponent implements OnInit, OnDestroy {
   public icons = {
+    faQuestionCircle,
+    faTrash,
     faWrench,
   };
 
   public loading = true;
-  public printers: Printer[] = [];
+  public printers?: PrinterItem[];
   public error: unknown = null;
 
   private _subscriptions: Subscription[] = [];
@@ -36,7 +46,10 @@ export class PrintersComponent implements OnInit, OnDestroy {
         .getPrinters()
         .subscribe(
           (printers) => {
-            this.printers = printers;
+            this.printers = printers.map((printer) => ({
+              ...printer,
+              deleting: false,
+            }));
           },
           (error) => {
             this.error = error;
@@ -60,6 +73,22 @@ export class PrintersComponent implements OnInit, OnDestroy {
     const component =
       modalRef.componentInstance as ChangeMaterialModalComponent;
     component.printer = printer;
+  }
+
+  public delete(printer: PrinterItem): void {
+    printer.deleting = true;
+
+    this._printersService
+      .deletePrinter(printer.id)
+      .subscribe(
+        () => {
+          this.printers = this.printers?.filter((p) => p.id !== printer.id);
+        },
+        (err) => {
+          this.error = err;
+        }
+      )
+      .add(() => (printer.deleting = false));
   }
 
   public ngOnDestroy(): void {

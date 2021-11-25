@@ -16,7 +16,7 @@ export class UsersService {
   public constructor(private _apollo: Apollo) {}
 
   public getCurrentUser(): Observable<{
-    currentUser: User;
+    currentUser: User | null;
     currentAbility: AbilityRule[];
   }> {
     return this._apollo

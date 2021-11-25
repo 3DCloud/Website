@@ -14,6 +14,7 @@ import {
 import CancelCurrentPrint from './queries/CancelCurrentPrint.graphql';
 import CreatePrinter from './queries/CreatePrinter.graphql';
 import DeletePrinter from './queries/DeletePrinter.graphql';
+import GetAvailablePrinters from './queries/GetAvailablePrinters.graphql';
 import GetPrinter from './queries/GetPrinter.graphql';
 import GetPrinterWithMaterials from './queries/GetPrinterWithMaterials.graphql';
 import GetPrinters from './queries/GetPrinters.graphql';
@@ -32,6 +33,17 @@ export class PrintersService {
     return this._apollo
       .query<{ printers: Printer[] }>({ query: GetPrinters })
       .pipe(map((result) => result.data.printers));
+  }
+
+  public getAvailablePrinters(): Observable<{
+    available: Printer[];
+    busy: Printer[];
+  }> {
+    return this._apollo
+      .query<{ available: Printer[]; busy: Printer[] }>({
+        query: GetAvailablePrinters,
+      })
+      .pipe(map((result) => result.data));
   }
 
   public getPrintersAndDefinitions(): Observable<{

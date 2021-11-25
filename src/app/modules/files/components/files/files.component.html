@@ -1,7 +1,8 @@
-<h1>My Files</h1>
+<div class="container">
+  <h1>My Files</h1>
 
-<div class="file-upload-zone">
-  <label for="file-upload" [class.bg-primary]="hover">
+  <div class="file-upload-zone">
+    <label for="file-upload" [class.bg-primary]="hover">
     <span class="row">
       <span class="col-12 col-lg-10 offset-lg-1 offset-xl-2 col-xl-8">
         <span *ngIf="uploadStatus.uploading">
@@ -29,15 +30,15 @@
       </span>
     </span>
 
-    <input #uploadFileInput id="file-upload" type="file" (change)="upload($event)" accept=".gcode"/>
-  </label>
-</div>
+      <input #uploadFileInput id="file-upload" type="file" (change)="upload($event)" accept=".gcode"/>
+    </label>
+  </div>
 
-<div class="files-table mt-3">
-  <app-spinner *ngIf="loading"></app-spinner>
+  <div class="files-table mt-3">
+    <app-spinner *ngIf="loading"></app-spinner>
 
-  <table *ngIf="!loading && files.length" class="table">
-    <thead>
+    <table *ngIf="!loading && files.length" class="table">
+      <thead>
       <tr>
         <th>Name</th>
         <th>Size</th>
@@ -45,8 +46,8 @@
         <th>Estimated Duration</th>
         <th>Actions</th>
       </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
       <tr *ngFor="let file of files">
         <td><a class="link" role="button" (click)="downloadFile(file.id)">{{file.filename}}</a></td>
         <td>{{bytesToReadable(file.byteSize)}}</td>
@@ -60,14 +61,15 @@
           <button type="button" class="ml-1 btn btn-danger" (click)="deleteFile(file)" [disabled]="file.busy"><fa-icon [icon]="icons.faTrash"></fa-icon></button>
         </td>
       </tr>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
 
-  <div *ngIf="!files.length && !loading && !error" class="alert alert-info">
-    No files found. Try uploading one by using the box above!
-  </div>
+    <div *ngIf="!files.length && !loading && !error" class="alert alert-info">
+      No files found. Try uploading one by using the box above!
+    </div>
 
-  <div *ngIf="error" class="alert alert-danger">
-    Failed to get files: {{error}}
+    <div *ngIf="error" class="alert alert-danger">
+      Failed to get files: {{error}}
+    </div>
   </div>
 </div>

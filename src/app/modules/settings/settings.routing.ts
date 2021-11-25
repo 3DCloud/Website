@@ -21,24 +21,24 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'printer-definitions', // TODO: replace with 'general' once that's implemented
+        redirectTo: 'printer-status-definitions', // TODO: replace with 'general' once that's implemented
       },
       {
-        path: 'printer-definitions',
+        path: 'printer-status-definitions',
         component: PrinterDefinitionsComponent,
         data: {
           subject: 'PrinterDefinition',
         },
       },
       {
-        path: 'printer-definitions/new',
+        path: 'printer-status-definitions/new',
         component: PrinterDefinitionComponent,
         data: {
           subject: 'PrinterDefinition',
         },
       },
       {
-        path: 'printer-definitions/:id',
+        path: 'printer-status-definitions/:id',
         component: PrinterDefinitionComponent,
         data: {
           subject: 'PrinterDefinition',

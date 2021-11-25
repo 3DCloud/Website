@@ -3,12 +3,14 @@ mutation (
   $byteSize: Int!
   $checksum: String!
   $contentType: String!
+  $publiclyAccessible: Boolean
 ) {
   createUploadFileRequest(
     filename: $filename
     byteSize: $byteSize
     checksum: $checksum
     contentType: $contentType
+    publiclyAccessible: $publiclyAccessible
   ) {
     url
     headers

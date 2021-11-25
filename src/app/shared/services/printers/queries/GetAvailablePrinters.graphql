@@ -1,0 +1,43 @@
+query {
+  available: printers(state: ["ready"]) {
+    id
+    printerDefinition {
+      name
+      thumbnail {
+        url
+      }
+    }
+    printerExtruders {
+      materialColor {
+        name
+        color
+        material {
+          name
+        }
+      }
+    }
+    name
+    state
+    deviceId
+  }
+  busy: printers(state: ["printing", "canceling"]) {
+    printerDefinition {
+      name
+      thumbnail {
+        url
+      }
+    }
+    printerExtruders {
+      materialColor {
+        name
+        color
+        material {
+          name
+        }
+      }
+    }
+    name
+    state
+    deviceId
+  }
+}

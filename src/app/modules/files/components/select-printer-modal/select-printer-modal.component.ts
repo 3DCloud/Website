@@ -20,7 +20,7 @@ export class SelectPrinterModalComponent implements OnInit, OnDestroy {
   public fileId = '';
   public loading = true;
   public busy = false;
-  public printers?: Printer[];
+  public printers?: { available?: Printer[]; busy?: Printer[] };
   public readonly printerDefinitions = new Map<string, PrinterDefinition>();
   public error?: string;
 
@@ -36,10 +36,10 @@ export class SelectPrinterModalComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this._subscriptions.push(
       this._printersService
-        .getPrinters()
+        .getAvailablePrinters()
         .subscribe(
-          (printers) => {
-            this.printers = printers;
+          (data) => {
+            this.printers = data;
           },
           (err) => {
             this.error = err;

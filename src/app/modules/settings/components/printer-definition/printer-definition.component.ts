@@ -1,5 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   faArrowLeft,
@@ -10,7 +17,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import md5 from 'js-md5';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 
 import {
@@ -46,10 +53,24 @@ export class PrinterDefinitionComponent implements OnInit, OnDestroy {
     '1.00 mm',
   ];
 
+  private requiredIfThumbnailDoesNotExit = (
+    control: AbstractControl
+  ): ValidationErrors | null => {
+    if (this.thumbnailUrl) {
+      return null;
+    }
+
+    return Validators.required(control);
+  };
+
   public formControls = {
     name: new FormControl(null, Validators.required),
     extruderCount: new FormControl(1, Validators.required),
-    thumbnailSignedId: new FormControl(null, Validators.required),
+    filamentDiameter: new FormControl(1.75, Validators.required),
+    thumbnailSignedId: new FormControl(
+      null,
+      this.requiredIfThumbnailDoesNotExit
+    ),
     startGCode: new FormControl(null),
     endGCode: new FormControl(null),
     cancelGCode: new FormControl(null),
@@ -59,6 +80,7 @@ export class PrinterDefinitionComponent implements OnInit, OnDestroy {
   public form = new FormGroup({
     name: this.formControls.name,
     extruderCount: this.formControls.extruderCount,
+    filamentDiameter: this.formControls.filamentDiameter,
     thumbnailSignedId: this.formControls.thumbnailSignedId,
     gCodeSettings: new FormGroup({
       startGCode: this.formControls.startGCode,
@@ -109,39 +131,46 @@ export class PrinterDefinitionComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this._subscriptions.push(
-      this._route.paramMap.subscribe((paramMap) => {
-        this.printerDefinitionId = paramMap.get('id');
-
-        if (!this.printerDefinitionId) {
-          this.loading.printerDefinition = false;
-          return;
-        }
-
-        this._printerDefinitionsService
-          .getPrinterDefinition(this.printerDefinitionId)
-          .subscribe((printerDefinition) => {
-            this.loading.printerDefinition = false;
-            this.printerDefinition = printerDefinition;
-            this.thumbnailUrl = this.printerDefinition.thumbnail?.url;
-
-            if (printerDefinition.ultiGCodeSettings) {
-              const formArray = this.form.get('ultiGCodeSettings') as FormArray;
-              for (
-                let i = 0;
-                i < printerDefinition.ultiGCodeSettings.length;
-                i++
-              ) {
-                formArray.push(this.createUltiGCodeSettings());
-              }
-
-              this.materials = printerDefinition.ultiGCodeSettings?.map(
-                (ugs) => ugs.material
-              );
+      this._route.paramMap
+        .pipe(
+          map((paramMap) => paramMap.get('id')),
+          concatMap((id) => {
+            if (!id) {
+              return of(undefined);
             }
 
-            this.form.patchValue(printerDefinition);
-          });
-      })
+            this.printerDefinitionId = id;
+
+            return this._printerDefinitionsService.getPrinterDefinition(id);
+          })
+        )
+        .subscribe((printerDefinition) => {
+          if (!printerDefinition) {
+            return;
+          }
+
+          this.printerDefinition = printerDefinition;
+          this.thumbnailUrl = this.printerDefinition.thumbnail?.url;
+
+          if (printerDefinition.ultiGCodeSettings) {
+            const formArray = this.form.get('ultiGCodeSettings') as FormArray;
+            for (
+              let i = 0;
+              i < printerDefinition.ultiGCodeSettings.length;
+              i++
+            ) {
+              formArray.push(this.createUltiGCodeSettings());
+            }
+
+            this.materials = printerDefinition.ultiGCodeSettings?.map(
+              (ugs) => ugs.material
+            );
+          }
+
+          this.form.patchValue(printerDefinition);
+
+          this.loading.printerDefinition = false;
+        })
     );
   }
 
@@ -261,12 +290,13 @@ export class PrinterDefinitionComponent implements OnInit, OnDestroy {
     const thumbnail = this.formControls.thumbnailSignedId.value as File;
     const printerDefinition = this.form.value as PrinterDefinitionInput;
 
-    this._filesService
-      .readAsArrayBuffer(thumbnail)
-      .pipe(
+    let observable: Observable<string | undefined> = of(undefined);
+
+    if (thumbnail) {
+      observable = this._filesService.readAsArrayBuffer(thumbnail).pipe(
         concatMap((arrayBuffer: ArrayBuffer) => {
           return this._filesService
-            .requestFileUpload(thumbnail, md5.base64(arrayBuffer))
+            .requestFileUpload(thumbnail, md5.base64(arrayBuffer), true)
             .pipe(
               concatMap((request: UploadFileRequest) => {
                 return this._filesService
@@ -279,7 +309,12 @@ export class PrinterDefinitionComponent implements OnInit, OnDestroy {
                   .pipe(map(() => request.signedId));
               })
             );
-        }),
+        })
+      );
+    }
+
+    observable
+      .pipe(
         concatMap((thumbnailSignedId) => {
           if (thumbnailSignedId) {
             printerDefinition.thumbnailSignedId = thumbnailSignedId;

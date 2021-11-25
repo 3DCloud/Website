@@ -1,18 +1,19 @@
-<h1>Clients</h1>
+<div class="container">
+  <h1>Clients</h1>
 
-<div class="clients-table">
-  <app-spinner *ngIf="loading"></app-spinner>
+  <div class="clients-table">
+    <app-spinner *ngIf="loading"></app-spinner>
 
-  <table *ngIf="!loading && clients.length" class="table">
-    <thead>
+    <table *ngIf="!loading && clients.length" class="table">
+      <thead>
       <tr>
         <th>ID</th>
         <th>Name</th>
         <th>Authorized?</th>
         <th>Actions</th>
       </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
       <tr *ngFor="let client of clients">
         <td><a routerLink="/clients/{{client.id}}">{{client.id}}</a></td>
         <td>{{client.name ? client.name : '&mdash;'}}</td>
@@ -23,14 +24,15 @@
           <button [disabled]="busy" class="btn btn-danger" (click)="delete(client.id)">Delete</button>
         </td>
       </tr>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
 
-  <div *ngIf="!clients.length && !loading && !error" class="alert alert-info">
-    No results.
-  </div>
+    <div *ngIf="!clients.length && !loading && !error" class="alert alert-info">
+      No results.
+    </div>
 
-  <div *ngIf="error" class="alert alert-danger">
-    Failed to get clients: {{error}}
+    <div *ngIf="error" class="alert alert-danger">
+      Failed to get clients: {{error}}
+    </div>
   </div>
 </div>

@@ -1,7 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faMinus, faPlus, faSave } from '@fortawesome/free-solid-svg-icons';
+import {
+  faExclamationTriangle,
+  faMinus,
+  faPlus,
+  faSave,
+} from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 
 import { Material } from 'app/core/models';
@@ -14,6 +19,7 @@ import { MaterialsService } from 'app/shared/services';
 })
 export class MaterialComponent implements OnInit, OnDestroy {
   public icons = {
+    faExclamationTriangle,
     faMinus,
     faPlus,
     faSave,
@@ -29,7 +35,6 @@ export class MaterialComponent implements OnInit, OnDestroy {
     brand: new FormControl(null, Validators.required),
     netFilamentWeight: new FormControl(null, Validators.required),
     emptySpoolWeight: new FormControl(null, Validators.required),
-    filamentDiameter: new FormControl(null, Validators.required),
     materialColors: this.materialColors,
   });
 

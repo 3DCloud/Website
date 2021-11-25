@@ -4,8 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthorizationGuard } from 'app/core/guards';
 
 import {
-  PrinterComponent,
   PrinterSettingsComponent,
+  PrinterStatusComponent,
   PrintersComponent,
 } from './components';
 
@@ -22,7 +22,7 @@ const routes: Routes = [
       },
       {
         path: ':id/status',
-        component: PrinterComponent,
+        component: PrinterStatusComponent,
         data: { subject: 'Printer' },
       },
     ],

@@ -9,27 +9,59 @@
     <app-spinner *ngIf="loading && !error"></app-spinner>
   </div>
 
-  <div *ngIf="printers && !busy && !error" class="printers">
-    <div class="printer" *ngFor="let printer of printers">
-      <div class="printer-icon"
-            [style.background-image]="printer.printerDefinition?.thumbnail?.url ? 'url(' + printer.printerDefinition?.thumbnail?.url + ')' : 'https://via.placeholder.com/150'"></div>
-      <div class="printer-name">{{ printer.name }}</div>
-      <app-printer-state-badge [state]="printer.state"></app-printer-state-badge>
-      <div class="printer-type">{{ printer.printerDefinition?.name }}</div>
-      <ng-container *ngFor="let extruder of printer.printerExtruders; let i = index">
-        <div class="printer-material">
-          <span class="text-muted mr-1" *ngIf="printer.printerExtruders.length > 1">E{{ i + 1 }}:</span>
-          <span *ngIf="extruder?.materialColor as materialColor">
+  <ng-container *ngIf="printers && !busy && !error">
+    <ng-container *ngIf="printers.available?.length">
+      <h5>Available</h5>
+      <div class="printers">
+        <div class="printer" *ngFor="let printer of printers.available">
+          <div class="printer-icon"
+               [style.background-image]="printer.printerDefinition?.thumbnail?.url ? 'url(' + printer.printerDefinition?.thumbnail?.url + ')' : 'https://via.placeholder.com/150'"></div>
+          <div class="printer-name">{{ printer.name }}</div>
+          <app-printer-state-badge [state]="printer.state"></app-printer-state-badge>
+          <div class="printer-type">{{ printer.printerDefinition?.name }}</div>
+          <ng-container *ngFor="let extruder of printer.printerExtruders; let i = index">
+            <div class="printer-material">
+              <span class="text-muted mr-1" *ngIf="printer.printerExtruders.length > 1">E{{ i + 1 }}:</span>
+              <span *ngIf="extruder?.materialColor as materialColor">
             <span class="dot" [style.background-color]="materialColor.color"></span> {{ materialColor.material.name }} ({{ materialColor.name }})
           </span>
-          <ng-container *ngIf="!extruder?.materialColor">
-            <fa-icon [icon]="icons.faQuestionCircle"></fa-icon> Unknown material
+              <ng-container *ngIf="!extruder?.materialColor">
+                <fa-icon [icon]="icons.faQuestionCircle"></fa-icon> Unknown material
+              </ng-container>
+            </div>
+          </ng-container>
+          <button class="select-button btn btn-primary" [disabled]="busy || printer.state !== 'ready'" (click)="startPrint(printer.id)">Select</button>
+        </div>
+      </div>
+    </ng-container>
+
+    <app-alert *ngIf="!printers.available?.length">No printers are currently available.</app-alert>
+
+    <ng-container *ngIf="printers.busy?.length">
+      <hr/>
+      <h5>Busy</h5>
+      <div class="printers">
+        <div class="printer" *ngFor="let printer of printers.busy">
+          <div class="printer-icon"
+               [style.background-image]="printer.printerDefinition?.thumbnail?.url ? 'url(' + printer.printerDefinition?.thumbnail?.url + ')' : 'https://via.placeholder.com/150'"></div>
+          <div class="printer-name">{{ printer.name }}</div>
+          <app-printer-state-badge [state]="printer.state"></app-printer-state-badge>
+          <div class="printer-type">{{ printer.printerDefinition?.name }}</div>
+          <ng-container *ngFor="let extruder of printer.printerExtruders; let i = index">
+            <div class="printer-material">
+              <span class="text-muted mr-1" *ngIf="printer.printerExtruders.length > 1">E{{ i + 1 }}:</span>
+              <span *ngIf="extruder?.materialColor as materialColor">
+            <span class="dot" [style.background-color]="materialColor.color"></span> {{ materialColor.material.name }} ({{ materialColor.name }})
+          </span>
+              <ng-container *ngIf="!extruder?.materialColor">
+                <fa-icon [icon]="icons.faQuestionCircle"></fa-icon> Unknown material
+              </ng-container>
+            </div>
           </ng-container>
         </div>
-      </ng-container>
-      <button class="select-button btn btn-primary" [disabled]="busy || printer.state !== 'ready'" (click)="startPrint(printer.id)">Select</button>
-    </div>
-  </div>
+      </div>
+    </ng-container>
+  </ng-container>
 
   <div *ngIf="busy && !error" class="starting-print-spinner">
     <app-spinner></app-spinner>

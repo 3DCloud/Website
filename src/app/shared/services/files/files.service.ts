@@ -43,12 +43,14 @@ export class FilesService {
 
   public requestFileUpload(
     file: File,
-    checksum: string
+    checksum: string,
+    publiclyAccessible = false
   ): Observable<UploadFileRequest> {
     return this._apollo
       .mutate<{ createUploadFileRequest: UploadFileRequest }>({
         mutation: CreateUploadFileRequest,
         variables: {
+          publiclyAccessible: publiclyAccessible,
           filename: file.name,
           byteSize: file.size,
           contentType: file.type?.length

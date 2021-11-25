@@ -1,30 +1,31 @@
-<app-spinner *ngIf="loading"></app-spinner>
+<div class="container">
+  <app-spinner *ngIf="loading"></app-spinner>
 
-<div *ngIf="error" class="alert alert-danger">
-  Failed to get clients: {{ error }}
-</div>
+  <div *ngIf="error" class="alert alert-danger">
+    Failed to get clients: {{ error }}
+  </div>
 
-<ng-container *ngIf="client">
-  <h1>{{ client.name ? client.name : 'Client' }} <small class="text-muted">{{ client.id }}</small></h1>
+  <ng-container *ngIf="client">
+    <h1>{{ client.name ? client.name : 'Client' }} <small class="text-muted">{{ client.id }}</small></h1>
 
-  <h2>Client Details</h2>
-  <div class="row">
-    <div class="form-group col-3">
-      <label for="name">Name</label>
-      <div class="input-group">
-        <input id="name" class="form-control" type="text" [formControl]="name" placeholder="Enter a name..." />
-        <div class="input-group-append">
-          <button class="btn btn-primary" [disabled]="name.invalid" (click)="saveName()" title="Save">
-            <fa-icon [icon]="icons.faSave"></fa-icon>
-          </button>
+    <h2>Client Details</h2>
+    <div class="row">
+      <div class="form-group col-3">
+        <label for="name">Name</label>
+        <div class="input-group">
+          <input id="name" class="form-control" type="text" [formControl]="name" placeholder="Enter a name..." />
+          <div class="input-group-append">
+            <button class="btn btn-primary" [disabled]="name.invalid" (click)="saveName()" title="Save">
+              <fa-icon [icon]="icons.faSave"></fa-icon>
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <h2>Devices</h2>
-  <table class="table" *ngIf="client.devices?.length">
-    <thead>
+    <h2>Devices</h2>
+    <table class="table" *ngIf="client.devices?.length">
+      <thead>
       <tr>
         <th>Path</th>
         <th>Serial Number</th>
@@ -32,14 +33,14 @@
         <th>Assigned To</th>
         <th>Actions</th>
       </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
       <tr *ngFor="let device of client.devices">
         <td>
           {{ device.path }}
           <span class="text-warning"
-            *ngIf="!device.serialNumber"
-            ngbTooltip="This device did not report a serial number. It will not be detected properly if the USB port it is connected to changes.">
+                *ngIf="!device.serialNumber"
+                ngbTooltip="This device did not report a serial number. It will not be detected properly if the USB port it is connected to changes.">
             <fa-icon [icon]="icons.faExclamationTriangle"></fa-icon>
           </span>
         </td>
@@ -52,8 +53,9 @@
           <button class="btn btn-light" (click)="setUpPrinter(device)">Set up printer&hellip;</button>
         </td>
       </tr>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
 
-  <app-alert *ngIf="!client.devices?.length">No devices detected.</app-alert>
-</ng-container>
+    <app-alert *ngIf="!client.devices?.length">No devices detected.</app-alert>
+  </ng-container>
+</div>

@@ -5,7 +5,6 @@ query ($id: ID!) {
     brand
     netFilamentWeight
     emptySpoolWeight
-    filamentDiameter
     materialColors {
       id
       name

@@ -1,21 +1,22 @@
-<h1>My Prints</h1>
+<div class="container">
+  <h1>My Prints</h1>
 
-<app-spinner *ngIf="loading"></app-spinner>
+  <app-spinner *ngIf="loading"></app-spinner>
 
-<app-alert *ngIf="error" type="danger" [icon]="icons.faExclamationTriangle">{{ error }}</app-alert>
+  <app-alert *ngIf="error" type="danger" [icon]="icons.faExclamationTriangle">{{ error }}</app-alert>
 
-<app-alert *ngIf="!loading && !error && !prints?.length">Your print history is empty.</app-alert>
+  <app-alert *ngIf="!loading && !error && !prints?.length">Your print history is empty.</app-alert>
 
-<table *ngIf="!loading && prints?.length" class="table">
-  <thead>
+  <table *ngIf="!loading && prints?.length" class="table">
+    <thead>
     <tr>
       <th>File Name</th>
       <th>Printed On</th>
       <th>Started</th>
       <th>Duration</th>
     </tr>
-  </thead>
-  <tbody>
+    </thead>
+    <tbody>
     <tr *ngFor="let print of prints">
       <td>
         <!--suppress TypeScriptValidateTypes -->
@@ -29,5 +30,6 @@
         <span *ngIf="print.startedAt && print.completedAt">{{ print.startedAt | djsDiff: print.completedAt | djsDuration }}</span>
       </td>
     </tr>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>

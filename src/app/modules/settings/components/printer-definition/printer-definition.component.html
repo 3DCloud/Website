@@ -13,27 +13,41 @@
       <h4>General</h4>
 
       <div class="form-group">
-        <label class="image-input">
+        <label class="image-input" for="thumbnail">
           Thumbnail
           <span *ngIf="thumbnailUrl" class="image-preview" [style.background-image]="'url(' + thumbnailUrl + ')'"></span>
         </label>
-        <input type="file" (change)="fileChanged($event)" accept="image/png, image/jpeg, image/bmp" [class.is-invalid]="formControls.thumbnailSignedId | isInvalid"/>
+        <input id="thumbnail" type="file" (change)="fileChanged($event)" accept="image/png, image/jpeg, image/bmp" [class.is-invalid]="formControls.thumbnailSignedId | isInvalid"/>
         <div class="invalid-feedback">
           Thumbnail is required.
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group col-md-6 col-12">
+        <div class="form-group col-xl-6 col-12">
           <label for="name">Name</label>
           <input id="name" formControlName="name" class="form-control" type="text"
                  [class.is-invalid]="formControls.name | isInvalid" />
         </div>
 
-        <div class="form-group col-md-6 col-12">
+        <div class="form-group col-xl-6 col-12">
           <label for="extruder-count">Extruder Count</label>
           <input id="extruder-count" formControlName="extruderCount" class="form-control" type="number" min="1" max="8"
                  [class.is-invalid]="formControls.extruderCount | isInvalid" />
+        </div>
+
+        <div class="form-group col-xl-6 col-12">
+          <label for="extruder-count">Filament Diameter</label>
+
+          <div class="custom-control custom-radio">
+            <input type="radio" id="filament-diameter-175" formControlName="filamentDiameter" [value]="1.75" class="custom-control-input">
+            <label class="custom-control-label" for="filament-diameter-175">1.75&nbsp;mm</label>
+          </div>
+
+          <div class="custom-control custom-radio">
+            <input type="radio" id="filament-diameter-285" formControlName="filamentDiameter" [value]="2.85" class="custom-control-input">
+            <label class="custom-control-label" for="filament-diameter-285">2.85&nbsp;mm</label>
+          </div>
         </div>
       </div>
 

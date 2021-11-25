@@ -12,7 +12,7 @@ export class SettingsComponent {
     { name: 'General', path: 'general', ability: 'GeneralSetting' },
     {
       name: 'Printer Definitions',
-      path: 'printer-definitions',
+      path: 'printer-status-definitions',
       ability: 'PrinterDefinition',
     },
     { name: 'Materials', path: 'materials', ability: 'Material' },
