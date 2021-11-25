@@ -106,6 +106,10 @@ export class PrinterStatusComponent
     }
   }
 
+  public hotendTrackBy(index: number, item: Temperature): string {
+    return item.name;
+  }
+
   public ngOnDestroy(): void {
     this._consumer?.disconnect();
 
