@@ -2,6 +2,9 @@
   currentUser {
     name
     emailAddress
+    avatar {
+      url
+    }
   }
   currentAbility {
     action

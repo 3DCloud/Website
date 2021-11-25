@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { hex } from 'js-md5';
 import { Subscription } from 'rxjs';
 
 import { AuthenticationService } from 'app/core/services';
@@ -42,12 +41,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public get isAuthenticated(): boolean {
     return this._authenticationService.isAuthenticated;
-  }
-
-  public get gravatarUrl(): string {
-    return `https://www.gravatar.com/avatar/${hex(
-      this.currentUser?.emailAddress.toLowerCase() ?? ''
-    )}`;
   }
 
   public get currentUser(): User | undefined {
