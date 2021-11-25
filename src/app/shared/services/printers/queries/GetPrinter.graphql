@@ -5,6 +5,10 @@ query ($id: ID!) {
     deviceId
     createdAt
     updatedAt
+    currentPrint {
+      id
+      userId
+    }
     printerDefinition {
       id
       name

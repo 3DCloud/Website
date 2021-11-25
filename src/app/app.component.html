@@ -49,7 +49,7 @@
             </li>
             <li class="nav-item dropdown" ngbDropdown *ngIf="isAuthenticated">
               <a role="button" class="nav-link" ngbDropdownToggle>
-                <img class="avatar" src="{{ currentUser?.avatar?.url }}" alt="" />
+                <img class="avatar" src="{{ currentUser?.avatar?.url || 'assets/default-avatar.png' }}" alt="" />
                 <span class="user-name">{{ currentUser?.name }}</span>
               </a>
               <div class="dropdown-menu" ngbDropdownMenu>

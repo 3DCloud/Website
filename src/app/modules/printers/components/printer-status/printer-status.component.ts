@@ -7,6 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ForcedSubject, subject } from '@casl/ability';
 import { faBan, faSync } from '@fortawesome/free-solid-svg-icons';
 import * as actioncable from 'actioncable';
 import { Subscription } from 'rxjs';
@@ -111,6 +112,13 @@ export class PrinterStatusComponent
     for (const subscription of this._subscriptions) {
       subscription.unsubscribe();
     }
+  }
+
+  public subject<T extends string, U>(
+    type: T,
+    object: U
+  ): U & ForcedSubject<T> {
+    return subject(type, object);
   }
 
   public sendCommand(): void {
