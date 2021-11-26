@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 
 import { Print } from 'app/core/models';
@@ -12,7 +12,7 @@ import { PrintsService, UploadedFilesService } from 'app/shared/services';
 })
 export class PrintsComponent implements OnInit, OnDestroy {
   public icons = {
-    faExclamationTriangle,
+    faQuestionCircle,
   };
 
   public loading = true;

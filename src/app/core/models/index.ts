@@ -1,5 +1,7 @@
 export { AbilityAction, AbilitySubject, UserAbility } from './user-ability';
 export { AbilityRule } from './ability-rule';
+export { CancellationReason } from './cancellation-reason';
+export { CancellationReasonInput } from './cancellation-reason-input';
 export { Client } from './client';
 export { Device } from './device';
 export { GCodeSettings } from './g-code-settings';

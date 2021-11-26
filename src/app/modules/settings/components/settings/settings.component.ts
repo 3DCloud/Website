@@ -12,9 +12,14 @@ export class SettingsComponent {
     { name: 'General', path: 'general', ability: 'GeneralSetting' },
     {
       name: 'Printer Definitions',
-      path: 'printer-status-definitions',
+      path: 'printer-definitions',
       ability: 'PrinterDefinition',
     },
     { name: 'Materials', path: 'materials', ability: 'Material' },
+    {
+      name: 'Cancellation Reasons',
+      path: 'cancellation-reasons',
+      ability: 'CancellationReason',
+    },
   ];
 }

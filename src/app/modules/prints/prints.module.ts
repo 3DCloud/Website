@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { AbilityModule } from '@casl/angular';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { CoreModule } from 'app/core/core.module';
@@ -18,6 +19,7 @@ import { PrintsRouting } from './prints.routing';
     NgbTooltipModule,
     SharedModule,
     AbilityModule,
+    FontAwesomeModule,
   ],
 })
 export class PrintsModule {}

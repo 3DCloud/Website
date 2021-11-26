@@ -2,11 +2,11 @@
   <div class="row">
     <div class="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-12">
       <h1>{{ printer?.name }} <small><app-printer-state-badge [state]="printerState?.printer_state" *ngIf="printerState"></app-printer-state-badge></small></h1>
-      <div *ngIf="printerState && printerState.temperatures" class="h3" >
-        <div *ngFor="let hotend of printerState.temperatures.hotend_temperatures; trackBy: hotendTrackBy" class="badge badge-primary mr-1" ngbTooltip="Current &deg;C (Actual &deg;C)">
+      <div *ngIf="printerState && printerState.temperatures" class="h3">
+        <div *ngFor="let hotend of printerState.temperatures.hotend_temperatures; trackBy: hotendTrackBy" class="badge badge-primary mr-1" [ngbTooltip]="tooltip">
           <span class="font-weight-normal">{{hotend.name}}</span> {{hotend.current | number: '1.1-1'}}&nbsp;&deg;C <ng-container *ngIf="hotend.target">({{hotend.target | number: '1.0'}}&nbsp;&deg;C)</ng-container>
         </div>
-        <div *ngIf="printerState.temperatures.bed_temperature" class="badge badge-primary mr-1" ngbTooltip="Current &deg;C (Actual &deg;C)">
+        <div *ngIf="printerState.temperatures.bed_temperature" class="badge badge-primary mr-1" [ngbTooltip]="tooltip">
           <span class="font-weight-normal">{{printerState.temperatures.bed_temperature.name}}</span> {{printerState.temperatures.bed_temperature.current | number: '1.1-1'}}&nbsp;&deg;C <ng-container *ngIf="printerState.temperatures.bed_temperature.target">({{printerState.temperatures.bed_temperature.target | number: '1.0'}}&nbsp;&deg;C)</ng-container>
         </div>
       </div>
@@ -17,7 +17,7 @@
         <ngb-progressbar [value]="printerState!.progress! * 100" [max]="100"></ngb-progressbar>
       </div>
       <!--suppress TypeScriptValidateTypes -->
-      <button class="btn btn-danger mr-1" [disabled]="!printer?.currentPrint" (click)="cancelPrint()" *ngIf="'cancel' | ablePure: subject('Print', printer?.currentPrint) | async">
+      <button class="btn btn-danger mr-1" [disabled]="!printer?.currentPrint" (click)="showCancelPrintModal()" *ngIf="'cancel' | ablePure: subject('Print', printer?.currentPrint) | async">
         <fa-icon [icon]="icons.faBan"></fa-icon> Cancel print
       </button>
       <!--suppress TypeScriptValidateTypes -->
@@ -27,3 +27,8 @@
     </div>
   </div>
 </div>
+
+<ng-template #tooltip>
+  <div>Hotend Temperature</div>
+  <div>Current &deg;C (Target &deg;C)</div>
+</ng-template>

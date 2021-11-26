@@ -36,10 +36,16 @@
             <!--suppress TypeScriptValidateTypes -->
             <li class="nav-item"
                 routerLinkActive="active"
+                ngbDropdown
                 *ngIf="('index' | ablePure: 'GeneralSetting' | async) ||
                      ('index' | ablePure: 'PrinterDefinition' | async) ||
                      ('index' | ablePure: 'Material' | async)">
-              <a class="nav-link" routerLink="settings">Settings</a>
+              <a role="button" class="nav-link dropdown-toggle" ngbDropdownToggle>Settings</a>
+              <div ngbDropdownMenu>
+                <a ngbDropdownItem routerLink="/settings/printer-definitions" routerLinkActive="active">Printer Definitions</a>
+                <a ngbDropdownItem routerLink="/settings/materials" routerLinkActive="active">Materials</a>
+                <a ngbDropdownItem routerLink="/settings/cancellation-reasons" routerLinkActive="active">Cancellation Reasons</a>
+              </div>
             </li>
           </ul>
 

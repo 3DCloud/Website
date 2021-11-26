@@ -1,41 +1,40 @@
 <div class="container-fluid">
-  <h1 class="text-center">Printers</h1>
 
-  <app-spinner *ngIf="loading"></app-spinner>
+  <div class="printers">
+    <div class="grid-header">
+      <h1>Printers</h1>
+      <app-spinner *ngIf="loading"></app-spinner>
+      <app-alert *ngIf="error" type="danger">{{error}}</app-alert>
+    </div>
 
-  <app-alert *ngIf="error" type="danger">{{error}}</app-alert>
-
-  <div class="printers-container">
-    <div class="printers" *ngIf="!loading && printers?.length">
-      <div class="printer" role="button" *ngFor="let printer of printers">
-        <div class="printer-button" [routerLink]="[printer.id, 'status']">
-          <div class="printer-name">{{ printer.name }}</div>
-          <div class="printer-type">{{ printer.printerDefinition.name }}</div>
-          <div class="printer-icon" [style.background-image]="'url(' + printer.printerDefinition.thumbnail?.url + ')'"></div>
-          <app-printer-state-badge [state]="printer.state"></app-printer-state-badge>
-          <div class="mt-1" *ngFor="let extruder of printer.printerExtruders; let i = index">
-            <div class="printer-material">
-              <span class="text-muted mr-1" *ngIf="printer.printerExtruders.length > 1">E{{ i + 1 }}:</span>
-              <span *ngIf="extruder?.materialColor as materialColor">
-            <span class="dot" [style.background-color]="materialColor.color"></span> {{ materialColor.material.name }} ({{ materialColor.name }})
-            </span>
-              <ng-container *ngIf="!extruder?.materialColor">
-                <fa-icon [icon]="icons.faQuestionCircle"></fa-icon> Unknown material
-              </ng-container>
-            </div>
+    <div class="printer" role="button" *ngFor="let printer of printers">
+      <div class="printer-button" [routerLink]="[printer.id, 'status']">
+        <div class="printer-name">{{ printer.name }}</div>
+        <div class="printer-type">{{ printer.printerDefinition.name }}</div>
+        <div class="printer-icon" [style.background-image]="'url(' + printer.printerDefinition.thumbnail?.url + ')'"></div>
+        <app-printer-state-badge [state]="printer.state"></app-printer-state-badge>
+        <div class="mt-1" *ngFor="let extruder of printer.printerExtruders; let i = index">
+          <div class="printer-material">
+            <span class="text-muted mr-1" *ngIf="printer.printerExtruders.length > 1">E{{ i + 1 }}:</span>
+            <span *ngIf="extruder?.materialColor as materialColor">
+          <span class="dot" [style.background-color]="materialColor.color"></span> {{ materialColor.material.name }} ({{ materialColor.name }})
+          </span>
+            <ng-container *ngIf="!extruder?.materialColor">
+              <fa-icon [icon]="icons.faQuestionCircle"></fa-icon> Unknown material
+            </ng-container>
           </div>
         </div>
+      </div>
 
-        <!--suppress TypeScriptValidateTypes -->
-        <div *ngIf="'update' | ablePure: 'Printer' | async">
-          <button type="button" class="btn btn-primary mt-1 mb-1" (click)="showChangeMaterialModal(printer)">Change Material&hellip;</button>
-          <div>
-            <a class="btn btn-light" [routerLink]="[printer.id, 'settings']"><fa-icon [icon]="icons.faWrench"></fa-icon></a>
-            <button class="btn btn-danger ml-1" (click)="delete(printer)" [disabled]="printer.deleting">
-              <fa-icon *ngIf="!printer.deleting" [icon]="icons.faTrash"></fa-icon>
-              <app-spinner *ngIf="printer.deleting" size="medium"></app-spinner>
-            </button>
-          </div>
+      <!--suppress TypeScriptValidateTypes -->
+      <div *ngIf="'update' | ablePure: 'Printer' | async">
+        <button type="button" class="btn btn-primary mt-1 mb-1" (click)="showChangeMaterialModal(printer)">Change Material&hellip;</button>
+        <div>
+          <a class="btn btn-light" [routerLink]="[printer.id, 'settings']"><fa-icon [icon]="icons.faWrench"></fa-icon></a>
+          <button class="btn btn-danger ml-1" (click)="delete(printer)" [disabled]="printer.deleting">
+            <fa-icon *ngIf="!printer.deleting" [icon]="icons.faTrash"></fa-icon>
+            <app-spinner *ngIf="printer.deleting" size="medium"></app-spinner>
+          </button>
         </div>
       </div>
     </div>

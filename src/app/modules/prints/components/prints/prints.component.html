@@ -3,7 +3,7 @@
 
   <app-spinner *ngIf="loading"></app-spinner>
 
-  <app-alert *ngIf="error" type="danger" [icon]="icons.faExclamationTriangle">{{ error }}</app-alert>
+  <app-alert *ngIf="error" type="danger">{{ error }}</app-alert>
 
   <app-alert *ngIf="!loading && !error && !prints?.length">Your print history is empty.</app-alert>
 
@@ -23,6 +23,14 @@
         <a *ngIf="print.uploadedFile.byteSize && ('download' | ablePure: (print.uploadedFile | subject: 'UploadedFile') | async ); else noFile" class="link" role="button" (click)="downloadFile(print.uploadedFile.id)" title="Download {{ print.uploadedFile.filename }}">{{ print.uploadedFile.filename }}</a>
         <ng-template #noFile><span title="File has been deleted.">{{ print.uploadedFile.filename }}</span></ng-template>
         <app-print-state-badge [state]="print.status" [pill]="true" class="ml-1"></app-print-state-badge>
+        <span class="d-inline-block ml-1" *ngIf="print.cancellationReason || print.cancellationReasonDetails">
+          <ng-template #tooltip>
+            <div>Cancellation reason:</div>
+            <div *ngIf="print.cancellationReason">{{ print.cancellationReason.name }}</div>
+            <div *ngIf="print.cancellationReasonDetails">{{ print.cancellationReasonDetails }}</div>
+          </ng-template>
+          <fa-icon [ngbTooltip]="tooltip" [icon]="icons.faQuestionCircle"></fa-icon>
+        </span>
       </td>
       <td><a [routerLink]="['/printers', print.printer.id, 'status']">{{ print.printer.name }}</a></td>
       <td><span [ngbTooltip]="print.createdAt | djsDateFormat: 'LLL'">{{ print.createdAt | djsTimeAgo }}</span></td>

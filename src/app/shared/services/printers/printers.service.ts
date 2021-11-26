@@ -117,11 +117,15 @@ export class PrintersService {
       .pipe(map(() => undefined));
   }
 
-  public cancelCurrentPrint(id: string): Observable<Printer> {
+  public cancelCurrentPrint(
+    id: string,
+    cancellationReasonId: string,
+    cancellationReasonDetails: string
+  ): Observable<Printer> {
     return this._apollo
       .mutate<{ cancelCurrentPrint: Printer }>({
         mutation: CancelCurrentPrint,
-        variables: { id },
+        variables: { id, cancellationReasonId, cancellationReasonDetails },
       })
       .pipe(mapMutationResult((data) => data.cancelCurrentPrint));
   }

@@ -1,0 +1,27 @@
+<h2>Cancellation Reasons</h2>
+<app-alert *ngIf="cancellationReasons && !cancellationReasons.length">No cancellation reasons have been defined.</app-alert>
+<app-alert *ngIf="error" type="danger">{{ error }}</app-alert>
+<a class="btn btn-success" routerLink="new"><fa-icon [icon]="icons.faPlus"></fa-icon> Add</a>
+<app-spinner *ngIf="loading"></app-spinner>
+<table class="table mt-2" *ngIf="cancellationReasons?.length">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let reason of cancellationReasons">
+      <td>{{ reason.name }}</td>
+      <td>{{ reason.description || '&mdash;' }}</td>
+      <td>
+        <a class="btn btn-light" [routerLink]="reason.id"><fa-icon [icon]="icons.faEdit"></fa-icon></a>
+        <button class="btn btn-danger ml-1" (click)="delete(reason)" [disabled]="reason.deleting">
+          <fa-icon [icon]="icons.faTrash" *ngIf="!reason.deleting"></fa-icon>
+          <app-spinner size="medium" *ngIf="reason.deleting"></app-spinner>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

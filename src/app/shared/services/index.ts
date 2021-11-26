@@ -1,3 +1,4 @@
+export { CancellationReasonsService } from './cancellation-reasons/cancellation-reasons.service';
 export { ClientsService } from './clients/clients.service';
 export { FilesService } from './files/files.service';
 export { MaterialsService } from './materials/materials.service';

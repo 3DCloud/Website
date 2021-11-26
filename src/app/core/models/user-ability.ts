@@ -2,6 +2,7 @@ import { Ability, AbilityClass } from '@casl/ability';
 
 export type AbilitySubject =
   | 'Client'
+  | 'CancellationReason'
   | 'Device'
   | 'GCodeSettings'
   | 'GeneralSetting'

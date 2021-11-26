@@ -7,6 +7,11 @@
   grid-gap: 1rem;
   justify-content: center;
 
+  .grid-header {
+    grid-row: 1;
+    grid-column: 1/-1;
+  }
+
   .printer {
     width: 15rem;
     text-align: center;

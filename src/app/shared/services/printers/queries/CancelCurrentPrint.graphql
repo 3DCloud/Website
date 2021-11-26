@@ -1,5 +1,5 @@
-mutation ($id: ID!) {
-  cancelCurrentPrint(id: $id) {
+mutation ($id: ID!, $cancellationReasonId: ID, $cancellationReasonDetails: String) {
+  cancelCurrentPrint(id: $id, cancellationReasonId: $cancellationReasonId, cancellationReasonDetails: $cancellationReasonDetails) {
     id
   }
 }

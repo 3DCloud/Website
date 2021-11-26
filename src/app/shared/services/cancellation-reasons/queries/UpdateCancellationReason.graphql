@@ -1,0 +1,5 @@
+mutation ($id: ID!, $cancellationReason: CancellationReasonInput!) {
+  updateCancellationReason(id: $id, cancellationReason: $cancellationReason) {
+    id
+  }
+}

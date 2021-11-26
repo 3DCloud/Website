@@ -9,6 +9,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { ForcedSubject, subject } from '@casl/ability';
 import { faBan, faSync } from '@fortawesome/free-solid-svg-icons';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as actioncable from 'actioncable';
 import { Subscription } from 'rxjs';
 
@@ -16,6 +17,8 @@ import { Printer, PrinterState } from 'app/core/models';
 import { AuthenticationService } from 'app/core/services';
 import { PrintersService, UsersService } from 'app/shared/services';
 import { environment } from 'environments/environment';
+
+import { CancelPrintModalComponent } from '..';
 
 interface Temperature {
   name: string;
@@ -67,7 +70,8 @@ export class PrinterStatusComponent
     private _route: ActivatedRoute,
     private _authenticationService: AuthenticationService,
     private _usersService: UsersService,
-    private _printersService: PrintersService
+    private _printersService: PrintersService,
+    private _modal: NgbModal
   ) {}
 
   public ngOnInit(): void {
@@ -130,16 +134,14 @@ export class PrinterStatusComponent
     this.command = '';
   }
 
-  public cancelPrint(): void {
-    if (!this._printerId) {
+  public showCancelPrintModal(): void {
+    if (!this.printer) {
       return;
     }
 
-    this._subscriptions.push(
-      this._printersService
-        .cancelCurrentPrint(this._printerId)
-        .subscribe(() => undefined)
-    );
+    const modalRef = this._modal.open(CancelPrintModalComponent);
+    const component = modalRef.componentInstance as CancelPrintModalComponent;
+    component.printer = this.printer;
   }
 
   public reconnect(): void {

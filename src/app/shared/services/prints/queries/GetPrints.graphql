@@ -12,6 +12,11 @@ query GetPrints {
       name
     }
     status
+    cancellationReason {
+      name
+      description
+    }
+    cancellationReasonDetails
     createdAt
     updatedAt
     startedAt

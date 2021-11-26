@@ -9,6 +9,7 @@ import { CoreModule } from 'app/core/core.module';
 import { SharedModule } from 'app/shared/shared.module';
 
 import {
+  CancelPrintModalComponent,
   ChangeMaterialModalComponent,
   PrinterSettingsComponent,
   PrinterStatusComponent,
@@ -22,6 +23,7 @@ import { PrintersRouting } from './printers.routing';
     PrinterStatusComponent,
     PrinterSettingsComponent,
     PrintersComponent,
+    CancelPrintModalComponent,
   ],
   imports: [
     CommonModule,

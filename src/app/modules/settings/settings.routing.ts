@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthorizationGuard } from 'app/core/guards';
 
 import {
+  CancellationReasonsComponent,
+  EditCancellationReasonComponent,
   MaterialComponent,
   MaterialsComponent,
   PrinterDefinitionComponent,
@@ -21,24 +23,24 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'printer-status-definitions', // TODO: replace with 'general' once that's implemented
+        redirectTo: 'printer-definitions', // TODO: replace with 'general' once that's implemented
       },
       {
-        path: 'printer-status-definitions',
+        path: 'printer-definitions',
         component: PrinterDefinitionsComponent,
         data: {
           subject: 'PrinterDefinition',
         },
       },
       {
-        path: 'printer-status-definitions/new',
+        path: 'printer-definitions/new',
         component: PrinterDefinitionComponent,
         data: {
           subject: 'PrinterDefinition',
         },
       },
       {
-        path: 'printer-status-definitions/:id',
+        path: 'printer-definitions/:id',
         component: PrinterDefinitionComponent,
         data: {
           subject: 'PrinterDefinition',
@@ -63,6 +65,27 @@ const routes: Routes = [
         component: MaterialComponent,
         data: {
           subject: 'Material',
+        },
+      },
+      {
+        path: 'cancellation-reasons',
+        component: CancellationReasonsComponent,
+        data: {
+          subject: 'CancellationReason',
+        },
+      },
+      {
+        path: 'cancellation-reasons/new',
+        component: EditCancellationReasonComponent,
+        data: {
+          subject: 'CancellationReason',
+        },
+      },
+      {
+        path: 'cancellation-reasons/:id',
+        component: EditCancellationReasonComponent,
+        data: {
+          subject: 'CancellationReason',
         },
       },
     ],

@@ -1,0 +1,34 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Cancel print</h4>
+</div>
+<div class="modal-body">
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <app-spinner *ngIf="loading"></app-spinner>
+
+  <form [formGroup]="form">
+    <div class="form-group">
+      <select class="form-control" formControlName="cancellationReasonId" [class.is-invalid]="formControls.cancellationReasonId | isInvalid">
+        <option *ngFor="let reason of reasons" [ngValue]="reason.id">{{ reason.name }}</option>
+        <option [ngValue]="null">Other</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <textarea class="form-control"
+                placeholder="Enter extra details regarding what happened, if applicable."
+                formControlName="cancellationReasonDetails"
+                [class.is-invalid]="formControls.cancellationReasonDetails | isInvalid"></textarea>
+      <div class="invalid-feedback">
+        Details are required if the selected reason is "Other."
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="submit" class="btn btn-danger" (click)="submit()" [disabled]="busy">
+    <ng-container *ngIf="!busy">Cancel print</ng-container>
+    <app-spinner *ngIf="busy" size="medium"></app-spinner>
+  </button>
+  <button type="button" class="btn btn-secondary" (click)="modal.dismiss()" [disabled]="busy">Go back</button>
+</div>

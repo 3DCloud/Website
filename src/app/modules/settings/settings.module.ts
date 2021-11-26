@@ -9,6 +9,8 @@ import { SharedModule } from 'app/shared/shared.module';
 
 import {
   AddMaterialModalComponent,
+  CancellationReasonsComponent,
+  EditCancellationReasonComponent,
   MaterialComponent,
   MaterialsComponent,
   PrinterDefinitionComponent,
@@ -25,6 +27,8 @@ import { SettingsRouting } from './settings.routing';
     AddMaterialModalComponent,
     MaterialsComponent,
     MaterialComponent,
+    CancellationReasonsComponent,
+    EditCancellationReasonComponent,
   ],
   imports: [
     CommonModule,
