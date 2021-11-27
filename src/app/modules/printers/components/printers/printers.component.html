@@ -9,6 +9,23 @@
       <div *ngIf="!loading && printers && !printers.length" class="alert alert-info">
         No printers have been configured.
       </div>
+
+      <div class="mb-1" *ngIf="printers?.length">
+        <ng-container *ngIf="state === 'connecting'">
+          <span class="spinner-border spinner-border-sm mr-1" role="status">
+            <span class="sr-only">Loading...</span>
+          </span>
+          Connecting to live data feed
+        </ng-container>
+
+        <ng-container *ngIf="state === 'connected'">
+          <fa-icon [icon]="icons.faCheck" class="text-success"></fa-icon> Connected to live data feed
+        </ng-container>
+
+        <ng-container *ngIf="state === 'disconnected'">
+          <fa-icon [icon]="icons.faTimes" class="text-danger"></fa-icon> Disconnected from live data feed
+        </ng-container>
+      </div>
     </div>
 
     <div class="printer" *ngFor="let printer of printers">

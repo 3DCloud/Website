@@ -18,31 +18,13 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as actioncable from 'actioncable';
 import { Subscription } from 'rxjs';
 
-import { Printer, PrinterState } from 'app/core/models';
+import { Printer } from 'app/core/models';
+import { PrinterStateObject, Temperature } from 'app/core/models/action-cable';
 import { AuthenticationService } from 'app/core/services';
 import { PrintersService, UsersService } from 'app/shared/services';
 import { environment } from 'environments/environment';
 
 import { CancelPrintModalComponent } from '..';
-
-interface Temperature {
-  name: string;
-  current: number;
-  target: number;
-}
-
-interface Temperatures {
-  active_hotend_temperature: Temperature;
-  bed_temperature?: Temperature;
-  hotend_temperatures: Temperature[];
-}
-
-interface PrinterStateObj {
-  printer_state: PrinterState;
-  temperatures?: Temperatures;
-  progress?: number;
-  time_remaining?: number;
-}
 
 @Component({
   selector: 'app-printer',
@@ -66,7 +48,7 @@ export class PrinterStatusComponent
   public error?: string;
   public printer: Printer | undefined;
   public state: 'connecting' | 'connected' | 'disconnected' = 'connecting';
-  public printerState?: PrinterStateObj;
+  public printerState?: PrinterStateObject;
   public scrollToBottom = true;
   public command = '';
 
@@ -192,7 +174,7 @@ export class PrinterStatusComponent
 
     switch (data.action) {
       case 'state':
-        this.printerState = data.state as PrinterStateObj;
+        this.printerState = data.state as PrinterStateObject;
         break;
     }
   }
