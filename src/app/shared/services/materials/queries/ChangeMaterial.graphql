@@ -3,8 +3,10 @@ mutation ($printerId: ID!, $extruderIndex: Int!, $materialColorId: ID!, $weight:
     extruderIndex
     materialColor {
       name
+      color
       material {
         name
+        brand
       }
     }
   }

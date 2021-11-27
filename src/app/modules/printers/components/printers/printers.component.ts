@@ -73,6 +73,19 @@ export class PrintersComponent implements OnInit, OnDestroy {
     const component =
       modalRef.componentInstance as ChangeMaterialModalComponent;
     component.printer = printer;
+
+    this._subscriptions.push(
+      modalRef.closed.subscribe((printerExtruder) => {
+        // TODO: printerExtruders shouldn't really allow null, get rid of this once that's fixed
+        const existing = printer.printerExtruders.find(
+          (pe) => pe?.id === printerExtruder.id
+        );
+
+        if (existing) {
+          existing.materialColor = printerExtruder.materialColor;
+        }
+      })
+    );
   }
 
   public delete(printer: PrinterItem): void {
