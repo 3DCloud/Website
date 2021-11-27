@@ -8,7 +8,7 @@
     </div>
 
     <div class="printer" *ngFor="let printer of printers">
-      <app-printer-button [printer]="printer" [routerLink]="[printer.id, 'status']"></app-printer-button>
+      <app-printer-button class="flex-grow-1" [printer]="printer" [routerLink]="[printer.id, 'status']"></app-printer-button>
 
       <!--suppress TypeScriptValidateTypes -->
       <div *ngIf="'update' | ablePure: 'Printer' | async">
