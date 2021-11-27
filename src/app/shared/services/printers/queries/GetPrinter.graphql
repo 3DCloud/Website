@@ -2,6 +2,7 @@ query ($id: ID!) {
   printer(id: $id) {
     id
     name
+    state
     deviceId
     createdAt
     updatedAt

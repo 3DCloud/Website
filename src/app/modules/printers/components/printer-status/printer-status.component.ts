@@ -8,7 +8,12 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ForcedSubject, subject } from '@casl/ability';
-import { faBan, faSync } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBan,
+  faCheck,
+  faSync,
+  faTimes,
+} from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as actioncable from 'actioncable';
 import { Subscription } from 'rxjs';
@@ -52,11 +57,13 @@ export class PrinterStatusComponent
 
   public icons = {
     faBan,
+    faCheck,
     faSync,
+    faTimes,
   };
 
   public printer: Printer | undefined;
-  public connecting = true;
+  public state: 'connecting' | 'connected' | 'disconnected' = 'connecting';
   public printerState?: PrinterStateObj;
   public scrollToBottom = true;
   public command = '';
@@ -89,12 +96,16 @@ export class PrinterStatusComponent
 
         this._consumer.connect();
 
+        const connected = this.connected.bind(this);
+        const disconnected = this.disconnected.bind(this);
         const received = this.received.bind(this);
 
         this._consumer?.ensureActiveConnection();
         this._channel = this._consumer?.subscriptions.create(
           { channel: 'PrinterListenerChannel', id: params.id },
           {
+            connected,
+            disconnected,
             received,
           }
         );
@@ -156,6 +167,15 @@ export class PrinterStatusComponent
     );
   }
 
+  private connected(): void {
+    this.state = 'connected';
+  }
+
+  private disconnected(): void {
+    this.printerState = undefined;
+    this.state = 'disconnected';
+  }
+
   private received(data: Record<string, unknown>): void {
     if (!data.action) {
       return;
@@ -163,7 +183,6 @@ export class PrinterStatusComponent
 
     switch (data.action) {
       case 'state':
-        this.connecting = false;
         this.printerState = data.state as PrinterStateObj;
         break;
     }

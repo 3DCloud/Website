@@ -1,7 +1,25 @@
 <div class="container">
   <div class="row">
     <div class="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-12">
-      <h1>{{ printer?.name }} <small><app-printer-state-badge [state]="printerState?.printer_state" *ngIf="printerState"></app-printer-state-badge></small></h1>
+      <h1>{{ printer?.name }} <small><app-printer-state-badge [state]="printerState?.printer_state || printer?.state"></app-printer-state-badge></small></h1>
+
+      <div class="mb-2">
+        <span *ngIf="state === 'connecting' || (state === 'connected' && !printerState)" class="spinner-border spinner-border-sm mr-1" role="status">
+          <span class="sr-only">Loading...</span>
+        </span>
+
+        <ng-container *ngIf="state === 'connecting'">Connecting to live data feed</ng-container>
+        <ng-container *ngIf="state === 'connected' && !printerState">Waiting for data</ng-container>
+
+        <ng-container *ngIf="state === 'connected' && printerState">
+          <fa-icon [icon]="icons.faCheck" class="text-success"></fa-icon> Connected to live data feed
+        </ng-container>
+
+        <ng-container *ngIf="state === 'disconnected'">
+          <fa-icon [icon]="icons.faTimes" class="text-danger"></fa-icon> Disconnected from live data feed
+        </ng-container>
+      </div>
+
       <div *ngIf="printerState && printerState.temperatures" class="h3">
         <div *ngFor="let hotend of printerState.temperatures.hotend_temperatures; trackBy: hotendTrackBy" class="badge badge-primary mr-1" [ngbTooltip]="tooltip">
           <span class="font-weight-normal">{{hotend.name}}</span> {{hotend.current | number: '1.1-1'}}&nbsp;&deg;C <ng-container *ngIf="hotend.target">({{hotend.target | number: '1.0'}}&nbsp;&deg;C)</ng-container>
@@ -10,8 +28,6 @@
           <span class="font-weight-normal">{{printerState.temperatures.bed_temperature.name}}</span> {{printerState.temperatures.bed_temperature.current | number: '1.1-1'}}&nbsp;&deg;C <ng-container *ngIf="printerState.temperatures.bed_temperature.target">({{printerState.temperatures.bed_temperature.target | number: '1.0'}}&nbsp;&deg;C)</ng-container>
         </div>
       </div>
-      <app-spinner *ngIf="connecting"></app-spinner>
-      <div *ngIf="!printerState">Waiting for data</div>
       <div *ngIf="printerState?.progress && printerState?.time_remaining" class="mt-2 mb-3">
         Estimated time remaining: {{ printerState!.time_remaining! * 1000 | djsDuration: true }} ({{ printerState!.progress! * 100 | number: '1.1-1' }}%)
         <ngb-progressbar [value]="printerState!.progress! * 100" [max]="100"></ngb-progressbar>
