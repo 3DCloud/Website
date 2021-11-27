@@ -5,6 +5,10 @@
       <h1>Printers</h1>
       <app-spinner *ngIf="loading"></app-spinner>
       <app-alert *ngIf="error" type="danger">{{error}}</app-alert>
+
+      <div *ngIf="!loading && printers && !printers.length" class="alert alert-info">
+        No printers have been configured.
+      </div>
     </div>
 
     <div class="printer" *ngFor="let printer of printers">
@@ -22,10 +26,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div *ngIf="!loading && printers && !printers.length" class="alert alert-info">
-    No printers have been configured.
   </div>
 
 </div>
