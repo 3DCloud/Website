@@ -31,13 +31,10 @@ export class CancelPrintModalComponent implements OnInit, OnDestroy {
 
   public formControls = {
     cancellationReasonId: new FormControl(null),
-    cancellationReasonDetails: new FormControl(
-      null,
-      this.requiredIfBlank('cancellationReasonId')
-    ),
+    cancellationReasonDetails: new FormControl(null),
   };
 
-  public form = new FormGroup(this.formControls);
+  public form = new FormGroup(this.formControls, this.detailsRequiredIfOther);
 
   private _subscriptions: Subscription[] = [];
 
@@ -100,13 +97,19 @@ export class CancelPrintModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  private requiredIfBlank(
-    name: string
-  ): (control: AbstractControl) => ValidationErrors | null {
-    const fn = (control: AbstractControl) => {
-      return this.form?.get(name)?.value ? null : Validators.required(control);
-    };
+  private detailsRequiredIfOther(
+    control: AbstractControl
+  ): ValidationErrors | null {
+    const detailsControl = control.get(
+      'cancellationReasonDetails'
+    ) as AbstractControl;
 
-    return fn.bind(this);
+    const errors = control.get('cancellationReasonId')?.value
+      ? null
+      : Validators.required(detailsControl);
+
+    detailsControl.setErrors(errors);
+
+    return null;
   }
 }
