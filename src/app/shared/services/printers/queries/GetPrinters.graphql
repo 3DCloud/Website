@@ -18,6 +18,7 @@ query {
     }
     name
     state
+    progress
     deviceId
     createdAt
     updatedAt

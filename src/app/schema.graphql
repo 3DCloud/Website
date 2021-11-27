@@ -169,6 +169,7 @@ type Print {
   canceledBy: User
   cancellationReason: CancellationReason
   cancellationReasonDetails: String
+  cancellationReasonId: Int
   completedAt: ISO8601DateTime
   createdAt: ISO8601DateTime!
   id: ID!
@@ -192,6 +193,7 @@ type Printer {
   printerDefinition: PrinterDefinition!
   printerDefinitionId: ID!
   printerExtruders: [PrinterExtruder]!
+  progress: Float
   state: String!
   ultiGCodeSettings: [UltiGCodeSettings]!
   updatedAt: ISO8601DateTime!

@@ -1,0 +1,18 @@
+<div class="printer-button" role="button">
+  <div class="printer-name">{{ printer.name }}</div>
+  <div class="printer-type">{{ printer.printerDefinition.name }}</div>
+  <div class="printer-icon" [style.background-image]="'url(' + printer.printerDefinition.thumbnail?.url + ')'"></div>
+  <app-printer-state-badge [state]="printer.state"></app-printer-state-badge>
+  <ngb-progressbar *ngIf="printer.progress" style="height: 0.2rem; margin: 0.5rem 2rem;" [max]="1" [value]="printer.progress" title="{{ printer.progress * 100 | number: '1.1-1' }}% completed"></ngb-progressbar>
+  <div class="mt-1" *ngFor="let extruder of printer.printerExtruders; let i = index">
+    <div class="printer-material">
+      <span class="text-muted mr-1" *ngIf="printer.printerExtruders.length > 1">E{{ i + 1 }}:</span>
+      <span *ngIf="extruder?.materialColor as materialColor">
+        <span class="dot" [style.background-color]="materialColor.color"></span> {{ materialColor.material.name }} ({{ materialColor.name }})
+      </span>
+      <ng-container *ngIf="!extruder?.materialColor">
+        <fa-icon [icon]="icons.faQuestionCircle"></fa-icon> Unknown material
+      </ng-container>
+    </div>
+  </div>
+</div>

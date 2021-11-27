@@ -1,9 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { PrintStateBadgeComponent } from './components/print-state-badge/print-state-badge.component';
-import { PrinterStateBadgeComponent } from './components/printer-state-badge/printer-state-badge.component';
+import {
+  PrintStateBadgeComponent,
+  PrinterButtonComponent,
+  PrinterStateBadgeComponent,
+} from './components';
 import { IsInvalidPipe } from './pipes/is-invalid.pipe';
 import { TimesPipe } from './pipes/times.pipe';
 
@@ -13,14 +17,16 @@ import { TimesPipe } from './pipes/times.pipe';
     PrintStateBadgeComponent,
     IsInvalidPipe,
     TimesPipe,
+    PrinterButtonComponent,
   ],
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, NgbModule],
   providers: [],
   exports: [
     PrinterStateBadgeComponent,
     PrintStateBadgeComponent,
     IsInvalidPipe,
     TimesPipe,
+    PrinterButtonComponent,
   ],
 })
 export class SharedModule {}

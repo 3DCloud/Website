@@ -21,6 +21,7 @@ export class PrintStateBadgeComponent {
         return 'info';
 
       case 'running':
+      case 'canceling':
         return 'warning';
 
       case 'success':
@@ -46,6 +47,9 @@ export class PrintStateBadgeComponent {
 
       case 'success':
         return 'Success';
+
+      case 'canceling':
+        return 'Canceling';
 
       case 'canceled':
         return 'Canceled';

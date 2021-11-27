@@ -7,24 +7,8 @@
       <app-alert *ngIf="error" type="danger">{{error}}</app-alert>
     </div>
 
-    <div class="printer" role="button" *ngFor="let printer of printers">
-      <div class="printer-button" [routerLink]="[printer.id, 'status']">
-        <div class="printer-name">{{ printer.name }}</div>
-        <div class="printer-type">{{ printer.printerDefinition.name }}</div>
-        <div class="printer-icon" [style.background-image]="'url(' + printer.printerDefinition.thumbnail?.url + ')'"></div>
-        <app-printer-state-badge [state]="printer.state"></app-printer-state-badge>
-        <div class="mt-1" *ngFor="let extruder of printer.printerExtruders; let i = index">
-          <div class="printer-material">
-            <span class="text-muted mr-1" *ngIf="printer.printerExtruders.length > 1">E{{ i + 1 }}:</span>
-            <span *ngIf="extruder?.materialColor as materialColor">
-          <span class="dot" [style.background-color]="materialColor.color"></span> {{ materialColor.material.name }} ({{ materialColor.name }})
-          </span>
-            <ng-container *ngIf="!extruder?.materialColor">
-              <fa-icon [icon]="icons.faQuestionCircle"></fa-icon> Unknown material
-            </ng-container>
-          </div>
-        </div>
-      </div>
+    <div class="printer" *ngFor="let printer of printers">
+      <app-printer-button [printer]="printer" [routerLink]="[printer.id, 'status']"></app-printer-button>
 
       <!--suppress TypeScriptValidateTypes -->
       <div *ngIf="'update' | ablePure: 'Printer' | async">

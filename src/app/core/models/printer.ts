@@ -12,6 +12,7 @@ export interface Printer {
   deviceId?: string;
   device?: Device;
   state: PrinterState;
+  progress?: number;
   currentPrint?: Print;
   printerDefinition: PrinterDefinition;
   printerExtruders: (PrinterExtruder | undefined)[];

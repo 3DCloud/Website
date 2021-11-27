@@ -20,7 +20,8 @@ query {
     state
     deviceId
   }
-  busy: printers(state: ["printing", "canceling"]) {
+  busy: printers(state: ["downloading", "heating", "printing", "canceling"]) {
+    id
     printerDefinition {
       name
       thumbnail {
@@ -38,6 +39,7 @@ query {
     }
     name
     state
+    progress
     deviceId
   }
 }

@@ -3,6 +3,7 @@ export type PrintState =
   | 'downloading'
   | 'running'
   | 'success'
+  | 'canceling'
   | 'canceled'
   | 'errored'
   | 'unknown';

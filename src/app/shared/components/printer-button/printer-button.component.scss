@@ -1,0 +1,39 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+
+.printer-button {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  width: 15rem;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.printer-name {
+  font-size: 1.2rem;
+}
+
+.printer-icon {
+  width: 10rem;
+  height: 10rem;
+  margin: 0.5rem auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.printer-type {
+  color: $text-muted;
+}
+
+.dot {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  vertical-align: -0.125em;
+}
