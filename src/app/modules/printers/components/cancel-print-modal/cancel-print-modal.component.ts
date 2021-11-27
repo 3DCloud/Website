@@ -45,6 +45,12 @@ export class CancelPrintModalComponent implements OnInit, OnDestroy {
     private _cancellationReasonsService: CancellationReasonsService
   ) {}
 
+  public get selectedReason(): CancellationReason | undefined {
+    return this.reasons?.find(
+      (r) => r.id === this.formControls.cancellationReasonId?.value
+    );
+  }
+
   public ngOnInit(): void {
     this._subscriptions.push(
       this._cancellationReasonsService

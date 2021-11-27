@@ -8,14 +8,20 @@
 
   <form [formGroup]="form">
     <div class="form-group">
-      <select class="form-control" formControlName="cancellationReasonId" [class.is-invalid]="formControls.cancellationReasonId | isInvalid">
+      <label for="reason">Reason</label>
+      <select class="form-control" id="reason" formControlName="cancellationReasonId" [class.is-invalid]="formControls.cancellationReasonId | isInvalid">
         <option *ngFor="let reason of reasons" [ngValue]="reason.id">{{ reason.name }}</option>
         <option [ngValue]="null">Other</option>
       </select>
+      <small class="form-text text-muted">
+        {{ selectedReason?.description }}
+      </small>
     </div>
 
     <div class="form-group">
+      <label for="details"></label>
       <textarea class="form-control"
+                id="details"
                 placeholder="Enter extra details regarding what happened, if applicable."
                 formControlName="cancellationReasonDetails"
                 [class.is-invalid]="formControls.cancellationReasonDetails | isInvalid"></textarea>
