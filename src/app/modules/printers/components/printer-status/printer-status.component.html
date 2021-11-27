@@ -1,5 +1,7 @@
 <div class="container">
-  <div class="row">
+  <app-spinner *ngIf="loading"></app-spinner>
+  <app-alert type="danger" *ngIf="error">{{ error }}</app-alert>
+  <div *ngIf="printer" class="row">
     <div class="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-12">
       <h1>{{ printer?.name }} <small><app-printer-state-badge [state]="printerState?.printer_state || printer?.state"></app-printer-state-badge></small></h1>
 

@@ -69,7 +69,9 @@ export class ChangeMaterialModalComponent implements OnInit, OnDestroy {
         )
         .subscribe(
           (result) => {
-            this.modal.close(result);
+            this.printer.printerExtruders[this.extruderIndex].materialColor =
+              result.materialColor;
+            this.modal.close();
           },
           (err) => {
             this.busy = false;

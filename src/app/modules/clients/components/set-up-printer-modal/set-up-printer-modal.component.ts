@@ -118,7 +118,7 @@ export class SetUpPrinterModalComponent implements OnInit, OnDestroy {
         .subscribe(
           (printer) => {
             this._router
-              .navigate(['/printers', printer.id, 'settings'])
+              .navigate(['/printers', printer.id, 'status'])
               .then(() => {
                 this.modal.close();
               });

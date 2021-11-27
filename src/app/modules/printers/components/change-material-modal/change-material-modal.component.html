@@ -9,10 +9,10 @@
   <app-alert *ngIf="!loading && !materials?.length">There are no materials from which to choose.</app-alert>
 
   <ng-container *ngIf="materials && materials.length">
-    <div class="form-group" *ngIf="printer && printer.printerDefinition.extruderCount > 1">
+    <div class="form-group" *ngIf="printer && printer.printerExtruders.length > 1">
       <label for="extruder">Extruder</label>
       <select class="form-control" id="extruder" [(ngModel)]="extruderIndex" [disabled]="loading">
-        <option *ngFor="let i of printer.printerDefinition.extruderCount | times" [ngValue]="i">Extruder {{ i + 1 }}</option>
+        <option *ngFor="let extruder of printer.printerExtruders; let i = index" [ngValue]="i">Extruder {{ extruder.extruderIndex + 1 }}</option>
       </select>
     </div>
     <div class="form-group">

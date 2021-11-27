@@ -15,5 +15,5 @@ export interface Printer {
   progress?: number;
   currentPrint?: Print;
   printerDefinition: PrinterDefinition;
-  printerExtruders: (PrinterExtruder | undefined)[];
+  printerExtruders: PrinterExtruder[];
 }

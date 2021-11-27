@@ -47,7 +47,7 @@
         <td>{{ device.serialNumber || '&mdash;' }}</td>
         <td><span [ngbTooltip]="device.lastSeen | djsDateFormat: 'LLL'">{{ device.lastSeen | djsTimeAgo }}</span></td>
         <td>
-          <a *ngIf="device.printer" [routerLink]="['/printers', device.printer.id, 'settings']">{{ device.printer.name }}</a>
+          <a *ngIf="device.printer" [routerLink]="['/printers', device.printer.id, 'status']">{{ device.printer.name }}</a>
         </td>
         <td>
           <button class="btn btn-light" (click)="setUpPrinter(device)">Set up printer&hellip;</button>

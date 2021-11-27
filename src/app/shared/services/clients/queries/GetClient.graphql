@@ -13,10 +13,5 @@ query ($clientId: ID!) {
         name
       }
     }
-    printers {
-      id
-      name
-      deviceId
-    }
   }
 }

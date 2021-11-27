@@ -62,6 +62,8 @@ export class PrinterStatusComponent
     faTimes,
   };
 
+  public loading = true;
+  public error?: string;
   public printer: Printer | undefined;
   public state: 'connecting' | 'connected' | 'disconnected' = 'connecting';
   public printerState?: PrinterStateObj;
@@ -85,9 +87,16 @@ export class PrinterStatusComponent
     this._route.params.subscribe((params) => {
       this._printerId = params.id;
 
-      this._printersService.getPrinter(params.id).subscribe((printer) => {
-        this.printer = printer;
-      });
+      this._printersService.getPrinter(params.id).subscribe(
+        (printer) => {
+          this.printer = printer;
+          this.loading = false;
+        },
+        (err) => {
+          this.error = err;
+          this.loading = false;
+        }
+      );
 
       this._usersService.getWebSocketTicket().subscribe((ticket) => {
         this._consumer = actioncable.createConsumer(
