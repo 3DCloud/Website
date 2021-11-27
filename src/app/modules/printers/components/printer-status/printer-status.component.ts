@@ -16,7 +16,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as actioncable from 'actioncable';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 
 import { Printer } from 'app/core/models';
 import { PrinterStateObject, Temperature } from 'app/core/models/action-cable';
@@ -66,42 +67,61 @@ export class PrinterStatusComponent
   ) {}
 
   public ngOnInit(): void {
-    this._route.params.subscribe((params) => {
-      this._printerId = params.id;
+    this._subscriptions.push(
+      this._route.paramMap
+        .pipe(
+          concatMap((paramMap) => {
+            this._printerId = paramMap.get('id') || undefined;
 
-      this._printersService.getPrinter(params.id).subscribe(
-        (printer) => {
-          this.printer = printer;
-          this.loading = false;
-        },
-        (err) => {
-          this.error = err;
-          this.loading = false;
-        }
-      );
+            if (!this._printerId) {
+              return of(undefined);
+            }
 
-      this._usersService.getWebSocketTicket().subscribe((ticket) => {
-        this._consumer = actioncable.createConsumer(
-          `${environment.cableUrl}?ticket=${encodeURIComponent(ticket)}`
-        );
+            return this._printersService.getPrinter(this._printerId);
+          })
+        )
+        .subscribe(
+          (printer) => {
+            this.printer = printer;
+            this.loading = false;
 
-        this._consumer.connect();
+            this._subscriptions.push(
+              this._usersService.getWebSocketTicket().subscribe(
+                (ticket) => {
+                  this._consumer = actioncable.createConsumer(
+                    `${environment.cableUrl}?ticket=${encodeURIComponent(
+                      ticket
+                    )}`
+                  );
 
-        const connected = this.connected.bind(this);
-        const disconnected = this.disconnected.bind(this);
-        const received = this.received.bind(this);
+                  this._consumer.connect();
 
-        this._consumer?.ensureActiveConnection();
-        this._channel = this._consumer?.subscriptions.create(
-          { channel: 'PrinterListenerChannel', id: params.id },
-          {
-            connected,
-            disconnected,
-            received,
+                  const connected = this.connected.bind(this);
+                  const disconnected = this.disconnected.bind(this);
+                  const received = this.received.bind(this);
+
+                  this._consumer?.ensureActiveConnection();
+                  this._channel = this._consumer?.subscriptions.create(
+                    { channel: 'PrinterListenerChannel', id: this._printerId },
+                    {
+                      connected,
+                      disconnected,
+                      received,
+                    }
+                  );
+                },
+                (err) => {
+                  this.error = err;
+                }
+              )
+            );
+          },
+          (err) => {
+            this.error = err;
+            this.loading = false;
           }
-        );
-      });
-    });
+        )
+    );
   }
 
   public ngAfterViewInit(): void {
