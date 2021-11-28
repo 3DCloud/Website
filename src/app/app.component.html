@@ -11,27 +11,27 @@
         <a class="navbar-brand" routerLink="/">
           <img class="d-inline-block align-top" src="assets/maker-repo-print.svg" alt="MakerRepo Print" height="40" />
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" [ngbCollapse]="isMenuCollapsed">
           <ul class="navbar-nav mr-auto">
             <!--suppress TypeScriptValidateTypes -->
             <li class="nav-item" routerLinkActive="active" *ngIf="'index' | ablePure: 'UploadedFile' | async">
-              <a class="nav-link" routerLink="files">Files</a>
+              <a class="nav-link" routerLink="files" (click)="isMenuCollapsed = true">Files</a>
             </li>
             <!--suppress TypeScriptValidateTypes -->
             <li class="nav-item" routerLinkActive="active" *ngIf="'index' | ablePure: 'Print' | async">
-              <a class="nav-link" routerLink="prints">Prints</a>
+              <a class="nav-link" routerLink="prints" (click)="isMenuCollapsed = true">Prints</a>
             </li>
             <!--suppress TypeScriptValidateTypes -->
             <li class="nav-item" routerLinkActive="active" *ngIf="'index' | ablePure: 'Client' | async">
-              <a class="nav-link" routerLink="clients">Clients</a>
+              <a class="nav-link" routerLink="clients" (click)="isMenuCollapsed = true">Clients</a>
             </li>
             <!--suppress TypeScriptValidateTypes -->
             <li class="nav-item" routerLinkActive="active" *ngIf="'index' | ablePure: 'Printer' | async">
-              <a class="nav-link" routerLink="printers">Printers</a>
+              <a class="nav-link" routerLink="printers" (click)="isMenuCollapsed = true">Printers</a>
             </li>
             <!--suppress TypeScriptValidateTypes -->
             <li class="nav-item"
@@ -42,9 +42,9 @@
                      ('index' | ablePure: 'Material' | async)">
               <a role="button" class="nav-link dropdown-toggle" ngbDropdownToggle>Settings</a>
               <div ngbDropdownMenu>
-                <a ngbDropdownItem routerLink="/settings/printer-definitions" routerLinkActive="active">Printer Definitions</a>
-                <a ngbDropdownItem routerLink="/settings/materials" routerLinkActive="active">Materials</a>
-                <a ngbDropdownItem routerLink="/settings/cancellation-reasons" routerLinkActive="active">Cancellation Reasons</a>
+                <a ngbDropdownItem routerLink="/settings/printer-definitions" routerLinkActive="active" (click)="isMenuCollapsed = true">Printer Definitions</a>
+                <a ngbDropdownItem routerLink="/settings/materials" routerLinkActive="active" (click)="isMenuCollapsed = true">Materials</a>
+                <a ngbDropdownItem routerLink="/settings/cancellation-reasons" routerLinkActive="active" (click)="isMenuCollapsed = true">Cancellation Reasons</a>
               </div>
             </li>
           </ul>

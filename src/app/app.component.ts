@@ -12,6 +12,7 @@ import { User } from './core/models';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
+  public isMenuCollapsed = true;
   public loaded = false;
   public error?: string;
 
