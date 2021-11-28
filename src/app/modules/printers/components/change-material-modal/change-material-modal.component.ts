@@ -42,6 +42,8 @@ export class ChangeMaterialModalComponent implements OnInit, OnDestroy {
         (materials) => {
           this.materials = materials;
           this.loading = false;
+
+          this.extruderChanged();
         },
         (err) => {
           this.error = err;
@@ -49,6 +51,35 @@ export class ChangeMaterialModalComponent implements OnInit, OnDestroy {
         }
       )
     );
+  }
+
+  public extruderChanged(): void {
+    if (!this.materials) {
+      return;
+    }
+
+    const currentMaterialColor =
+      this.printer.printerExtruders[this.extruderIndex].materialColor;
+
+    this.materialIndex =
+      this.materials?.findIndex(
+        (m) => m.id === currentMaterialColor?.material.id
+      ) || -1;
+
+    if (this.materialIndex === -1) {
+      this.materialIndex = 0;
+    }
+
+    if (this.materialIndex < this.materials.length) {
+      this.materialColorIndex =
+        this.materials![this.materialIndex]?.materialColors.findIndex(
+          (mc) => mc.id === currentMaterialColor?.id
+        ) || -1;
+    }
+
+    if (this.materialColorIndex === -1) {
+      this.materialColorIndex = 0;
+    }
   }
 
   public submit(): void {

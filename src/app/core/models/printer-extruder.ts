@@ -5,8 +5,8 @@ export interface PrinterExtruder {
   id: string;
   printer: Printer;
   printerId: string;
-  materialColor: MaterialColor;
-  materialColorId: string;
+  materialColor?: MaterialColor;
+  materialColorId?: string;
   extruderIndex: number;
   ultiGCodeNozzleSize?: string;
   filamentDiameter: number;

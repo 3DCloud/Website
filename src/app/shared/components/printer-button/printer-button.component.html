@@ -10,9 +10,7 @@
       <span *ngIf="extruder?.materialColor as materialColor">
         <span class="dot" [style.background-color]="materialColor.color"></span> {{ materialColor.material.name }} ({{ materialColor.name }})
       </span>
-      <ng-container *ngIf="!extruder?.materialColor">
-        <fa-icon [icon]="icons.faQuestionCircle"></fa-icon> Unknown material
-      </ng-container>
+      <ng-container *ngIf="!extruder?.materialColor">No Material</ng-container>
     </div>
   </div>
 </div>

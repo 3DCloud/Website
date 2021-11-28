@@ -11,7 +11,7 @@
   <ng-container *ngIf="materials && materials.length">
     <div class="form-group" *ngIf="printer && printer.printerExtruders.length > 1">
       <label for="extruder">Extruder</label>
-      <select class="form-control" id="extruder" [(ngModel)]="extruderIndex" [disabled]="loading">
+      <select class="form-control" id="extruder" [(ngModel)]="extruderIndex" [disabled]="loading" (change)="extruderChanged()">
         <option *ngFor="let extruder of printer.printerExtruders; let i = index" [ngValue]="i">Extruder {{ extruder.extruderIndex + 1 }}</option>
       </select>
     </div>

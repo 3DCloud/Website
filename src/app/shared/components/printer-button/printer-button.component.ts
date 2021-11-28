@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { Printer } from 'app/core/models';
 
@@ -10,8 +9,4 @@ import { Printer } from 'app/core/models';
 })
 export class PrinterButtonComponent {
   @Input() public printer: Printer = null!;
-
-  public icons = {
-    faQuestionCircle,
-  };
 }

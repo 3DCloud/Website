@@ -10,9 +10,11 @@ query {
     printerExtruders {
       extruderIndex
       materialColor {
+        id
         name
         color
         material {
+          id
           name
         }
       }
