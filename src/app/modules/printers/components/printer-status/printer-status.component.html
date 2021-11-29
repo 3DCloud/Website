@@ -39,7 +39,7 @@
         <fa-icon [icon]="icons.faBan"></fa-icon> Cancel print
       </button>
       <!--suppress TypeScriptValidateTypes -->
-      <button class="btn btn-warning" (click)="reconnect()" *ngIf="'reconnect' | ablePure: subject('Printer', printer) | async">
+      <button class="btn btn-warning" [disabled]="(printerState?.printer_state || printer.state) === 'offline'" (click)="reconnect()" *ngIf="'reconnect' | ablePure: subject('Printer', printer) | async">
         <fa-icon [icon]="icons.faSync"></fa-icon> Reconnect
       </button>
     </div>
