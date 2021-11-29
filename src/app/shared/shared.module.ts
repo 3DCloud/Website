@@ -8,15 +8,13 @@ import {
   PrinterButtonComponent,
   PrinterStateBadgeComponent,
 } from './components';
-import { IsInvalidPipe } from './pipes/is-invalid.pipe';
-import { TimesPipe } from './pipes/times.pipe';
+import { IsInvalidPipe } from './pipes';
 
 @NgModule({
   declarations: [
     PrinterStateBadgeComponent,
     PrintStateBadgeComponent,
     IsInvalidPipe,
-    TimesPipe,
     PrinterButtonComponent,
   ],
   imports: [CommonModule, FontAwesomeModule, NgbModule],
@@ -25,7 +23,6 @@ import { TimesPipe } from './pipes/times.pipe';
     PrinterStateBadgeComponent,
     PrintStateBadgeComponent,
     IsInvalidPipe,
-    TimesPipe,
     PrinterButtonComponent,
   ],
 })
