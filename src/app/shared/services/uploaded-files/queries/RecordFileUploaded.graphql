@@ -3,6 +3,8 @@ mutation ($signedId: String!) {
     id
     filename
     byteSize
+    estimatedDuration
+    ultiGCodeNozzleSize
     createdAt
   }
 }

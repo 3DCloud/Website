@@ -7,5 +7,6 @@ export interface UploadedFile {
   byteSize: number;
   createdAt: Date;
   estimatedDuration: number;
+  ultiGCodeNozzleSize: string;
   url: string;
 }

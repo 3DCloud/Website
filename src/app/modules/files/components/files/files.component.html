@@ -44,6 +44,7 @@
         <th role="button" (click)="order('byte_size', true)">Size <fa-icon *ngIf="orderBy === 'byte_size'" [icon]="ascending ? icons.faCaretUp : icons.faCaretDown"></fa-icon></th>
         <th role="button" (click)="order('created_at', false)">Upload Time <fa-icon *ngIf="orderBy === 'created_at'" [icon]="ascending ? icons.faCaretUp : icons.faCaretDown"></fa-icon></th>
         <th>Estimated Duration</th>
+        <th>Nozzle Size</th>
         <th>Actions</th>
       </tr>
       </thead>
@@ -56,6 +57,7 @@
           <span *ngIf="file.estimatedDuration">{{ file.estimatedDuration * 1000 | djsDuration: true }}</span>
           <span *ngIf="!file.estimatedDuration">&ndash;</span>
         </td>
+        <td>{{ nozzleSize(file.ultiGCodeNozzleSize) }}</td>
         <td>
           <button type="button" class="ml-1 btn btn-primary" (click)="showSelectPrinterModal(file.id)">Print&hellip;</button>
           <button type="button" class="ml-1 btn btn-danger" (click)="deleteFile(file)" [disabled]="file.busy" title="Delete"><fa-icon [icon]="icons.faTrash"></fa-icon></button>

@@ -92,6 +92,32 @@ export class FilesComponent implements OnInit, OnDestroy {
     this.reloadFiles();
   }
 
+  public nozzleSize(key: string): string {
+    if (!key) {
+      return 'N/A';
+    }
+
+    switch (key) {
+      case 'size_0_25':
+        return '0.25 mm';
+
+      case 'size_0_40':
+        return '0.40 mm';
+
+      case 'size_0_60':
+        return '0.60 mm';
+
+      case 'size_0_80':
+        return '0.80 mm';
+
+      case 'size_1_00':
+        return '1.00 mm';
+
+      default:
+        return 'Unknown';
+    }
+  }
+
   public debounceSearch(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
 
@@ -203,7 +229,7 @@ export class FilesComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (uploadedFile) => {
-          this.files = this.files?.splice(0, 0, {
+          this.files?.splice(0, 0, {
             ...uploadedFile,
             busy: false,
           });

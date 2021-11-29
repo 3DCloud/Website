@@ -5,5 +5,6 @@ query ($search: String, $orderBy: String, $ascending: Boolean) {
     byteSize
     createdAt
     estimatedDuration
+    ultiGCodeNozzleSize
   }
 }
