@@ -6,14 +6,14 @@
       <h1>{{ printer?.name }} <small><app-printer-state-badge [state]="printerState?.printer_state || printer?.state"></app-printer-state-badge></small></h1>
 
       <div class="mb-2">
-        <span *ngIf="state === 'connecting' || (state === 'connected' && !printerState)" class="spinner-border spinner-border-sm mr-1" role="status">
+        <ng-container *ngIf="state === 'connecting'">
+          <span *ngIf="state === 'connecting'" class="spinner-border spinner-border-sm mr-1" role="status">
           <span class="sr-only">Loading...</span>
         </span>
+          Connecting to live data feed
+        </ng-container>
 
-        <ng-container *ngIf="state === 'connecting'">Connecting to live data feed</ng-container>
-        <ng-container *ngIf="state === 'connected' && !printerState">Waiting for data</ng-container>
-
-        <ng-container *ngIf="state === 'connected' && printerState">
+        <ng-container *ngIf="state === 'connected'">
           <fa-icon [icon]="icons.faCheck" class="text-success"></fa-icon> Connected to live data feed
         </ng-container>
 
