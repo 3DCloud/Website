@@ -1,5 +1,5 @@
-query GetPrints {
-  prints {
+query ($search: String, $orderBy: String, $ascending: Boolean, $statuses: [String!]) {
+  prints (search: $search, orderBy: $orderBy, ascending: $ascending, statuses: $statuses) {
     id
     uploadedFile {
       id

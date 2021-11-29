@@ -1,22 +1,33 @@
 <div class="container">
   <h1>My Prints</h1>
 
-  <app-spinner *ngIf="loading"></app-spinner>
+  <div class="d-flex flex-row mb-2">
+    <input class="form-control flex-grow-1" placeholder="Search&hellip;" (keyup)="debounceSearch($event)" />
+    <div ngbDropdown>
+      <button ngbDropdownToggle class="btn btn-light ml-1">Status</button>
+      <div ngbDropdownMenu>
+        <button ngbDropdownItem class="filter-item" (click)="toggleAll()">
+          <fa-icon class="check" *ngIf="all" [icon]="icons.faCheck"></fa-icon>
+          All
+        </button>
+        <button ngbDropdownItem class="filter-item" *ngFor="let item of printStatuses | keyvalue" (click)="toggleStatus(item.key)">
+          <fa-icon class="check" *ngIf="item.value.selected" [icon]="icons.faCheck"></fa-icon>
+          {{ item.value.name }}
+        </button>
+      </div>
+    </div>
+  </div>
 
-  <app-alert *ngIf="error" type="danger">{{ error }}</app-alert>
-
-  <app-alert *ngIf="!loading && !error && !prints?.length">Your print history is empty.</app-alert>
-
-  <table *ngIf="!loading && prints?.length" class="table">
+  <table class="table">
     <thead>
     <tr>
-      <th>File Name</th>
-      <th>Printed On</th>
-      <th>Started</th>
+      <th role="button" (click)="order('filename', true)">File Name <fa-icon *ngIf="orderBy === 'filename'" [icon]="ascending ? icons.faCaretUp : icons.faCaretDown"></fa-icon></th>
+      <th role="button" (click)="order('printer', true)">Printed On <fa-icon *ngIf="orderBy === 'printer'" [icon]="ascending ? icons.faCaretUp : icons.faCaretDown"></fa-icon></th>
+      <th role="button" (click)="order('started_at', false)">Started <fa-icon *ngIf="orderBy === 'started_at'" [icon]="ascending ? icons.faCaretUp : icons.faCaretDown"></fa-icon></th>
       <th>Duration</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody [class.collapsed]="loading || !prints?.length">
     <tr *ngFor="let print of prints">
       <td>
         <!--suppress TypeScriptValidateTypes -->
@@ -40,4 +51,11 @@
     </tr>
     </tbody>
   </table>
+
+  <app-spinner *ngIf="loading"></app-spinner>
+  <app-alert *ngIf="error" type="danger">{{ error }}</app-alert>
+  <app-alert *ngIf="!loading && prints && !prints.length">
+    <ng-container *ngIf="!searched">Your print history is empty.</ng-container>
+    <ng-container *ngIf="searched">No prints match your search/filters.</ng-container>
+  </app-alert>
 </div>

@@ -1,0 +1,13 @@
+.collapsed {
+  visibility: collapse;
+}
+
+.filter-item {
+  position: relative;
+  padding-left: 2rem;
+
+  .check {
+    position: absolute;
+    left: 0.5rem;
+  }
+}

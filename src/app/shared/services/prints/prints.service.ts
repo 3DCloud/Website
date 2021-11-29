@@ -15,10 +15,16 @@ import StartPrint from './queries/StartPrint.graphql';
 export class PrintsService {
   public constructor(private _apollo: Apollo) {}
 
-  public getPrints(): Observable<Print[]> {
+  public getPrints(
+    search?: string,
+    orderBy?: string,
+    ascending?: boolean,
+    statuses?: string[]
+  ): Observable<Print[]> {
     return this._apollo
       .query<{ prints: Print[] }>({
         query: GetPrints,
+        variables: { search, orderBy, ascending, statuses },
       })
       .pipe(map((result) => result.data.prints));
   }
