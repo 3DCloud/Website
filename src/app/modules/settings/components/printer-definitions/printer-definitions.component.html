@@ -8,8 +8,8 @@
 
     <app-spinner *ngIf="loading"></app-spinner>
 
-    <app-alert *ngIf="error" [icon]="icons.faExclamationTriangle" type="danger">{{ error }}</app-alert>
-    <app-alert *ngIf="printerDefinitions && !printerDefinitions.length" [icon]="icons.faInfoCircle" type="info">No results.</app-alert>
+    <app-alert *ngIf="error" type="danger">{{ error }}</app-alert>
+    <app-alert *ngIf="printerDefinitions && !printerDefinitions.length" type="info">No results.</app-alert>
 
     <table class="table" *ngIf="printerDefinitions && printerDefinitions.length">
       <thead>

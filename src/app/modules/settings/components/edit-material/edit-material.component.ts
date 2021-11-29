@@ -1,25 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  faExclamationTriangle,
-  faMinus,
-  faPlus,
-  faSave,
-} from '@fortawesome/free-solid-svg-icons';
-import { Subscription } from 'rxjs';
+import { faMinus, faPlus, faSave } from '@fortawesome/free-solid-svg-icons';
+import { Subscription, of } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 
 import { Material } from 'app/core/models';
 import { MaterialsService } from 'app/shared/services';
 
 @Component({
   selector: 'app-material',
-  templateUrl: './material.component.html',
-  styleUrls: ['./material.component.scss'],
+  templateUrl: './edit-material.component.html',
+  styleUrls: ['./edit-material.component.scss'],
 })
-export class MaterialComponent implements OnInit, OnDestroy {
+export class EditMaterialComponent implements OnInit, OnDestroy {
   public icons = {
-    faExclamationTriangle,
     faMinus,
     faPlus,
     faSave,
@@ -29,6 +24,7 @@ export class MaterialComponent implements OnInit, OnDestroy {
   public error?: unknown;
 
   public materialId: string | null = null;
+  public material?: Readonly<Material>;
   public materialColors = new FormArray([]);
   public form = new FormGroup({
     name: new FormControl(null, Validators.required),
@@ -48,32 +44,50 @@ export class MaterialComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this._subscriptions.push(
-      this._route.paramMap.subscribe((paramMap) => {
-        this.materialId = paramMap.get('id');
+      this._route.paramMap
+        .pipe(
+          concatMap((paramMap) => {
+            console.log('hi');
 
-        if (this.materialId) {
-          this._subscriptions.push(
-            this._materialsService
-              .getMaterial(this.materialId)
-              .subscribe(
-                (material) => {
-                  for (let i = 0; i < material.materialColors!.length; i++) {
-                    this.materialColors.push(this.createColor());
-                  }
-                  this.form.patchValue(material);
-                },
-                (err) => {
-                  this.error = err;
-                }
-              )
-              .add(() => {
-                this.loading = false;
-              })
-          );
-        } else {
+            this.materialId = paramMap.get('id');
+
+            if (!this.materialId) {
+              return of(undefined);
+            }
+
+            return this._materialsService.getMaterial(this.materialId);
+          })
+        )
+        .subscribe(
+          (material) => {
+            if (!material) {
+              this.loading = false;
+              return;
+            }
+
+            this.material = material;
+
+            for (let i = 0; i < material.materialColors!.length; i++) {
+              this.materialColors.push(this.createColor());
+            }
+
+            this.form.patchValue(material);
+
+            this.loading = false;
+          },
+          (err) => {
+            this.error = err;
+            this.loading = false;
+          },
+          () => {
+            console.log('complete');
+            this.loading = false;
+          }
+        )
+        .add(() => {
+          console.log('add');
           this.loading = false;
-        }
-      })
+        })
     );
   }
 

@@ -82,7 +82,7 @@ export class AddMaterialModalComponent implements OnInit, OnDestroy {
       this.materialTxtOptions = [];
 
       for (const line of contents.split('\n')) {
-        if (line === '[material]') {
+        if (line === '[edit-material]') {
           if (currentMaterial) {
             const parsed = this.parseMaterial(currentMaterial);
 

@@ -1,11 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  faEdit,
-  faExclamationTriangle,
-  faInfoCircle,
-  faPlus,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 
 import { Material } from 'app/core/models';
@@ -23,8 +17,6 @@ interface MaterialItem extends Material {
 export class MaterialsComponent implements OnInit, OnDestroy {
   public icons = {
     faEdit,
-    faExclamationTriangle,
-    faInfoCircle,
     faPlus,
     faTrash,
   };

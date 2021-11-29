@@ -6,9 +6,9 @@ import { AuthorizationGuard } from 'app/core/guards';
 import {
   CancellationReasonsComponent,
   EditCancellationReasonComponent,
-  MaterialComponent,
+  EditMaterialComponent,
+  EditPrinterDefinitionComponent,
   MaterialsComponent,
-  PrinterDefinitionComponent,
   PrinterDefinitionsComponent,
   SettingsComponent,
 } from './components';
@@ -34,14 +34,14 @@ const routes: Routes = [
       },
       {
         path: 'printer-definitions/new',
-        component: PrinterDefinitionComponent,
+        component: EditPrinterDefinitionComponent,
         data: {
           subject: 'PrinterDefinition',
         },
       },
       {
         path: 'printer-definitions/:id',
-        component: PrinterDefinitionComponent,
+        component: EditPrinterDefinitionComponent,
         data: {
           subject: 'PrinterDefinition',
         },
@@ -55,14 +55,14 @@ const routes: Routes = [
       },
       {
         path: 'materials/new',
-        component: MaterialComponent,
+        component: EditMaterialComponent,
         data: {
           subject: 'Material',
         },
       },
       {
         path: 'materials/:id',
-        component: MaterialComponent,
+        component: EditMaterialComponent,
         data: {
           subject: 'Material',
         },

@@ -1,11 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  faEdit,
-  faExclamationTriangle,
-  faInfoCircle,
-  faPlus,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 
 import { PrinterDefinition } from 'app/core/models';
@@ -27,8 +21,6 @@ export class PrinterDefinitionsComponent implements OnInit, OnDestroy {
 
   public icons = {
     faEdit,
-    faExclamationTriangle,
-    faInfoCircle,
     faPlus,
     faTrash,
   };

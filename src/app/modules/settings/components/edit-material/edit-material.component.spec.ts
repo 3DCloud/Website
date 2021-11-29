@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PrinterDefinitionComponent } from './printer-definition.component';
+import { EditMaterialComponent } from './edit-material.component';
 
-describe('PrinterDefinitionComponent', () => {
-  let component: PrinterDefinitionComponent;
-  let fixture: ComponentFixture<PrinterDefinitionComponent>;
+describe('MaterialComponent', () => {
+  let component: EditMaterialComponent;
+  let fixture: ComponentFixture<EditMaterialComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PrinterDefinitionComponent],
+      declarations: [EditMaterialComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PrinterDefinitionComponent);
+    fixture = TestBed.createComponent(EditMaterialComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

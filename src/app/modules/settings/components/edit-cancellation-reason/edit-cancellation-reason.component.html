@@ -1,13 +1,13 @@
 <h2>
-  <ng-container *ngIf="!id">Create Cancellation Reason</ng-container>
-  <ng-container *ngIf="id">Edit Cancellation Reason</ng-container>
+  <ng-container *ngIf="!cancellationReasonId">Create Cancellation Reason</ng-container>
+  <ng-container *ngIf="cancellationReasonId">Edit Cancellation Reason</ng-container>
 </h2>
 
 <app-spinner *ngIf="loading"></app-spinner>
-
+<app-alert *ngIf="!loading && cancellationReasonId && !cancellationReason" type="warning">Material not found.</app-alert>
 <app-alert type="danger" *ngIf="error">{{ error }}</app-alert>
 
-<form *ngIf="!loading" [formGroup]="form" (ngSubmit)="submit()">
+<form *ngIf="!loading && (!cancellationReasonId || cancellationReason)" [formGroup]="form" (ngSubmit)="submit()">
   <div class="form-group">
     <label for="name">Name</label>
     <input class="form-control" id="name" formControlName="name" [class.is-invalid]="formControls.name | isInvalid" />

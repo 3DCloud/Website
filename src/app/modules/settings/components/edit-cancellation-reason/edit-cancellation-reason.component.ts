@@ -19,7 +19,8 @@ export class EditCancellationReasonComponent implements OnInit, OnDestroy {
   };
 
   public loading = true;
-  public id: string | null = null;
+  public cancellationReasonId: string | null = null;
+  public cancellationReason?: Readonly<CancellationReason>;
   public error?: string;
   public busy = false;
 
@@ -42,10 +43,10 @@ export class EditCancellationReasonComponent implements OnInit, OnDestroy {
       this._route.paramMap
         .pipe(
           concatMap((paramMap) => {
-            this.id = paramMap.get('id');
-            if (this.id) {
+            this.cancellationReasonId = paramMap.get('id');
+            if (this.cancellationReasonId) {
               return this._cancellationReasonsService.getCancellationReason(
-                this.id
+                this.cancellationReasonId
               );
             } else {
               return of(undefined);
@@ -54,7 +55,7 @@ export class EditCancellationReasonComponent implements OnInit, OnDestroy {
         )
         .subscribe(
           (cancellationReason) => {
-            if (this.id) {
+            if (this.cancellationReasonId) {
               if (cancellationReason) {
                 this.form.patchValue(cancellationReason);
               } else {
@@ -84,9 +85,9 @@ export class EditCancellationReasonComponent implements OnInit, OnDestroy {
     const cancellationReason = this.form.value as CancellationReasonInput;
     let request: Observable<CancellationReason>;
 
-    if (this.id) {
+    if (this.cancellationReasonId) {
       request = this._cancellationReasonsService.updateCancellationReason(
-        this.id,
+        this.cancellationReasonId,
         cancellationReason
       );
     } else {
