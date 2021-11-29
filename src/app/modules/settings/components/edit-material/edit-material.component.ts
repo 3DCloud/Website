@@ -47,8 +47,6 @@ export class EditMaterialComponent implements OnInit, OnDestroy {
       this._route.paramMap
         .pipe(
           concatMap((paramMap) => {
-            console.log('hi');
-
             this.materialId = paramMap.get('id');
 
             if (!this.materialId) {
@@ -78,16 +76,8 @@ export class EditMaterialComponent implements OnInit, OnDestroy {
           (err) => {
             this.error = err;
             this.loading = false;
-          },
-          () => {
-            console.log('complete');
-            this.loading = false;
           }
         )
-        .add(() => {
-          console.log('add');
-          this.loading = false;
-        })
     );
   }
 

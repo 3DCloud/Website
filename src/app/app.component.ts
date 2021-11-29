@@ -62,8 +62,6 @@ export class AppComponent implements OnInit, OnDestroy {
             route = route.parent;
           }
 
-          console.log(title);
-
           if (title) {
             document.title = `${title} | MakerRepo Print`;
           } else {
