@@ -18,10 +18,15 @@ import RecordFileUploaded from './queries/RecordFileUploaded.graphql';
 export class UploadedFilesService {
   public constructor(private _apollo: Apollo, private _http: HttpClient) {}
 
-  public getFiles(): Observable<UploadedFile[]> {
+  public getFiles(
+    search?: string,
+    orderBy?: string,
+    ascending?: boolean
+  ): Observable<UploadedFile[]> {
     return this._apollo
       .query<{ uploadedFiles: UploadedFile[] }>({
         query: GetFiles,
+        variables: { search, orderBy, ascending },
       })
       .pipe(map((result) => result.data.uploadedFiles));
   }

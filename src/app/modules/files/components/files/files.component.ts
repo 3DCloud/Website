@@ -6,7 +6,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCaretDown,
+  faCaretUp,
+  faTrash,
+  faUpload,
+} from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import md5 from 'js-md5';
 import { Subscription } from 'rxjs';
@@ -32,16 +37,20 @@ interface UploadedFileItem extends UploadedFile {
 })
 export class FilesComponent implements OnInit, OnDestroy {
   public icons = {
+    faCaretDown,
+    faCaretUp,
     faTrash,
     faUpload,
   };
 
   @ViewChild('uploadFileInput') public uploadFileInput: ElementRef | undefined;
 
+  public searchString = '';
+
   public loading = true;
   public hover = false;
   public error?: unknown;
-  public files: UploadedFileItem[] = [];
+  public files?: UploadedFileItem[];
   public uploadStatus = {
     uploading: false,
     step: 'starting',
@@ -50,6 +59,9 @@ export class FilesComponent implements OnInit, OnDestroy {
     success: false,
     fileName: '',
   };
+
+  public orderBy = 'created_at';
+  public ascending = false;
 
   private dragEnter = (event: DragEvent) => {
     this.hover = this.uploadFileInput?.nativeElement.contains(event.target);
@@ -60,6 +72,7 @@ export class FilesComponent implements OnInit, OnDestroy {
   };
 
   private _subscriptions: Subscription[] = [];
+  private _debounceTimer?: number;
 
   public constructor(
     private _modalService: NgbModal,
@@ -76,17 +89,56 @@ export class FilesComponent implements OnInit, OnDestroy {
     document.addEventListener('dragend', this.dragStop);
     document.addEventListener('drop', this.dragStop);
 
+    this.reloadFiles();
+  }
+
+  public debounceSearch(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+
+    if (this.searchString === value) {
+      return;
+    }
+
+    if (this._debounceTimer) {
+      clearTimeout(this._debounceTimer);
+    }
+
+    this._debounceTimer = setTimeout(() => {
+      this.searchString = value;
+      this._debounceTimer = undefined;
+      this.reloadFiles();
+    }, 800);
+  }
+
+  public order(by: string, defaultAscending: boolean): void {
+    if (this.orderBy == by) {
+      this.ascending = !this.ascending;
+    } else {
+      this.orderBy = by;
+      this.ascending = defaultAscending;
+    }
+
+    this.reloadFiles();
+  }
+
+  public reloadFiles(): void {
+    this.loading = true;
+    this.error = null;
+
     this._subscriptions.push(
-      this._uploadedFilesService.getFiles().subscribe(
-        (files) => {
-          this.loading = false;
-          this.files = files.map((f) => ({ ...f, busy: false }));
-        },
-        (err) => {
-          this.loading = false;
-          this.error = err;
-        }
-      )
+      this._uploadedFilesService
+        .getFiles(this.searchString, this.orderBy, this.ascending)
+        .subscribe(
+          (files) => {
+            this.loading = false;
+            this.files = files.map((f) => ({ ...f, busy: false }));
+          },
+          (err) => {
+            this.loading = false;
+            this.files = [];
+            this.error = err;
+          }
+        )
     );
   }
 
@@ -151,7 +203,11 @@ export class FilesComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (uploadedFile) => {
-          this.files.splice(0, 0, { ...uploadedFile, busy: false });
+          this.files = this.files?.splice(0, 0, {
+            ...uploadedFile,
+            busy: false,
+          });
+
           this.uploadStatus.uploading = false;
           this.uploadStatus.success = true;
         },
@@ -184,7 +240,7 @@ export class FilesComponent implements OnInit, OnDestroy {
   public deleteFile(file: UploadedFileItem): void {
     file.busy = true;
     this._uploadedFilesService.delete(file.id).subscribe((deleted) => {
-      this.files = this.files.filter((f) => f.id != deleted.id);
+      this.files = this.files?.filter((f) => f.id != deleted.id);
     });
   }
 

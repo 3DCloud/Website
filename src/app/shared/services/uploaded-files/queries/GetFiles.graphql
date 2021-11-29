@@ -1,5 +1,5 @@
-query {
-  uploadedFiles {
+query ($search: String, $orderBy: String, $ascending: Boolean) {
+  uploadedFiles (search: $search, orderBy: $orderBy, ascending: $ascending) {
     id
     filename
     byteSize

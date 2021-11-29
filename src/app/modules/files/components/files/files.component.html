@@ -3,51 +3,51 @@
 
   <div class="file-upload-zone">
     <label for="file-upload" [class.bg-primary]="hover">
-    <span class="row">
-      <span class="col-12 col-lg-10 offset-lg-1 offset-xl-2 col-xl-8">
-        <span *ngIf="uploadStatus.uploading">
-          <span [ngSwitch]="uploadStatus.step" class="mb-1">
-            <ng-template ngSwitchCase="starting">Preparing&hellip;</ng-template>
-            <ng-template ngSwitchCase="uploading">Uploading '{{uploadStatus.fileName}}'&hellip; {{uploadStatus.progress | number: '1.1-1' }}%</ng-template>
-            <ng-template ngSwitchCase="processing">Processing&hellip;</ng-template>
+      <span class="row">
+        <span class="col-12 col-lg-10 offset-lg-1 offset-xl-2 col-xl-8">
+          <span *ngIf="uploadStatus.uploading">
+            <span [ngSwitch]="uploadStatus.step" class="mb-1">
+              <ng-template ngSwitchCase="starting">Preparing&hellip;</ng-template>
+              <ng-template ngSwitchCase="uploading">Uploading '{{uploadStatus.fileName}}'&hellip; {{uploadStatus.progress | number: '1.1-1' }}%</ng-template>
+              <ng-template ngSwitchCase="processing">Processing&hellip;</ng-template>
+            </span>
+            <ngb-progressbar *ngIf="uploadStatus.step === 'uploading'" type="primary" [value]="uploadStatus.progress"></ngb-progressbar>
+            <ngb-progressbar *ngIf="uploadStatus.step !== 'uploading'" type="primary" [value]="100" [animated]="true" [striped]="true"></ngb-progressbar>
           </span>
-          <ngb-progressbar *ngIf="uploadStatus.step === 'uploading'" type="primary" [value]="uploadStatus.progress"></ngb-progressbar>
-          <ngb-progressbar *ngIf="uploadStatus.step !== 'uploading'" type="primary" [value]="100" [animated]="true" [striped]="true"></ngb-progressbar>
-        </span>
 
-        <span *ngIf="uploadStatus.success">
-          File '{{uploadStatus.fileName}}' uploaded successfully!
-        </span>
+          <span *ngIf="uploadStatus.success">
+            File '{{uploadStatus.fileName}}' uploaded successfully!
+          </span>
 
-        <span *ngIf="uploadStatus.error">
-          Failed to upload: {{uploadStatus.error}}
-        </span>
+          <span *ngIf="uploadStatus.error">
+            Failed to upload: {{uploadStatus.error}}
+          </span>
 
-        <span *ngIf="!uploadStatus.uploading" class="mt-1">
-          <fa-icon [icon]="icons.faUpload"></fa-icon>
-          Drag and drop a G-code file here or click to browse&hellip;
+          <span *ngIf="!uploadStatus.uploading" class="mt-1">
+            <fa-icon [icon]="icons.faUpload"></fa-icon>
+            Drag and drop a G-code file here or click to browse&hellip;
+          </span>
         </span>
       </span>
-    </span>
 
       <input #uploadFileInput id="file-upload" type="file" (change)="upload($event)" accept=".gcode"/>
     </label>
   </div>
 
   <div class="files-table mt-3">
-    <app-spinner *ngIf="loading"></app-spinner>
+    <input class="form-control mb-2" type="text" (keyup)="debounceSearch($event)" placeholder="Search&hellip;" />
 
-    <table *ngIf="!loading && files.length" class="table">
+    <table class="table">
       <thead>
       <tr>
-        <th>Name</th>
-        <th>Size</th>
-        <th>Upload Time</th>
+        <th role="button" (click)="order('filename', true)">Name <fa-icon *ngIf="orderBy === 'filename'" [icon]="ascending ? icons.faCaretUp : icons.faCaretDown"></fa-icon></th>
+        <th role="button" (click)="order('byte_size', true)">Size <fa-icon *ngIf="orderBy === 'byte_size'" [icon]="ascending ? icons.faCaretUp : icons.faCaretDown"></fa-icon></th>
+        <th role="button" (click)="order('created_at', false)">Upload Time <fa-icon *ngIf="orderBy === 'created_at'" [icon]="ascending ? icons.faCaretUp : icons.faCaretDown"></fa-icon></th>
         <th>Estimated Duration</th>
         <th>Actions</th>
       </tr>
       </thead>
-      <tbody>
+      <tbody [class.collapsed]="loading || error || !files?.length">
       <tr *ngFor="let file of files">
         <td><a class="link" role="button" (click)="downloadFile(file.id)">{{file.filename}}</a></td>
         <td>{{bytesToReadable(file.byteSize)}}</td>
@@ -64,12 +64,12 @@
       </tbody>
     </table>
 
-    <div *ngIf="!files.length && !loading && !error" class="alert alert-info">
-      No files found. Try uploading one by using the box above!
-    </div>
+    <app-spinner class="mt-2" *ngIf="loading"></app-spinner>
 
-    <div *ngIf="error" class="alert alert-danger">
-      Failed to get files: {{error}}
-    </div>
+    <app-alert *ngIf="error">Failed to get files: {{error}}</app-alert>
+    <app-alert *ngIf="!loading && files && !files.length">
+      <ng-container *ngIf="!searchString">No files found. Try uploading one by using the box above!</ng-container>
+      <ng-container *ngIf="searchString">No files matching "{{ searchString }}" found.</ng-container>
+    </app-alert>
   </div>
 </div>
