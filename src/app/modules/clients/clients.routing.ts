@@ -9,6 +9,9 @@ const routes: Routes = [
   {
     path: 'clients',
     canActivateChild: [AuthorizationGuard],
+    data: {
+      title: 'Clients',
+    },
     children: [
       { path: '', component: ClientsComponent, data: { subject: 'Client' } },
       { path: ':id', component: ClientComponent, data: { subject: 'Client' } },

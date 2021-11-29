@@ -58,7 +58,7 @@
         </td>
         <td>
           <button type="button" class="ml-1 btn btn-primary" (click)="showSelectPrinterModal(file.id)">Print&hellip;</button>
-          <button type="button" class="ml-1 btn btn-danger" (click)="deleteFile(file)" [disabled]="file.busy"><fa-icon [icon]="icons.faTrash"></fa-icon></button>
+          <button type="button" class="ml-1 btn btn-danger" (click)="deleteFile(file)" [disabled]="file.busy" title="Delete"><fa-icon [icon]="icons.faTrash"></fa-icon></button>
         </td>
       </tr>
       </tbody>

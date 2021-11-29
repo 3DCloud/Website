@@ -44,6 +44,7 @@ export class EditCancellationReasonComponent implements OnInit, OnDestroy {
         .pipe(
           concatMap((paramMap) => {
             this.cancellationReasonId = paramMap.get('id');
+
             if (this.cancellationReasonId) {
               return this._cancellationReasonsService.getCancellationReason(
                 this.cancellationReasonId
@@ -55,12 +56,9 @@ export class EditCancellationReasonComponent implements OnInit, OnDestroy {
         )
         .subscribe(
           (cancellationReason) => {
-            if (this.cancellationReasonId) {
-              if (cancellationReason) {
-                this.form.patchValue(cancellationReason);
-              } else {
-                this.error = 'Cancellation reason not found.';
-              }
+            if (cancellationReason) {
+              this.cancellationReason = cancellationReason;
+              this.form.patchValue(cancellationReason);
             }
 
             this.loading = false;

@@ -9,6 +9,9 @@ const routes: Routes = [
   {
     path: 'files',
     canActivateChild: [AuthorizationGuard],
+    data: {
+      title: 'Files',
+    },
     children: [
       {
         path: '',

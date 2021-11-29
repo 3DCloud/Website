@@ -12,6 +12,9 @@ import {
 const routes: Routes = [
   {
     path: 'printers',
+    data: {
+      title: 'Printers',
+    },
     children: [
       { path: '', component: PrintersComponent, data: { subject: 'Printer' } },
       {

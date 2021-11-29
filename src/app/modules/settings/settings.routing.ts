@@ -19,6 +19,9 @@ const routes: Routes = [
     canActivate: [AuthorizationGuard],
     canActivateChild: [AuthorizationGuard],
     component: SettingsComponent,
+    data: {
+      title: 'Settings',
+    },
     children: [
       {
         path: '',
@@ -30,6 +33,7 @@ const routes: Routes = [
         component: PrinterDefinitionsComponent,
         data: {
           subject: 'PrinterDefinition',
+          title: 'Printer Definitions',
         },
       },
       {
@@ -37,6 +41,7 @@ const routes: Routes = [
         component: EditPrinterDefinitionComponent,
         data: {
           subject: 'PrinterDefinition',
+          title: 'Create Printer Definition',
         },
       },
       {
@@ -44,6 +49,7 @@ const routes: Routes = [
         component: EditPrinterDefinitionComponent,
         data: {
           subject: 'PrinterDefinition',
+          title: 'Edit Printer Definition',
         },
       },
       {
@@ -51,6 +57,7 @@ const routes: Routes = [
         component: MaterialsComponent,
         data: {
           subject: 'Material',
+          title: 'Materials',
         },
       },
       {
@@ -58,6 +65,7 @@ const routes: Routes = [
         component: EditMaterialComponent,
         data: {
           subject: 'Material',
+          title: 'Create Material',
         },
       },
       {
@@ -65,6 +73,7 @@ const routes: Routes = [
         component: EditMaterialComponent,
         data: {
           subject: 'Material',
+          title: 'Edit Material',
         },
       },
       {
@@ -72,6 +81,7 @@ const routes: Routes = [
         component: CancellationReasonsComponent,
         data: {
           subject: 'CancellationReason',
+          title: 'Cancellation Reasons',
         },
       },
       {
@@ -79,6 +89,7 @@ const routes: Routes = [
         component: EditCancellationReasonComponent,
         data: {
           subject: 'CancellationReason',
+          title: 'Create Cancellation Reason',
         },
       },
       {
@@ -86,6 +97,7 @@ const routes: Routes = [
         component: EditCancellationReasonComponent,
         data: {
           subject: 'CancellationReason',
+          title: 'Edit Cancellation Reason',
         },
       },
     ],

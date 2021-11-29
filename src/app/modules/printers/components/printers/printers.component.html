@@ -1,33 +1,30 @@
-<div class="container-fluid">
+<div class="container">
+  <h1>Printers</h1>
+  <app-spinner *ngIf="loading"></app-spinner>
+  <app-alert *ngIf="error" type="danger">{{error}}</app-alert>
 
-  <div class="printers">
-    <div class="grid-header">
-      <h1>Printers</h1>
-      <app-spinner *ngIf="loading"></app-spinner>
-      <app-alert *ngIf="error" type="danger">{{error}}</app-alert>
+  <div *ngIf="!loading && printers && !printers.length" class="alert alert-info">
+    No printers have been configured.
+  </div>
 
-      <div *ngIf="!loading && printers && !printers.length" class="alert alert-info">
-        No printers have been configured.
-      </div>
-
-      <div class="mb-1" *ngIf="printers?.length">
-        <ng-container *ngIf="state === 'connecting'">
+  <div class="mb-1" *ngIf="printers?.length">
+    <ng-container *ngIf="state === 'connecting'">
           <span class="spinner-border spinner-border-sm mr-1" role="status">
             <span class="sr-only">Loading...</span>
           </span>
-          Connecting to live data feed
-        </ng-container>
+      Connecting to live data feed
+    </ng-container>
 
-        <ng-container *ngIf="state === 'connected'">
-          <fa-icon [icon]="icons.faCheck" class="text-success"></fa-icon> Connected to live data feed
-        </ng-container>
+    <ng-container *ngIf="state === 'connected'">
+      <fa-icon [icon]="icons.faCheck" class="text-success"></fa-icon> Connected to live data feed
+    </ng-container>
 
-        <ng-container *ngIf="state === 'disconnected'">
-          <fa-icon [icon]="icons.faTimes" class="text-danger"></fa-icon> Disconnected from live data feed
-        </ng-container>
-      </div>
-    </div>
-
+    <ng-container *ngIf="state === 'disconnected'">
+      <fa-icon [icon]="icons.faTimes" class="text-danger"></fa-icon> Disconnected from live data feed
+    </ng-container>
+  </div>
+  
+  <div class="printers">
     <div class="printer" *ngFor="let printer of printers">
       <app-printer-button class="flex-grow-1" [printer]="printer" [routerLink]="[printer.id, 'status']"></app-printer-button>
 
@@ -35,8 +32,8 @@
       <div *ngIf="'update' | ablePure: 'Printer' | async">
         <button type="button" class="btn btn-primary mt-1 mb-1" (click)="showChangeMaterialModal(printer)">Change Material&hellip;</button>
         <div>
-          <a class="btn btn-light" [routerLink]="[printer.id, 'settings']"><fa-icon [icon]="icons.faWrench"></fa-icon></a>
-          <button class="btn btn-danger ml-1" (click)="delete(printer)" [disabled]="printer.deleting">
+          <a class="btn btn-light" [routerLink]="[printer.id, 'settings']" title="Settings"><fa-icon [icon]="icons.faWrench"></fa-icon></a>
+          <button class="btn btn-danger ml-1" (click)="delete(printer)" [disabled]="printer.deleting" title="Delete">
             <fa-icon *ngIf="!printer.deleting" [icon]="icons.faTrash"></fa-icon>
             <app-spinner *ngIf="printer.deleting" size="medium"></app-spinner>
           </button>

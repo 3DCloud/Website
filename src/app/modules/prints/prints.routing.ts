@@ -8,6 +8,9 @@ import { PrintsComponent } from './components';
 const routes: Routes = [
   {
     path: 'prints',
+    data: {
+      title: 'Prints',
+    },
     canActivateChild: [AuthorizationGuard],
     children: [
       { path: '', component: PrintsComponent, data: { subject: 'Print' } },

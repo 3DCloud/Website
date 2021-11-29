@@ -1,6 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  ActivationStart,
+  Router,
+} from '@angular/router';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { AuthenticationService } from 'app/core/services';
 
@@ -24,13 +29,47 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this._authenticationService.signInIfSessionExists().subscribe(
-      () => {
-        this.loaded = true;
-      },
-      (err) => {
-        this.error = err;
-      }
+    this._subscriptions.push(
+      this._authenticationService.signInIfSessionExists().subscribe(
+        () => {
+          this.loaded = true;
+        },
+        (err) => {
+          this.error = err;
+        }
+      )
+    );
+
+    this._subscriptions.push(
+      this._router.events
+        .pipe(
+          filter(
+            (event): event is ActivationStart =>
+              event instanceof ActivationStart
+          )
+        )
+        .subscribe((event) => {
+          let title: string | undefined = undefined;
+          let route: ActivatedRouteSnapshot | null = event.snapshot;
+
+          while (route) {
+            title = route.data.title;
+
+            if (title) {
+              break;
+            }
+
+            route = route.parent;
+          }
+
+          console.log(title);
+
+          if (title) {
+            document.title = `${title} | MakerRepo Print`;
+          } else {
+            document.title = 'MakerRepo Print';
+          }
+        })
     );
   }
 

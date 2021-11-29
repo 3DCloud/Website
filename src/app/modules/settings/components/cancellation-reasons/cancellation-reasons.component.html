@@ -15,9 +15,9 @@
     <tr *ngFor="let reason of cancellationReasons">
       <td>{{ reason.name }}</td>
       <td>{{ reason.description || '&mdash;' }}</td>
-      <td>
-        <a class="btn btn-light" [routerLink]="reason.id"><fa-icon [icon]="icons.faEdit"></fa-icon></a>
-        <button class="btn btn-danger ml-1" (click)="delete(reason)" [disabled]="reason.deleting">
+      <td class="text-nowrap">
+        <a class="btn btn-light" [routerLink]="reason.id" title="Edit"><fa-icon [icon]="icons.faEdit"></fa-icon></a>
+        <button class="btn btn-danger ml-1" (click)="delete(reason)" [disabled]="reason.deleting" title="Delete">
           <fa-icon [icon]="icons.faTrash" *ngIf="!reason.deleting"></fa-icon>
           <app-spinner size="medium" *ngIf="reason.deleting"></app-spinner>
         </button>

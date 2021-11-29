@@ -4,7 +4,7 @@
 </h2>
 
 <app-spinner *ngIf="loading"></app-spinner>
-<app-alert *ngIf="!loading && cancellationReasonId && !cancellationReason" type="warning">Material not found.</app-alert>
+<app-alert *ngIf="!loading && cancellationReasonId && !cancellationReason" type="warning">Cancellation reason not found.</app-alert>
 <app-alert type="danger" *ngIf="error">{{ error }}</app-alert>
 
 <form *ngIf="!loading && (!cancellationReasonId || cancellationReason)" [formGroup]="form" (ngSubmit)="submit()">
