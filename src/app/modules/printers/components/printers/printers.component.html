@@ -23,7 +23,7 @@
       <fa-icon [icon]="icons.faTimes" class="text-danger"></fa-icon> Disconnected from live data feed
     </ng-container>
   </div>
-  
+
   <div class="printers">
     <div class="printer" *ngFor="let printer of printers">
       <app-printer-button class="flex-grow-1" [printer]="printer" [routerLink]="[printer.id, 'status']"></app-printer-button>
@@ -41,5 +41,4 @@
       </div>
     </div>
   </div>
-
 </div>
