@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, max-content));
   grid-gap: 1rem;
-  justify-content: space-between;
+  justify-content: space-around;
 
   .grid-header {
     grid-row: 1;
