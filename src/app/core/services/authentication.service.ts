@@ -109,8 +109,14 @@ export class AuthenticationService {
       window.localStorage.removeItem(ACCESS_TOKEN_KEY);
       window.localStorage.removeItem(REFRESH_TOKEN_KEY);
 
+      if (this._refreshTimer) {
+        clearInterval(this._refreshTimer);
+      }
+
+      this._user = undefined;
       this._accessToken = undefined;
       this._refreshToken = undefined;
+      this._refreshTimer = undefined;
     });
   }
 
