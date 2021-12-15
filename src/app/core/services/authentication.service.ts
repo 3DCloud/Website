@@ -111,8 +111,6 @@ export class AuthenticationService {
 
       this._accessToken = undefined;
       this._refreshToken = undefined;
-
-      location.assign('https://makerepo.com');
     });
   }
 
